@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><title>App Redesign · Student Loan App — Harish Babu Nadar</title>
+<script src="./theme.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;family=Quicksand:wght@400;500;600&amp;display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:#f6f5f2;color:#0f1013;font-family:"Geist",system-ui,sans-serif;font-size:15px;line-height:1.55;text-wrap:pretty;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,figure,dl,dd,blockquote{margin:0}
+input{font:inherit;color:inherit}
+::selection{background:rgba(64,70,255,.18)}
+a{color:#4046ff}
+a:hover{color:#2a2fd6}
+:focus-visible{outline:2px solid #4046ff;outline-offset:3px}
+</style>
+</helmet>
+
+<div ref="{{ enterRef }}" aria-hidden="true" style="position:fixed; inset:0; z-index:100; background:#0f1013; clip-path:inset(0 0 100% 0); pointer-events:none; display:grid; place-items:center;"><div style="display:flex; flex-direction:column; align-items:center; gap:18px;"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#a3a5ad;">01 / 06</span><span style="font-size:clamp(32px,4vw,56px); line-height:1; font-weight:500; letter-spacing:-0.04em; color:#f6f5f2;">App <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.01em; color:#a9adff;">redesign</span></span><span style="width:160px; height:2px; border-radius:2px; background:rgba(255,255,255,.12); overflow:hidden;"><span style="display:block; height:100%; background:#4046ff; transform-origin:left;"></span></span></div></div>
+<div ref="{{ progressRef }}" style="position:fixed; left:0; right:0; top:0; height:2px; z-index:60; background:#4046ff; transform:scaleX(0); transform-origin:left;"></div>
+<header style="position:fixed; top:0; left:0; right:0; z-index:50; padding:12px clamp(12px,3vw,24px); pointer-events:none;">
+  <div style="pointer-events:auto; max-width:{{ navMax }}; margin:0 auto; display:flex; align-items:center; gap:16px; padding:8px; border-radius:999px; background:{{ navBg }}; box-shadow:{{ navShadow }}; backdrop-filter:blur(16px) saturate(160%); -webkit-backdrop-filter:blur(16px) saturate(160%); transition:max-width .6s cubic-bezier(.2,.8,.2,1), background .4s ease, box-shadow .4s ease;">
+    <a href="Education%20Lending%20Case%20Study.dc.html#cases" aria-label="Back to Student Loan App features" style="display:inline-flex; align-items:center; justify-content:center; flex:none; width:44px; height:44px; border-radius:50%; background:#0f1013; color:#f6f5f2; text-decoration:none; transition:background .2s ease, transform .2s ease;" style-hover="background:#4046ff; color:#ffffff;" style-active="transform:scale(.94);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg></a>
+    <span style="margin-right:auto; display:flex; align-items:center; gap:8px; min-width:0; font-size:15px; font-weight:500; letter-spacing:-0.01em; white-space:nowrap;"><a href="Portfolio%20Homepage.dc.html" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; color:#0f1013; text-decoration:none; transition:color .2s ease;" style-hover="color:#4046ff;">Home</a><span aria-hidden="true" style="color:#b9bac0; font-weight:400;">/</span><a href="Education%20Lending%20Case%20Study.dc.html#cases" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; min-width:0; overflow:hidden; text-overflow:ellipsis; color:#55575e; text-decoration:none; transition:color .2s ease;" style-hover="color:#0f1013;">Student Loan App</a></span>
+    <nav style="display:{{ navLinksDisplay }}; gap:2px;">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
+        <a href="{{ n.href }}" style="padding:8px 12px; border-radius:999px; color:{{ n.color }}; background:{{ n.bg }}; text-decoration:none; font-size:14px; transition:color .2s ease, background .2s ease;" style-hover="color:#0f1013; background:rgba(15,16,19,.05);">{{ n.label }}</a>
+      </sc-for>
+    </nav>
+    <button type="button" data-pf-theme="" aria-label="Switch to dark mode" title="Switch to dark mode" style="display:grid; place-items:center; flex:none; width:44px; height:44px; padding:0; border:0; border-radius:999px; background:transparent; color:#55575e; cursor:pointer; transition:color .2s ease, background .2s ease;" style-hover="color:#0f1013; background:rgba(15,16,19,.05);"><svg data-pf-icon="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg><svg data-pf-icon="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button>
+  </div>
+</header>
+
+<section id="top" style="max-width:1200px; margin:0 auto; padding:clamp(128px,18vh,184px) clamp(20px,5vw,72px) 0;">
+  <div data-reveal="0" style="display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;">
+    <span style="display:inline-flex; align-items:center; gap:8px; padding:6px 12px 6px 10px; border-radius:999px; background:#ffffff; border:1px solid rgba(15,16,19,.08);"><span style="width:7px; height:7px; border-radius:50%; background:#4046ff;"></span>01 / 06 · App redesign</span>
+    <span>Student Loan App · Kuhoo · 2025</span>
+  </div>
+  <h1 style="margin-top:28px; max-width:15ch; font-size:clamp(46px,7vw,108px); line-height:.98; letter-spacing:-0.05em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em;"><span data-reveal="80" data-up="" style="display:inline-block;">The form</span></span> <span style="display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em;"><span data-reveal="150" data-up="" style="display:inline-block;">that stopped</span></span> <span style="display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em;"><span data-reveal="220" data-up="" style="display:inline-block;">students from</span></span> <span style="display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em;"><span data-reveal="290" data-up="" style="display:inline-block;">reaching their</span></span> <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="360" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.025em; color:#4046ff;">degree.</span></span>
+  </h1>
+  <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:36px clamp(32px,6vw,96px); margin-top:44px;">
+    <p data-reveal="440" style="flex:1 1 380px; max-width:54ch; font-size:19px; line-height:1.6; color:#55575e;">A seven-step eligibility redesign for Kuhoo’s lending app raised end-to-end completion from <span style="color:#0f1013; font-weight:500;">17.4% to 38.6%</span> in eight weeks — more than doubling qualified pipeline without a single backend rewrite.</p>
+    <dl data-reveal="520" style="flex:0 1 440px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px 24px;">
+      <div><dt style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Role</dt><dd style="margin-top:6px; font-size:15px;">Product Designer</dd></div>
+      <div><dt style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Timeline</dt><dd style="margin-top:6px; font-size:15px;">8 weeks · 2025</dd></div>
+      <div><dt style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Platform</dt><dd style="margin-top:6px; font-size:15px;">Android &amp; iOS</dd></div>
+    </dl>
+  </div>
+  <div data-reveal="620" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr)); gap:16px; margin-top:clamp(56px,9vh,88px);">
+    <div style="padding:clamp(24px,3vw,36px); border-radius:28px; background:#ffffff; border:1px solid rgba(15,16,19,.07); display:flex; flex-direction:column; gap:20px;">
+      <div style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#4046ff;">Eligibility flow redesign</div>
+      <div style="font-size:clamp(24px,2.4vw,32px); line-height:1.12; letter-spacing:-0.035em; font-weight:500; max-width:20ch;">Seven saved steps replaced one exhausting, <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.01em;">lossy marathon.</span></div>
+      <div ref="{{ stepsRef }}" style="display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:6px; margin-top:4px;">
+        <span style="height:40px; border-radius:12px; background:#f1f1f4; color:#8b8d94; display:grid; place-items:center; font-family:'Geist Mono',monospace; font-size:12px; transition:background .35s ease, color .35s ease, transform .4s cubic-bezier(.3,1.6,.5,1);">1</span>
+        <span style="height:40px; border-radius:12px; background:#f1f1f4; color:#8b8d94; display:grid; place-items:center; font-family:'Geist Mono',monospace; font-size:12px; transition:background .35s ease, color .35s ease, transform .4s cubic-bezier(.3,1.6,.5,1);">2</span>
+        <span style="height:40px; border-radius:12px; background:#f1f1f4; color:#8b8d94; display:grid; place-items:center; font-family:'Geist Mono',monospace; font-size:12px; transition:background .35s ease, color .35s ease, transform .4s cubic-bezier(.3,1.6,.5,1);">3</span>
+        <span style="height:40px; border-radius:12px; background:#f1f1f4; color:#8b8d94; display:grid; place-items:center; font-family:'Geist Mono',monospace; font-size:12px; transition:background .35s ease, color .35s ease, transform .4s cubic-bezier(.3,1.6,.5,1);">4</span>
+        <span style="height:40px; border-radius:12px; background:#f1f1f4; color:#8b8d94; display:grid; place-items:center; font-family:'Geist Mono',monospace; font-size:12px; transition:background .35s ease, color .35s ease, transform .4s cubic-bezier(.3,1.6,.5,1);">5</span>
+        <span style="height:40px; border-radius:12px; background:#f1f1f4; color:#8b8d94; display:grid; place-items:center; font-family:'Geist Mono',monospace; font-size:12px; transition:background .35s ease, color .35s ease, transform .4s cubic-bezier(.3,1.6,.5,1);">6</span>
+        <span style="height:40px; border-radius:12px; background:#f1f1f4; color:#8b8d94; display:grid; place-items:center; font-family:'Geist Mono',monospace; font-size:12px; transition:background .35s ease, color .35s ease, transform .4s cubic-bezier(.3,1.6,.5,1);">7</span>
+      </div>
+      <p style="font-size:14px; line-height:1.6; color:#6c6e75;">Peak volume: 12,400 eligibility starts a month. Median sanctioned ticket ₹18.4L. 62% of annual volume arrives April to August.</p>
+    </div>
+    <div style="position:relative; overflow:hidden; padding:clamp(24px,3vw,36px); border-radius:28px; background:#0f1013; color:#f6f5f2; display:flex; flex-direction:column; justify-content:space-between; gap:28px;">
+      <span aria-hidden="true" style="position:absolute; right:-80px; top:-120px; width:340px; height:340px; border-radius:50%; background:radial-gradient(closest-side, rgba(64,70,255,.6), transparent);"></span>
+      <div style="position:relative; font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#a3a5ad;">End-to-end completion</div>
+      <div style="position:relative; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;">
+        <span data-count="38.6" data-dec="1" data-suf="%" style="font-size:clamp(64px,7vw,104px); line-height:.9; letter-spacing:-0.06em; font-weight:500; font-variant-numeric:tabular-nums;">38.6%</span>
+        <span style="font-family:'Instrument Serif',serif; font-style:italic; font-size:24px; color:#a9adff;">2.2× in 8 weeks</span>
+      </div>
+      <div style="position:relative; display:grid; gap:10px;">
+        <div style="display:grid; grid-template-columns:64px minmax(0,1fr) 48px; align-items:center; gap:12px; font-size:12px; color:#a3a5ad;"><span>Before</span><span style="height:6px; border-radius:6px; background:rgba(255,255,255,.08);"><span data-reveal="900" data-rx="" style="display:block; width:34.8%; height:100%; border-radius:6px; background:#6c6e75; transform-origin:left;"></span></span><span style="font-family:'Geist Mono',monospace; text-align:right;">17.4%</span></div>
+        <div style="display:grid; grid-template-columns:64px minmax(0,1fr) 48px; align-items:center; gap:12px; font-size:12px; color:#ffffff;"><span>After</span><span style="height:6px; border-radius:6px; background:rgba(255,255,255,.08);"><span data-reveal="1050" data-rx="" style="display:block; width:77.2%; height:100%; border-radius:6px; background:linear-gradient(90deg,#4046ff,#8f94ff); transform-origin:left;"></span></span><span style="font-family:'Geist Mono',monospace; text-align:right;">38.6%</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="problem" style="max-width:1200px; margin:0 auto; padding:clamp(112px,16vh,168px) clamp(20px,5vw,72px) 0;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#4046ff;">01</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Problem &amp; strategic context</div>
+  <h2 style="margin-top:22px; max-width:17ch; font-size:clamp(36px,5vw,72px); line-height:1.02; letter-spacing:-0.045em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em;"><span data-reveal="60" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#4046ff;">82.6%</span></span> <span style="display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em;"><span data-reveal="120" data-up="" style="display:inline-block;">of students were</span></span> <span style="display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em;"><span data-reveal="180" data-up="" style="display:inline-block;">walking away before</span></span> <span style="display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em;"><span data-reveal="240" data-up="" style="display:inline-block;">submitting.</span></span>
+  </h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr)); gap:24px clamp(32px,6vw,96px); margin-top:40px;">
+    <p data-reveal="200" style="font-size:17px; line-height:1.65; color:#55575e; max-width:56ch;">Kuhoo’s eligibility form was the single gateway to a ₹18.4L median loan. Three months of Mixpanel data, 140 PostHog session recordings, a heuristic review and moderated testing told the same story: the product was losing students faster than marketing could acquire them.</p>
+    <div data-reveal="280" style="padding:24px 26px; border-radius:22px; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+      <div style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#4046ff;">Business case</div>
+      <p style="margin-top:10px; font-size:15px; line-height:1.6; color:#33353b;">April–August carries 62% of annual volume. Doubling completion before peak season wasn’t a design aspiration — it was revenue recovery. The opportunity was already funded; we were leaving it on the table.</p>
+    </div>
+  </div>
+  <figure data-reveal="0" style="margin-top:clamp(48px,7vh,72px); padding:clamp(22px,3vw,36px); border-radius:28px; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+    <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:8px 24px;">
+      <div style="font-size:18px; font-weight:500; letter-spacing:-0.02em;">Original funnel <span style="color:#8b8d94; font-weight:400;">· per 1,000 starts</span></div>
+      <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; font-family:'Geist Mono',monospace; font-size:11px; color:#8b8d94;"><span style="display:inline-flex; align-items:center; gap:6px;"><span style="width:10px; height:10px; border-radius:3px; background:#c9cbff;"></span>Continued</span><span style="display:inline-flex; align-items:center; gap:6px;"><span style="width:10px; height:10px; border-radius:3px; background:repeating-linear-gradient(135deg, rgba(217,45,58,.45) 0 2px, rgba(217,45,58,.1) 2px 4px); box-shadow:inset 0 0 0 1px rgba(217,45,58,.45);"></span>Dropped</span><span>3 months Mixpanel · 140 PostHog sessions</span></div>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:clamp(4px,1vw,14px); margin-top:28px;">
+      <sc-for list="{{ funnel }}" as="f" hint-placeholder-count="8">
+        <div onMouseEnter="{{ f.onEnter }}" onMouseLeave="{{ f.onLeave }}" style="display:flex; flex-direction:column; gap:8px; cursor:default;">
+          <span style="font-family:'Geist Mono',monospace; font-size:clamp(10px,1vw,12px); font-weight:500; color:#d92d3a; text-align:center; opacity:{{ f.lostO }};">{{ f.lost }}</span>
+          <span style="font-size:clamp(12px,1.4vw,18px); font-weight:500; letter-spacing:-0.02em; text-align:center; color:{{ f.vc }}; font-variant-numeric:tabular-nums; transition:color .2s ease;">{{ f.v }}</span>
+          <div style="height:clamp(160px,26vh,260px); display:flex; flex-direction:column; justify-content:flex-end; border-radius:12px; background:#f6f5f2;">
+            <span data-reveal="{{ f.ld }}" style="display:block; height:{{ f.lh }}; border-radius:10px 10px 0 0; background:repeating-linear-gradient(135deg, rgba(217,45,58,.30) 0 3px, rgba(217,45,58,.07) 3px 7px); box-shadow:inset 0 0 0 1px rgba(217,45,58,.4);"></span><span data-reveal="{{ f.delay }}" data-ry="" style="display:block; height:{{ f.h }}; border-radius:{{ f.br }}; background:{{ f.bg }}; transform-origin:bottom; transition:background .25s ease;"></span>
+          </div>
+          <span style="font-size:clamp(10px,1vw,12px); color:#6c6e75; text-align:center; overflow-wrap:anywhere;">{{ f.l }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <figcaption style="margin-top:22px; max-width:68ch; font-size:14px; line-height:1.6; color:#6c6e75;">Only 174 of every 1,000 students who started the eligibility form reached submission. That 82.6% drop-off was the core business problem. Hatched red segments show the students lost at each step.</figcaption>
+  </figure>
+  <div data-reveal="0" style="margin-top:clamp(64px,9vh,96px); font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Five diagnosed root causes</div>
+  <div style="display:grid; grid-template-columns:{{ causeCols }}; gap:12px; margin-top:18px;">
+    <sc-for list="{{ causes }}" as="c" hint-placeholder-count="5">
+      <div data-reveal="{{ c.delay }}" onMouseMove="{{ spot }}" style="grid-column:{{ c.span }}; padding:22px; border-radius:22px; border:1px solid rgba(15,16,19,.07); background:radial-gradient(260px circle at var(--mx,50%) var(--my,-40%), rgba(64,70,255,.10), transparent 70%), #ffffff; display:grid; grid-template-columns:{{ causeInner }}; align-content:start; align-items:start; gap:14px 16px; transition:border-color .25s ease, transform .3s cubic-bezier(.2,.8,.2,1);" style-hover="border-color:rgba(64,70,255,.35); transform:translateY(-3px);">
+        <span style="width:30px; height:30px; border-radius:50%; background:#eef0ff; color:#4046ff; display:grid; place-items:center; font-family:'Geist Mono',monospace; font-size:11px;">{{ c.n }}</span>
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <span style="font-size:17px; font-weight:500; letter-spacing:-0.02em; line-height:1.25;">{{ c.t }}</span>
+          <span style="font-size:14px; line-height:1.55; color:#6c6e75;">{{ c.d }}</span>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <blockquote data-scrub="" style="margin-top:clamp(72px,10vh,112px); max-width:30ch; font-family:'Instrument Serif',serif; font-size:clamp(30px,3.8vw,52px); line-height:1.12; letter-spacing:-0.02em;">
+    <span data-w="">“I</span> <span data-w="">started</span> <span data-w="">filling</span> <span data-w="">it</span> <span data-w="">three</span> <span data-w="">times.</span> <span data-w="">Each</span> <span data-w="">time</span> <span data-w="">something</span> <span data-w="">went</span> <span data-w="">wrong</span> <span data-w="">and</span> <span data-w="">I</span> <span data-w="">had</span> <span data-w="">to</span> <span data-w="">start</span> <span data-w="">over.</span> <span data-w="">I</span> <span data-w="">just</span> <span data-w="">gave</span> <span data-w="">up</span> <span data-w="">and</span> <span data-w="">called</span> <span data-w="">customer</span> <span data-w="">support</span> <span data-w="">instead.”</span>
+    <footer style="margin-top:22px; font-family:'Geist',sans-serif; font-size:14px; letter-spacing:0; color:#6c6e75;">Final-year student · Pune · moderated session</footer>
+  </blockquote>
+</section>
+
+<section id="strategy" style="max-width:1200px; margin:0 auto; padding:clamp(112px,16vh,168px) clamp(20px,5vw,72px) 0;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#4046ff;">02</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Strategy &amp; constraints</div>
+  <h2 style="margin-top:22px; max-width:16ch; font-size:clamp(36px,5vw,72px); line-height:1.02; letter-spacing:-0.045em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em;"><span data-reveal="60" data-up="" style="display:inline-block;">Fix flow before</span></span> <span style="display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em;"><span data-reveal="120" data-up="" style="display:inline-block;">surface. Never lose</span></span> <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="180" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#4046ff;">student work.</span></span>
+  </h2>
+  <p data-reveal="200" style="margin-top:32px; max-width:58ch; font-size:17px; line-height:1.65; color:#55575e;">Hard constraints shaped every decision: mandated regulatory fields, an incomplete vendor catalogue, no backend rewrite, the existing brand, and four weeks to a dev-ready handoff.</p>
+  <div data-reveal="260" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:24px;">
+    <span style="padding:8px 14px; border-radius:999px; background:#ffffff; border:1px solid rgba(15,16,19,.08); font-size:13px; color:#33353b;">Mandated regulatory fields</span>
+    <span style="padding:8px 14px; border-radius:999px; background:#ffffff; border:1px solid rgba(15,16,19,.08); font-size:13px; color:#33353b;">Incomplete institute catalogue</span>
+    <span style="padding:8px 14px; border-radius:999px; background:#ffffff; border:1px solid rgba(15,16,19,.08); font-size:13px; color:#33353b;">No backend rewrite</span>
+    <span style="padding:8px 14px; border-radius:999px; background:#ffffff; border:1px solid rgba(15,16,19,.08); font-size:13px; color:#33353b;">Existing Kuhoo brand</span>
+    <span style="padding:8px 14px; border-radius:999px; background:#0f1013; color:#f6f5f2; font-size:13px;">Dev-ready in 4 weeks</span>
+  </div>
+  <div style="display:grid; grid-template-columns:{{ prinCols }}; gap:16px; margin-top:clamp(48px,7vh,72px);">
+    <sc-for list="{{ principles }}" as="p" hint-placeholder-count="3">
+      <div data-reveal="{{ p.delay }}" onMouseMove="{{ spot }}" style="position:relative; overflow:hidden; padding:clamp(24px,3vw,32px); border-radius:28px; background:radial-gradient(320px circle at var(--mx,50%) var(--my,-40%), rgba(64,70,255,.45), transparent 70%), #0f1013; color:#f6f5f2; display:flex; flex-direction:column; gap:12px;">
+        <span style="align-self:flex-start; padding:5px 10px; border-radius:999px; background:rgba(169,173,255,.12); font-family:'Geist Mono',monospace; font-size:11px; color:#a9adff;">Principle {{ p.n }}</span>
+        <span style="margin-top:20px; font-size:clamp(22px,2.2vw,28px); line-height:1.12; letter-spacing:-0.03em; font-weight:500;">{{ p.t }}</span>
+        <span style="font-size:14px; line-height:1.6; color:#b4b6bd;">{{ p.d }}</span>
+      </div>
+    </sc-for>
+  </div>
+  <div style="margin-top:clamp(56px,8vh,88px); border-top:1px solid rgba(15,16,19,.1);">
+    <sc-for list="{{ decisions }}" as="d" hint-placeholder-count="4">
+      <div data-reveal="{{ d.delay }}" style="display:grid; grid-template-columns:{{ rowCols }}; gap:8px 24px; align-items:baseline; padding:24px 0; border-bottom:1px solid rgba(15,16,19,.1); transition:padding .3s cubic-bezier(.2,.8,.2,1);" style-hover="padding-left:10px;">
+        <span style="font-family:'Geist Mono',monospace; font-size:12px; color:#4046ff;">{{ d.n }}</span>
+        <span style="font-size:19px; font-weight:500; letter-spacing:-0.02em;">{{ d.t }}</span>
+        <span style="font-size:15px; line-height:1.6; color:#55575e;">{{ d.d }}</span>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<section style="max-width:1200px; margin:0 auto; padding:clamp(48px,7vh,72px) clamp(20px,5vw,72px) 0;">
+  <div data-reveal="0" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr)); gap:clamp(32px,5vw,72px); align-items:center; padding:clamp(24px,4vw,56px); border-radius:32px; background:#0f1013; color:#f6f5f2; overflow:hidden; position:relative;">
+    <span aria-hidden="true" style="position:absolute; right:-120px; bottom:-200px; width:520px; height:520px; border-radius:50%; background:radial-gradient(closest-side, rgba(64,70,255,.5), transparent);"></span>
+    <div style="position:relative; display:flex; flex-direction:column; gap:16px;">
+      <span style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#a9adff;">Institute search</span>
+      <span style="font-size:clamp(26px,3vw,40px); line-height:1.08; letter-spacing:-0.04em; font-weight:500; max-width:16ch;">No institute is a <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.01em; color:#a9adff;">dead end.</span></span>
+      <p style="font-size:15px; line-height:1.65; color:#b4b6bd; max-width:44ch;">Typeahead suggests as students type. When the vendor catalogue is missing their institute or course, picking “Other” opens a plain text field — so the form keeps moving.</p>
+    </div>
+    <div style="position:relative; display:flex; justify-content:center; gap:clamp(12px,2vw,24px);">
+      <sc-for list="{{ fall }}" as="e" hint-placeholder-count="2">
+        <figure data-reveal="{{ e.delay }}" style="flex:0 1 220px; display:flex; flex-direction:column; gap:14px; margin-top:{{ e.mt }};">
+          <div style="width:100%; overflow:hidden; border-radius:32px; padding:6px; background:#2a2b31; box-shadow:0 40px 70px -30px rgba(0,0,0,.7);">
+            <div style="width:100%; aspect-ratio:360/760; min-height:0; border-radius:26px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:rgba(15,16,19,.25) transparent; overflow-x:hidden; background:#f4f4fb;"><img data-pan="" src="{{ e.src }}" alt="{{ e.t }}" onLoad="{{ panLoad }}" style="display:block; width:100%; height:auto;"></div>
+          </div>
+          <figcaption style="font-size:13px; color:#b4b6bd; padding:0 4px;">{{ e.t }}</figcaption>
+        </figure>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section id="craft" style="max-width:1200px; margin:0 auto; padding:clamp(112px,16vh,168px) clamp(20px,5vw,72px) 0;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#4046ff;">03</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Design craft</div>
+  <h2 style="margin-top:22px; max-width:16ch; font-size:clamp(36px,5vw,72px); line-height:1.02; letter-spacing:-0.045em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em;"><span data-reveal="60" data-up="" style="display:inline-block;">Every field saves,</span></span> <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="120" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#4046ff;">explains, recovers.</span></span>
+  </h2>
+  <div data-reveal="0" style="margin-top:clamp(48px,7vh,72px); display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:8px 24px;">
+    <div style="display:flex; flex-direction:column; gap:8px;"><span style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Sign-in</span><span style="font-size:clamp(22px,2.4vw,30px); font-weight:500; letter-spacing:-0.03em;">A way in that never dead-ends.</span></div>
+  </div>
+  <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:36px 20px; margin-top:28px;">
+    <sc-for list="{{ entry }}" as="e" hint-placeholder-count="6">
+      <figure data-reveal="{{ e.delay }}" style="flex:0 0 clamp(150px,20vw,220px); display:flex; flex-direction:column; gap:16px;">
+        <div style="width:100%; overflow:hidden; border-radius:34px; padding:7px; background:#0f1013; box-shadow:0 30px 60px -30px rgba(15,16,19,.5); transition:transform .4s cubic-bezier(.2,.8,.2,1);" style-hover="transform:translateY(-6px);">
+          <div style="width:100%; aspect-ratio:360/760; min-height:0; border-radius:28px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:rgba(15,16,19,.25) transparent; overflow-x:hidden; background:#f4f4fb;"><img data-pan="" src="{{ e.src }}" alt="{{ e.t }}" onLoad="{{ panLoad }}" style="display:block; width:100%; height:auto;"></div>
+        </div>
+        <figcaption style="display:flex; flex-direction:column; gap:4px; padding:0 4px;"><span style="font-size:15px; font-weight:500; letter-spacing:-0.015em;">{{ e.t }}</span><span style="font-size:13px; line-height:1.5; color:#6c6e75;">{{ e.d }}</span></figcaption>
+      </figure>
+    </sc-for>
+  </div>
+  <div data-reveal="0" style="margin-top:clamp(56px,8vh,88px); display:flex; flex-direction:column; gap:8px;"><span style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">The seven steps</span><span style="font-size:clamp(22px,2.4vw,30px); font-weight:500; letter-spacing:-0.03em;">Small, saved commitments.</span></div>
+  <div data-reveal="80" style="margin-top:24px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr)); gap:clamp(24px,4vw,64px); align-items:center; padding:clamp(20px,4vw,56px); border-radius:32px; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+    <div style="display:flex; flex-direction:column; gap:4px;">
+      <div style="display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:5px; margin:0 16px 16px;">
+        <sc-for list="{{ shots }}" as="s" hint-placeholder-count="7"><span style="height:4px; border-radius:4px; background:{{ s.seg }}; transition:background .3s ease;"></span></sc-for>
+      </div>
+      <sc-for list="{{ shots }}" as="s" hint-placeholder-count="7">
+        <button type="button" aria-pressed="{{ s.sel }}" onClick="{{ s.onClick }}" style="display:grid; grid-template-columns:32px minmax(0,1fr); gap:4px 12px; align-items:baseline; width:100%; text-align:left; padding:14px 16px; border:0; border-radius:16px; background:{{ s.bg }}; font:inherit; color:inherit; cursor:pointer; transition:background .25s ease;" style-hover="background:#f1f1f4;">
+          <span style="font-family:'Geist Mono',monospace; font-size:12px; color:{{ s.nc }};">{{ s.n }}</span>
+          <span style="font-size:17px; font-weight:500; letter-spacing:-0.02em; color:{{ s.tc }}; transition:color .25s ease;">{{ s.t }}</span>
+          <sc-if value="{{ s.on }}" hint-placeholder-val="{{ false }}"><span style="grid-column:2; font-size:14px; line-height:1.55; color:#6c6e75;">{{ s.d }}</span></sc-if>
+        </button>
+      </sc-for>
+    </div>
+    <div style="position:relative; display:grid; place-items:center; padding:12px 0;">
+      <span aria-hidden="true" style="position:absolute; width:min(110%,460px); aspect-ratio:1; border-radius:50%; background:radial-gradient(closest-side, rgba(64,70,255,.22), transparent);"></span>
+      <div style="position:relative; width:min(100%,290px); overflow:hidden; border-radius:42px; padding:8px; background:#0f1013; box-shadow:0 50px 90px -40px rgba(15,16,19,.6), 0 0 0 1px rgba(15,16,19,.1);">
+        <div style="width:100%; aspect-ratio:360/760; min-height:0; border-radius:34px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:rgba(15,16,19,.25) transparent; overflow-x:hidden; background:#f4f4fb;"><img data-pan="" src="{{ curSrc }}" alt="{{ curAlt }}" onLoad="{{ panLoad }}" style="display:block; width:100%; height:auto;"></div>
+      </div>
+    </div>
+  </div>
+  <div data-reveal="0" style="margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:16px;">
+    <div style="padding:clamp(24px,3vw,36px); border-radius:28px; background:#ffffff; border:1px solid rgba(15,16,19,.07); display:flex; flex-direction:column; gap:20px;">
+      <div style="display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap;">
+        <span style="font-size:18px; font-weight:500; letter-spacing:-0.02em;">Loan amount field</span>
+        <span style="font-family:'Geist Mono',monospace; font-size:11px; color:#8b8d94;">M3 outlined · {{ fsName }}</span>
+      </div>
+      <div style="padding:16px; border-radius:18px; background:#f3f3fb;">
+        <div style="border-radius:10px; background:#ffffff; font-family:'Quicksand',sans-serif; box-shadow:0 1px 2px rgba(15,16,19,.06);">
+          <div style="padding:14px 16px; border-bottom:1px solid #ececf3; font-size:14px; font-weight:500; color:#1a12f5;">Course fees for full program</div>
+          <div style="padding:24px 16px 14px;">
+            <label style="position:relative; display:flex; align-items:center; gap:6px; height:56px; padding:0 12px 0 16px; border-radius:4px; border:1px solid {{ fBorder }}; box-shadow:{{ fRing }}; background:#ffffff; cursor:text; transition:border-color .15s ease, box-shadow .15s ease;">
+              <span style="position:absolute; left:12px; top:{{ lTop }}; transform:translateY(-50%); padding:0 4px; background:#ffffff; font-size:{{ lFs }}; line-height:1.2; color:{{ fLabelC }}; white-space:nowrap; pointer-events:none; transition:top .16s ease, font-size .16s ease, color .16s ease;">Course fee for 3 years <span style="color:#d92d3a;">*</span></span>
+              <span style="font-size:16px; font-weight:500; color:{{ fInC }}; opacity:{{ preO }}; transition:opacity .16s ease;">₹</span>
+              <input ref="{{ amtRef }}" inputmode="numeric" aria-label="Course fee for 3 years" value="{{ amtStr }}" disabled="{{ fDis }}" onChange="{{ onAmt }}" onFocus="{{ onFocusAmt }}" onBlur="{{ onBlurAmt }}" style="flex:1; min-width:0; height:100%; border:0; outline:0; background:transparent; font-family:'Quicksand',sans-serif; font-size:16px; font-weight:500; color:{{ fInC }}; caret-color:#1a12f5; font-variant-numeric:tabular-nums;">
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex:none; opacity:{{ errO }}; transition:opacity .15s ease;"><circle cx="12" cy="12" r="10" fill="#d92d3a"></circle><path d="M12 7v6" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"></path><circle cx="12" cy="16.6" r="1.3" fill="#ffffff"></circle></svg>
+            </label>
+            <div style="min-height:18px; margin-top:4px; padding-left:16px; font-size:12px; line-height:1.5; color:{{ fHelpC }}; transition:color .15s ease;">{{ fHelp }}</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:6px;">
+        <sc-for list="{{ chips }}" as="ch" hint-placeholder-count="5">
+          <button type="button" aria-pressed="{{ ch.sel }}" onClick="{{ ch.onClick }}" style="height:32px; padding:0 14px; border:0; border-radius:999px; background:{{ ch.bg }}; color:{{ ch.fg }}; font:inherit; font-size:12px; cursor:pointer; transform:{{ ch.sc }}; transition:background .2s ease, color .2s ease, transform .3s cubic-bezier(.3,1.6,.5,1);">{{ ch.st }}</button>
+        </sc-for>
+      </div>
+    </div>
+    <div style="padding:clamp(24px,3vw,36px); border-radius:28px; background:#ffffff; border:1px solid rgba(15,16,19,.07); display:flex; flex-direction:column; gap:20px;">
+      <div style="display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap;">
+        <span style="font-size:18px; font-weight:500; letter-spacing:-0.02em;">Marks with explicit units</span>
+        <span style="font-family:'Geist Mono',monospace; font-size:11px; color:#8b8d94;">M3 outlined · live</span>
+      </div>
+      <div style="padding:16px; border-radius:18px; background:#f3f3fb;">
+        <div style="border-radius:10px; background:#ffffff; font-family:'Quicksand',sans-serif; box-shadow:0 1px 2px rgba(15,16,19,.06);">
+          <div style="padding:14px 16px; border-bottom:1px solid #ececf3; font-size:14px; font-weight:500; color:#1a12f5;">Highest qualification</div>
+          <div style="padding:18px 16px 14px; display:flex; flex-direction:column; gap:14px;">
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <span style="font-size:14px; color:#1c1b1f;">Score type? <span style="color:#d92d3a;">*</span></span>
+              <div role="radiogroup" aria-label="Score type" style="display:flex; gap:20px;">
+                <sc-for list="{{ mRadios }}" as="r" hint-placeholder-count="2">
+                  <button type="button" role="radio" aria-checked="{{ r.sel }}" onClick="{{ r.onClick }}" style="display:inline-flex; align-items:center; gap:10px; padding:6px 2px; border:0; background:transparent; font-family:'Quicksand',sans-serif; font-size:15px; font-weight:500; color:#1c1b1f; cursor:pointer;"><span style="width:20px; height:20px; border-radius:50%; border:2px solid {{ r.rc }}; display:grid; place-items:center; transition:border-color .15s ease;"><span style="width:10px; height:10px; border-radius:50%; background:#1a12f5; transform:{{ r.ds }}; transition:transform .22s cubic-bezier(.3,1.6,.5,1);"></span></span>{{ r.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+            <div style="display:flex; gap:12px; padding-top:6px;">
+              <sc-for list="{{ mFields }}" as="mf" hint-placeholder-count="1">
+                <div style="flex:1 1 0; min-width:0;">
+                  <label style="position:relative; display:flex; align-items:center; gap:6px; height:56px; padding:0 12px 0 16px; border-radius:4px; border:1px solid {{ mf.bc }}; box-shadow:{{ mf.ring }}; background:#ffffff; cursor:text; transition:border-color .15s ease, box-shadow .15s ease;">
+                    <span style="position:absolute; left:12px; top:{{ mf.lTop }}; transform:translateY(-50%); padding:0 4px; background:#ffffff; font-size:{{ mf.lFs }}; line-height:1.2; color:{{ mf.lc }}; white-space:nowrap; pointer-events:none; transition:top .16s ease, font-size .16s ease, color .16s ease;">{{ mf.label }} <span style="color:#d92d3a;">*</span></span>
+                    <input inputmode="decimal" aria-label="{{ mf.label }}" value="{{ mf.v }}" onChange="{{ mf.onChange }}" onFocus="{{ mf.onFocus }}" onBlur="{{ mf.onBlur }}" style="flex:1; min-width:0; height:100%; border:0; outline:0; background:transparent; font-family:'Quicksand',sans-serif; font-size:16px; font-weight:500; color:#1c1b1f; caret-color:#1a12f5; font-variant-numeric:tabular-nums;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex:none; opacity:{{ mf.errO }}; transition:opacity .15s ease;"><circle cx="12" cy="12" r="10" fill="#d92d3a"></circle><path d="M12 7v6" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"></path><circle cx="12" cy="16.6" r="1.3" fill="#ffffff"></circle></svg>
+                  </label>
+                  <div style="min-height:18px; margin-top:4px; padding-left:16px; font-size:12px; line-height:1.5; color:{{ mf.hc }};">{{ mf.help }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p style="margin-top:auto; font-size:14px; line-height:1.6; color:#6c6e75;">Ambiguous marks were a top source of blocking errors. Making the score type an explicit choice — with its maximum — removed the guesswork at one of the highest-stakes inputs in the flow.</p>
+    </div>
+  </div>
+  <div data-reveal="0" style="margin-top:clamp(64px,9vh,96px); display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:8px 24px;">
+    <div style="display:flex; flex-direction:column; gap:8px;"><span style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Error states</span><span style="font-size:clamp(22px,2.4vw,30px); font-weight:500; letter-spacing:-0.03em;">Every failure has a next action.</span></div>
+  </div>
+  <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:36px 20px; margin-top:28px;">
+    <sc-for list="{{ errs }}" as="e" hint-placeholder-count="7">
+      <figure data-reveal="{{ e.delay }}" style="flex:0 0 clamp(150px,20vw,220px); display:flex; flex-direction:column; gap:16px;">
+        <div style="width:100%; overflow:hidden; border-radius:34px; padding:7px; background:#0f1013; box-shadow:0 30px 60px -30px rgba(15,16,19,.5); transition:transform .4s cubic-bezier(.2,.8,.2,1);" style-hover="transform:translateY(-6px);">
+          <div style="width:100%; aspect-ratio:360/760; min-height:0; border-radius:28px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:rgba(15,16,19,.25) transparent; overflow-x:hidden; background:#f4f4fb;"><img data-pan="" src="{{ e.src }}" alt="{{ e.t }}" onLoad="{{ panLoad }}" style="display:block; width:100%; height:auto;"></div>
+        </div>
+        <figcaption style="display:flex; flex-direction:column; gap:4px; padding:0 4px;"><span style="display:flex; align-items:center; gap:8px; font-size:15px; font-weight:500; letter-spacing:-0.015em;"><span style="flex:none; width:6px; height:6px; border-radius:50%; background:#d92d3a;"></span>{{ e.t }}</span><span style="font-size:13px; line-height:1.5; color:#6c6e75;">{{ e.d }}</span></figcaption>
+      </figure>
+    </sc-for>
+  </div>
+  <div data-reveal="0" style="margin-top:clamp(64px,9vh,96px); font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Validation</div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr)); gap:clamp(24px,4vw,48px); margin-top:20px;">
+    <sc-for list="{{ valid }}" as="v" hint-placeholder-count="3">
+      <div data-reveal="{{ v.delay }}" style="display:flex; flex-direction:column; gap:8px; padding-top:20px; border-top:1px solid rgba(15,16,19,.12);">
+        <span data-count="{{ v.to }}" style="font-size:clamp(56px,6vw,88px); line-height:.9; letter-spacing:-0.06em; font-weight:500; color:{{ v.c }}; font-variant-numeric:tabular-nums;">{{ v.v }}</span>
+        <span style="margin-top:8px; font-size:17px; font-weight:500; letter-spacing:-0.02em;">{{ v.t }}</span>
+        <span style="font-size:14px; line-height:1.6; color:#6c6e75;">{{ v.d }}</span>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<section id="outcomes" style="max-width:1280px; margin:0 auto; padding:clamp(112px,16vh,168px) clamp(12px,2vw,24px) 0;">
+  <div style="padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px); border-radius:clamp(28px,4vw,48px); background:#0f1013; color:#f6f5f2; position:relative; overflow:hidden;">
+    <span aria-hidden="true" style="position:absolute; left:-160px; bottom:-220px; width:560px; height:560px; border-radius:50%; background:radial-gradient(closest-side, rgba(64,70,255,.45), transparent);"></span>
+    <div data-reveal="0" style="position:relative; display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#a3a5ad;"><span style="color:#a9adff;">04</span><span style="width:28px; height:1px; background:rgba(255,255,255,.25);"></span>Outcomes</div>
+    <h2 style="position:relative; margin-top:22px; max-width:16ch; font-size:clamp(36px,5vw,72px); line-height:1.02; letter-spacing:-0.045em; font-weight:500;">
+      <span style="display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em;"><span data-reveal="60" data-up="" style="display:inline-block;">Completion more</span></span> <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="120" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#a9adff;">than doubled.</span></span>
+    </h2>
+    <div style="position:relative; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr)); gap:16px; margin-top:clamp(40px,6vh,64px);">
+      <sc-for list="{{ bta }}" as="m" hint-placeholder-count="2">
+        <div data-reveal="{{ m.delay }}" style="padding:24px; border-radius:24px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); display:grid; gap:12px;">
+          <span style="font-size:17px; font-weight:500; letter-spacing:-0.02em; margin-bottom:6px;">{{ m.name }}</span>
+          <div style="display:grid; grid-template-columns:64px minmax(0,1fr) 52px; align-items:center; gap:12px; font-size:12px; color:#a3a5ad;"><span>Baseline</span><span style="height:8px; border-radius:8px; background:rgba(255,255,255,.08);"><span data-reveal="300" data-rx="" style="display:block; width:{{ m.bW }}; height:100%; border-radius:8px; background:#6c6e75; transform-origin:left;"></span></span><span style="font-family:'Geist Mono',monospace; text-align:right;">{{ m.bL }}</span></div>
+          <div style="display:grid; grid-template-columns:64px minmax(0,1fr) 52px; align-items:center; gap:12px; font-size:12px; color:#a3a5ad;"><span>Target</span><span style="height:8px; border-radius:8px; background:rgba(255,255,255,.08);"><span data-reveal="450" data-rx="" style="display:block; width:{{ m.tW }}; height:100%; border-radius:8px; background:rgba(169,173,255,.45); transform-origin:left;"></span></span><span style="font-family:'Geist Mono',monospace; text-align:right;">{{ m.tL }}</span></div>
+          <div style="display:grid; grid-template-columns:64px minmax(0,1fr) 52px; align-items:center; gap:12px; font-size:12px; color:#ffffff;"><span>Actual</span><span style="height:8px; border-radius:8px; background:rgba(255,255,255,.08);"><span data-reveal="600" data-rx="" style="display:block; width:{{ m.aW }}; height:100%; border-radius:8px; background:linear-gradient(90deg,#4046ff,#8f94ff); transform-origin:left;"></span></span><span style="font-family:'Geist Mono',monospace; text-align:right;">{{ m.aL }}</span></div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="position:relative; display:grid; grid-template-columns:{{ metCols }}; gap:1px; margin-top:16px; border-radius:24px; overflow:hidden; background:rgba(255,255,255,.08);">
+      <sc-for list="{{ metrics }}" as="k" hint-placeholder-count="8">
+        <div data-reveal="{{ k.delay }}" style="padding:24px; background:#141519; display:flex; flex-direction:column; gap:6px; min-height:170px;">
+          <span data-count="{{ k.to }}" data-dec="{{ k.dec }}" data-pre="{{ k.pre }}" data-suf="{{ k.suf }}" style="font-size:clamp(36px,3.6vw,48px); line-height:1; letter-spacing:-0.05em; font-weight:500; font-variant-numeric:tabular-nums;">{{ k.v }}</span>
+          <span style="margin-top:auto; font-size:14px; font-weight:500;">{{ k.l }}</span>
+          <span style="font-size:12px; line-height:1.5; color:#a3a5ad;">{{ k.sub }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section id="learnings" style="max-width:1200px; margin:0 auto; padding:clamp(112px,16vh,168px) clamp(20px,5vw,72px) 0;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#4046ff;">05</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Learnings</div>
+  <h2 style="margin-top:22px; max-width:16ch; font-size:clamp(36px,5vw,72px); line-height:1.02; letter-spacing:-0.045em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em;"><span data-reveal="60" data-up="" style="display:inline-block;">Structure precedes</span></span> <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="120" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#4046ff;">aesthetics.</span></span>
+  </h2>
+  <div style="margin-top:clamp(40px,6vh,64px); border-top:1px solid rgba(15,16,19,.1);">
+    <sc-for list="{{ learn }}" as="l" hint-placeholder-count="3">
+      <div data-reveal="{{ l.delay }}" style="display:grid; grid-template-columns:{{ learnCols }}; gap:8px 24px; align-items:baseline; padding:28px 0; border-bottom:1px solid rgba(15,16,19,.1);">
+        <span style="font-family:'Geist Mono',monospace; font-size:12px; color:#4046ff;">{{ l.n }}</span>
+        <span style="font-size:clamp(20px,2vw,26px); font-weight:500; letter-spacing:-0.03em; line-height:1.15;">{{ l.t }}</span>
+        <span style="font-size:15px; line-height:1.65; color:#55575e;">{{ l.d }}</span>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<section style="max-width:1200px; margin:0 auto; padding:clamp(112px,16vh,168px) clamp(20px,5vw,72px) clamp(48px,7vh,72px);">
+  <div data-reveal="0" style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:32px;">
+    <div>
+      <div style="font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;">Next feature · Student Loan App · 02 / 06</div>
+      <div style="margin-top:14px; font-size:clamp(36px,5vw,64px); line-height:1; letter-spacing:-0.045em; font-weight:500;">DigiLocker</div>
+    </div>
+    <a href="DigiLocker%20Case%20Study.dc.html" onMouseMove="{{ magMove }}" onMouseLeave="{{ magLeave }}" style="display:inline-flex; align-items:center; gap:12px; height:56px; padding:0 10px 0 26px; border-radius:999px; background:#0f1013; color:#f6f5f2; text-decoration:none; font-size:15px; font-weight:500; transition:background .25s ease, box-shadow .25s ease, transform .3s cubic-bezier(.2,.8,.2,1);" style-hover="background:#4046ff; color:#ffffff; box-shadow:0 14px 40px -10px rgba(64,70,255,.6);">View feature<span style="display:grid; place-items:center; width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span></a>
+  </div>
+  <footer style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; margin-top:clamp(64px,9vh,96px); padding-top:24px; border-top:1px solid rgba(15,16,19,.1); font-size:13px; color:#6c6e75;">
+    <span style="color:#0f1013; font-weight:500;">Harish Babu Nadar</span>
+    <span style="font-family:'Geist Mono',monospace; font-size:12px;">© 2026 · All rights reserved</span>
+    <div style="display:flex; flex-wrap:wrap; gap:20px;"><a href="https://www.linkedin.com/in/harishbabuganesannadar" target="_blank" rel="noopener noreferrer" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; color:#55575e; text-decoration:none; transition:color .2s ease;" style-hover="color:#0f1013;">LinkedIn</a><a href="mailto:Harishbabuganesan@gmail.com" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; color:#55575e; text-decoration:none; transition:color .2s ease;" style-hover="color:#0f1013;">Email</a></div>
+  </footer>
+</section>
+<dc-import name="BackToTop" hint-size="0px,0px"></dc-import>
+<dc-import name="MobilePreview" viewport="{{ viewport }}" hint-size="0px,0px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;motion&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Full&quot;,&quot;Subtle&quot;,&quot;Off&quot;],&quot;default&quot;:&quot;Full&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Motion&quot;},&quot;viewport&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Desktop&quot;,&quot;Mobile&quot;],&quot;default&quot;:&quot;Desktop&quot;,&quot;tsType&quot;:&quot;'Desktop' | 'Mobile'&quot;}}">
+class Component extends DCLogic {
+  progressRef = React.createRef();
+  enterRef = React.createRef();
+  spinRef = React.createRef();
+  stepsRef = React.createRef();
+  amtRef = React.createRef();
+  state = { solid: false, nav: '', narrow: typeof window !== 'undefined' && window.innerWidth < 960,
+    bar: -1, amount: 25583383, fs: 'Filled', marks: '83.83', unit: '%', cg: '8', cgMax: '10', mf: '', mt: {}, step: 0, pinned: false };
+
+  SHOTS = [
+    ['Study plan', 'Partner code, target country, institute and course. Institute search falls back to manual entry.'],
+    ['Study expenses', 'Course fee and living costs with amount-in-words, plus a running total of the loan required.'],
+    ['Student details', 'Identity basics and PAN. Pin code resolves city and state automatically.'],
+    ['Previous education', 'Explicit score type — percentage or CGPA with its maximum — so marks are never ambiguous.'],
+    ['Work details', 'Work experience and internships. Income fields echo the amount in words.'],
+    ['Entrance tests', 'Add as many tests as needed; each score field knows that test’s maximum.'],
+    ['Co-borrower', 'Expected and explained up front: add the highest-earning family member for the best offer.']
+  ];
+  ENTRY = [
+    ['e1', 'Permissions, explained', 'Why camera, storage, location and notifications are needed.'],
+    ['e2', 'Onboarding', 'Three short screens set expectations before sign-in.'],
+    ['e3', 'Login', 'One field to start: a mobile number.'],
+    ['e4', 'Verify OTP', 'Code suggested from Messages, with a visible resend timer.'],
+    ['e5', 'Sign up', 'New students finish with just name and email.'],
+    ['e6', 'DOB verification', 'Confirms identity before the eligibility check begins.']
+  ];
+  ERRS = [
+    ['r1', 'Mobile number should be 10 digits', 'Validated inline, before any OTP is requested.'],
+    ['r2', 'OTP expired', 'Says why it failed — Resend is one tap away.'],
+    ['r3', 'Login temporarily paused', 'Rate limit explained, with a clear time to retry.'],
+    ['r4', 'PAN already exists', 'A specific reason instead of a generic failure.'],
+    ['r5', 'Cannot exceed 390', 'Scores are bounded by the chosen test’s maximum.'],
+    ['r6', 'Less than total course fee', 'Cross-field check caught on the spot.'],
+    ['r7', 'Date of birth mismatch', 'Explains the mismatch and lets students correct it.']
+  ];
+  FALL = [['f1', 'Typeahead suggests as you type'], ['f2', '“Other” opens manual entry']];
+
+  FUNNEL = [['Start', 1000], ['Step 2', 610], ['Step 3', 440], ['Step 4', 380], ['Step 5', 330], ['Step 6', 310], ['Step 7', 240], ['Submitted', 174]];
+  CAUSES = [
+    ['Institute search', 'Poor typeahead caused students to give up before entering personal data.'],
+    ['No saved state', 'Endless unsaved forms meant every session restart was complete data loss.'],
+    ['Blocking errors', 'Unhelpful, dead-end error states with no recovery path.'],
+    ['Co-borrower surprise', 'Students hit the co-borrower requirement late, unprepared, without context.'],
+    ['Auth leakage', 'Session and auth failures caused silent, invisible drop-off.']
+  ];
+  PRINCIPLES = [
+    ['Seven saved commitments', 'Treat the application as seven small, auto-saved steps — not one long form. Progress persists across sessions.'],
+    ['Every failure has a next action', 'Errors are waypoints, not walls. Each state tells the student exactly what to do next.'],
+    ['Speak student, not banking', 'Replace financial jargon with student-native language. Use marks-unit patterns and amount-in-words for clarity.']
+  ];
+  DECISIONS = [
+    ['Institute search', 'Resilient typeahead with a manual-entry fallback — so no institute is a dead end.'],
+    ['Amount fields', 'Explicit marks/units and amount-in-words reduce input errors and build confidence at high-stakes moments.'],
+    ['Co-borrower prep', 'Surface the co-borrower requirement before data entry begins — students arrive ready, not surprised.'],
+    ['Per-step save', 'Reframed internally as lead recovery, not UX polish — unlocking engineering commitment from week one.']
+  ];
+  STEPS = [
+    ['Institute', 'Search & confirm', 'Resilient typeahead + manual fallback. Saved immediately on selection.'],
+    ['Course', 'Marks & loan amount', 'Marks-unit pattern + amount-in-words. Inline validation prevents downstream errors.'],
+    ['Co-borrower', 'Prepare & confirm', 'Requirement surfaced early with checklist — students arrive ready, not surprised.']
+  ];
+  VALID = [
+    [8, 'Moderated sessions', 'Task-based testing with real students at each major design iteration.'],
+    [42, 'First-click test participants', 'Validated information architecture and primary CTA placement.'],
+    [2, 'Failed hypotheses corrected', 'Testing disproved two assumptions; designs were revised before handoff.']
+  ];
+  BTA = [
+    { name: 'End-to-end completion', b: 17.4, t: 30, a: 38.6, dec: 1, max: 45 },
+    { name: 'Step-1 completion', b: 61, t: 80, a: 87, dec: 0, max: 100 }
+  ];
+  METRICS = [
+    ['38.6%', 38.6, 1, '', '%', 'End-to-end completion', 'from 17.4% baseline · target was 30%'],
+    ['9.4 min', 9.4, 1, '', ' min', 'Median submit time', 'from 22 min · target was ≤ 12 min'],
+    ['11%', 11, 0, '', '%', 'Search abandonment', 'from 41% · target was ≤ 15%'],
+    ['0.8', 0.8, 1, '', '', 'Blocking errors / session', 'from 3.4 · target was ≤ 1'],
+    ['34%', 34, 0, '', '%', 'Co-borrower second start', 'from 12% · target was 30%'],
+    ['−74%', 74, 0, '−', '%', 'Support tickets', '1,180 → 310 · eligibility-related'],
+    ['0.9%', 0.9, 1, '', '%', 'Frozen sessions', 'from 6.2% · near elimination'],
+    ['4.4', 4.4, 1, '', '', 'Play Store rating', 'from 3.6 · post-launch']
+  ];
+  LEARN = [
+    ['Flow before surface', 'Fixing the save architecture and error recovery drove more lift than any visual polish. Structure precedes aesthetics.'],
+    ['Frame design as revenue recovery', 'Reframing per-step save as lead recovery — not UX polish — secured engineering buy-in and resourcing in week one.'],
+    ['Test hypotheses, not just designs', 'Two hypotheses failed in moderated testing and were corrected before handoff — an outcome, not a setback.']
+  ];
+  STATES = ['Empty', 'Focused', 'Filled', 'Error', 'Disabled'];
+
+  motionOff() {
+    return (this.props.motion ?? 'Full') === 'Off' ||
+      (typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+  componentDidMount() {
+    this.onScroll = () => { if (this.raf) return; this.raf = requestAnimationFrame(() => { this.raf = 0; this.tick(); }); };
+    this.onResize = () => { const narrow = window.innerWidth < 960; if (narrow !== this.state.narrow) this.setState({ narrow }); this.onScroll();
+      clearTimeout(this.rpT); this.rpT = setTimeout(() => document.querySelectorAll('img[data-pan]').forEach(im => im.complete && 0), 200); };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', this.onResize);
+    const off = this.motionOff();
+    const ov = this.enterRef.current;
+    if (ov && !off && !document.hidden) {
+      let viaT = false; try { viaT = sessionStorage.getItem('pf-transition') === '1'; sessionStorage.removeItem('pf-transition'); } catch (er) {}
+      if (viaT && ov.firstElementChild) ov.firstElementChild.style.visibility = 'hidden';
+      const a = ov.animate([{ clipPath: 'inset(0 0 0% 0)' }, { clipPath: 'inset(0 0 100% 0)' }], { duration: 600, delay: 80, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'backwards' });
+      if (ov.firstElementChild) ov.firstElementChild.animate([{ opacity: 1, transform: 'translateY(0px)' }, { opacity: 0, transform: 'translateY(-28px)' }], { duration: 300, delay: 0, easing: 'cubic-bezier(.6,0,.2,1)', fill: 'backwards' });
+      this.ovT = setTimeout(() => { try { a.finish(); } catch (e) {} }, 900);
+    }
+    if (this.spinRef.current && !off) this.spinRef.current.animate([{ transform: 'rotate(0deg)' }, { transform: 'rotate(360deg)' }], { duration: 800, iterations: Infinity });
+    this.setupReveal();
+    this.runSteps();
+    if (!off) this.stepT = setInterval(() => { if (!this.state.pinned && !document.hidden) this.setState(x => ({ step: (x.step + 1) % 7 })); }, 7000);
+    setTimeout(() => document.querySelectorAll('img[data-pan]').forEach(im => im.complete && 0), 300);
+    this.tick();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('resize', this.onResize);
+    if (this.io) this.io.disconnect();
+    clearInterval(this.st); clearInterval(this.stepT); clearTimeout(this.rpT); clearTimeout(this.svt); clearTimeout(this.fb); clearTimeout(this.ovT);
+    if (this.onVis) document.removeEventListener('visibilitychange', this.onVis);
+  }
+  runSteps() {
+    const box = this.stepsRef.current;
+    if (!box) return;
+    const paint = k => [...box.children].forEach((el, i) => {
+      const on = i < k;
+      el.style.background = on ? '#4046ff' : '#f1f1f4';
+      el.style.color = on ? '#ffffff' : '#8b8d94';
+      el.style.transform = i === k - 1 ? 'translateY(-3px)' : 'translateY(0px)';
+    });
+    if (this.motionOff()) { paint(7); return; }
+    let k = 0;
+    paint(0);
+    this.st = setInterval(() => { k = (k + 1) % 11; paint(Math.min(k, 7)); }, 520);
+  }
+  tick() {
+    const y = window.scrollY, vh = window.innerHeight;
+    const max = document.documentElement.scrollHeight - vh;
+    if (this.progressRef.current) this.progressRef.current.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
+    if (!this.motionOff()) document.querySelectorAll('[data-scrub]').forEach(st => {
+      const r = st.getBoundingClientRect();
+      const p = Math.max(0, Math.min(1, (vh * 0.85 - r.top) / (r.height + vh * 0.35)));
+      const ws = st.querySelectorAll('[data-w]'), n = ws.length;
+      ws.forEach((w, i) => { w.style.opacity = (0.16 + 0.84 * Math.max(0, Math.min(1, p * (n + 3) - i))).toFixed(3); });
+    });
+    const upd = {};
+    const solid = y > 24;
+    if (solid !== this.state.solid) upd.solid = solid;
+    let nav = '';
+    ['problem', 'strategy', 'craft', 'outcomes', 'learnings'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top < vh * 0.4) nav = id;
+    });
+    if (nav !== this.state.nav) upd.nav = nav;
+    if (Object.keys(upd).length) this.setState(upd);
+  }
+  setupReveal() {
+    if (this.motionOff() || typeof IntersectionObserver === 'undefined' || document.hidden) return;
+    const subtle = this.props.motion === 'Subtle';
+    const kf = subtle ? [{ opacity: 0 }, { opacity: 1 }]
+      : [{ opacity: 0, transform: 'translateY(24px)', filter: 'blur(8px)' }, { opacity: 1, transform: 'translateY(0px)', filter: 'blur(0px)' }];
+    const vh = window.innerHeight, pending = [];
+    let fired = false;
+    const show = el => {
+      if (el.__rv) el.__rv.play();
+      if (this.io) this.io.unobserve(el);
+      const d = Number(el.dataset.reveal || 0);
+      setTimeout(() => { if (el.matches('[data-count]')) this.countUp(el); el.querySelectorAll('[data-count]').forEach(x => this.countUp(x)); }, d);
+    };
+    this.io = new IntersectionObserver(es => { fired = true; es.forEach(e => e.isIntersecting && show(e.target)); }, { rootMargin: '0px 0px -8% 0px', threshold: 0.01 });
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      const up = el.hasAttribute('data-up'), bx = el.hasAttribute('data-rx'), by = el.hasAttribute('data-ry');
+      const frames = up ? [{ transform: 'translateY(105%)' }, { transform: 'translateY(0%)' }]
+        : bx ? [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }]
+        : by ? [{ transform: 'scaleY(0)' }, { transform: 'scaleY(1)' }] : kf;
+      const a = el.animate(frames, { duration: up ? 1000 : (bx || by) ? 1100 : (subtle ? 500 : 900), delay: Number(el.dataset.reveal || 0),
+        easing: up ? 'cubic-bezier(.2,.9,.1,1)' : 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' });
+      el.__rv = a;
+      const r = el.getBoundingClientRect();
+      if (r.top < vh && r.bottom > 0) { show(el); return; }
+      a.pause(); pending.push(a); this.io.observe(el);
+    });
+    this.fb = setTimeout(() => { if (!fired) pending.forEach(a => { try { a.finish(); } catch (e) {} }); }, 1000);
+    this.onVis = () => { if (document.hidden) pending.forEach(a => { try { a.finish(); } catch (e) {} }); };
+    document.addEventListener('visibilitychange', this.onVis);
+  }
+  countUp(el) {
+    if (!el || this.motionOff()) return;
+    const node = el.firstChild;
+    if (!node || node.nodeType !== 3) return;
+    const to = parseFloat(el.dataset.count), dec = Number(el.dataset.dec || 0), pre = el.dataset.pre || '', suf = el.dataset.suf || '';
+    if (isNaN(to)) return;
+    const final = node.nodeValue, t0 = performance.now(), tok = {};
+    el.__tok = tok;
+    const step = t => {
+      if (el.__tok !== tok) return;
+      const p = Math.min(1, (t - t0) / 1400), e = 1 - Math.pow(1 - p, 4);
+      node.nodeValue = p < 1 ? pre + (to * e).toFixed(dec) + suf : final;
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+  words(n) {
+    if (!n) return '';
+    const cr = Math.floor(n / 1e7), l = Math.floor(n / 1e5) % 100, th = Math.floor(n / 1e3) % 100, hu = Math.floor(n / 100) % 10, r = n % 100, p = [];
+    if (cr) p.push(cr + ' crore'); if (l) p.push(l + ' lakh'); if (th) p.push(th + ' thousand'); if (hu) p.push(hu + ' hundred'); if (r) p.push(String(r));
+    return p.join(' ') + ' rupees';
+  }
+  onAmt = e => {
+    const n = parseInt(e.target.value.replace(/\D/g, '').slice(0, 10) || '0', 10);
+    this.setState({ amount: n, fs: 'Focused' });
+  };
+  pickState = st => {
+    const amount = st === 'Empty' || st === 'Error' ? 0 : (this.state.amount || 25583383);
+    this.setState({ fs: st, amount }, () => { if (st === 'Focused' && this.amtRef.current) this.amtRef.current.focus(); });
+  };
+  magMove = e => {
+    if (this.motionOff()) return;
+    const el = e.currentTarget, r = el.getBoundingClientRect();
+    el.style.transform = `translate(${((e.clientX - r.left - r.width / 2) * 0.22).toFixed(1)}px, ${((e.clientY - r.top - r.height / 2) * 0.32).toFixed(1)}px)`;
+  };
+  magLeave = e => { e.currentTarget.style.transform = ''; };
+  pan(img, fade) {
+    if (!img) return;
+    if (img.parentElement) img.parentElement.scrollTop = 0;
+    if (fade && !this.motionOff()) img.animate([{ opacity: 0, transform: 'scale(.98)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 420, easing: 'cubic-bezier(.2,.8,.2,1)' });
+  }
+  panLoad = e => this.pan(e.currentTarget, true);
+  spot = e => {
+    const el = e.currentTarget, r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+    el.style.setProperty('--my', `${e.clientY - r.top}px`);
+  };
+
+  renderVals() {
+    const s = this.state, A = '#4046ff', INK = '#0f1013', RED = '#d92d3a', AMB = '#b25e00', GRN = '#13805a';
+    const pad = i => String(i + 1).padStart(2, '0');
+    const PR = '#1a12f5', words = this.words(s.amount), has = s.amount > 0, OUT = '#8e8e99', LBL = '#5f5f6b', DIM = 'rgba(28,27,31,.38)';
+    const F = {
+      Empty: { bc: OUT, ring: 'none', lc: LBL, fl: false, help: '', hc: LBL, err: 0, ic: '#1c1b1f' },
+      Focused: { bc: PR, ring: 'inset 0 0 0 1px ' + PR, lc: PR, fl: true, help: words, hc: PR, err: 0, ic: '#1c1b1f' },
+      Filled: { bc: OUT, ring: 'none', lc: LBL, fl: true, help: words, hc: GRN, err: 0, ic: '#1c1b1f' },
+      Error: { bc: RED, ring: 'none', lc: RED, fl: has, help: has ? 'Should be less than total course fee' : 'Required field', hc: RED, err: 1, ic: '#1c1b1f' },
+      Disabled: { bc: 'rgba(28,27,31,.14)', ring: 'none', lc: DIM, fl: has, help: words, hc: DIM, err: 0, ic: DIM }
+    }[s.fs] || {};
+    const fmax = 1000;
+    return {
+      progressRef: this.progressRef, enterRef: this.enterRef, spinRef: this.spinRef, stepsRef: this.stepsRef,
+      magMove: this.magMove, magLeave: this.magLeave, spot: this.spot,
+      navMax: s.solid && !s.narrow ? '900px' : '1200px',
+      navBg: s.solid ? 'rgba(255,255,255,.72)' : 'rgba(255,255,255,0)',
+      navShadow: s.solid ? '0 0 0 1px rgba(15,16,19,.06), 0 12px 32px -12px rgba(15,16,19,.18)' : '0 0 0 1px rgba(15,16,19,0)',
+      navLinksDisplay: s.narrow ? 'none' : 'flex',
+      navItems: [['problem', 'Problem'], ['strategy', 'Strategy'], ['craft', 'Craft'], ['outcomes', 'Outcomes'], ['learnings', 'Learnings']].map(([id, label]) => ({
+        href: `#${id}`, label, color: s.nav === id ? INK : '#55575e', bg: s.nav === id ? 'rgba(15,16,19,.06)' : 'transparent' })),
+      causes: this.CAUSES.map(([t, d], i) => ({ n: pad(i), t, d, delay: String(i * 80), span: 'auto' })),
+      funnel: this.FUNNEL.map(([l, v], i) => {
+        const hi = s.bar === i, last = i === this.FUNNEL.length - 1, lost = i ? this.FUNNEL[i - 1][1] - v : 0;
+        return { l, v: v.toLocaleString('en-IN'), h: `${(v / fmax) * 100}%`, delay: String(i * 90),
+          bg: hi || last ? A : '#c9cbff', vc: hi || last ? A : '#55575e',
+          lost: i ? `−${lost}` : '—', lostO: i ? 1 : 0, lh: `${(lost / fmax) * 100}%`, ld: String(i * 90 + 700), br: i ? '0 0 12px 12px' : '12px',
+          onEnter: () => this.setState({ bar: i }), onLeave: () => this.setState({ bar: -1 }) };
+      }),
+      principles: this.PRINCIPLES.map(([t, d], i) => ({ n: pad(i), t, d, delay: String(i * 90) })),
+      decisions: this.DECISIONS.map(([t, d], i) => ({ n: pad(i), t, d, delay: String(i * 70) })),
+      steps: this.STEPS.map(([k, t, d], i) => ({ n: pad(i), k, t, d, delay: String(i * 90) })),
+      valid: this.VALID.map(([v, t, d], i) => ({ v: String(v), to: v, t, d, delay: String(i * 90), c: i === 2 ? AMB : A })),
+      bta: this.BTA.map((m, i) => ({ ...m, bW: `${(m.b / m.max) * 100}%`, tW: `${(m.t / m.max) * 100}%`, aW: `${(m.a / m.max) * 100}%`,
+        bL: `${m.b.toFixed(m.dec)}%`, tL: `${m.t.toFixed(m.dec)}%`, aL: `${m.a.toFixed(m.dec)}%`, delay: String(i * 120) })),
+      metrics: this.METRICS.map(([v, to, dec, pre, suf, l, sub], i) => ({ v, to, dec, pre, suf, l, sub, delay: String((i % 4) * 80), c: i >= 5 && i !== 6 ? GRN : (i === 6 ? GRN : A) })),
+      learn: this.LEARN.map(([t, d], i) => ({ n: pad(i), t, d, delay: String(i * 90) })),
+      amtRef: this.amtRef,
+      amtStr: has ? s.amount.toLocaleString('en-IN') : '',
+      onAmt: this.onAmt,
+      onFocusAmt: () => { if (this.state.fs !== 'Disabled') this.setState({ fs: 'Focused' }); },
+      onBlurAmt: () => { if (this.state.fs === 'Focused') this.setState(x => ({ fs: x.amount ? 'Filled' : 'Error' })); },
+      fBorder: F.bc, fRing: F.ring, fLabelC: F.lc, lTop: F.fl ? '0px' : '28px', lFs: F.fl ? '12px' : '16px', preO: F.fl ? 1 : 0,
+      fHelp: F.help, fHelpC: F.hc, errO: F.err, fInC: F.ic, fDis: s.fs === 'Disabled', fsName: s.fs,
+      chips: this.STATES.map(st => {
+        const on = s.fs === st;
+        return { st, sel: on ? 'true' : 'false', bg: on ? INK : '#f1f1f4', fg: on ? '#ffffff' : '#55575e', sc: on ? 'scale(1.04)' : 'scale(1)', onClick: () => this.pickState(st) };
+      }),
+      mRadios: [['%', 'Percentage'], ['CGPA', 'CGPA']].map(([u, label]) => ({ label, sel: s.unit === u ? 'true' : 'false', rc: s.unit === u ? PR : '#49454f', ds: s.unit === u ? 'scale(1)' : 'scale(0)',
+        onClick: () => this.setState({ unit: u, mt: {} }) })),
+      mFields: (s.unit === '%' ? [['marks', 'Percentage scored', 100]] : [['cg', 'CGPA scored', null], ['cgMax', 'Max CGPA', 10]]).map(([k, label, cap]) => {
+        const v = s[k], n = parseFloat(v), foc = s.mf === k, up = foc || v !== '';
+        const lim = k === 'cg' ? parseFloat(s.cgMax) : cap;
+        const err = v === '' ? (s.mt[k] ? 'Required field' : '') : (lim != null && !isNaN(lim) && n > lim ? (k === 'cg' ? 'Cannot exceed max CGPA' : 'Cannot exceed ' + lim) : '');
+        const c = err ? RED : foc ? PR : OUT;
+        return { k, label, v, lTop: up ? '0px' : '28px', lFs: up ? '12px' : '16px', bc: c, ring: foc ? 'inset 0 0 0 1px ' + c : 'none',
+          lc: err ? RED : foc ? PR : LBL, errO: err ? 1 : 0, help: err || (k === 'marks' ? 'Out of 100' : ''), hc: err ? RED : '#49454f',
+          onChange: e => this.setState({ [k]: e.target.value.replace(/[^\d.]/g, '').slice(0, 5) }),
+          onFocus: () => this.setState({ mf: k }),
+          onBlur: () => this.setState(x => ({ mf: x.mf === k ? '' : x.mf, mt: { ...x.mt, [k]: true } })) };
+      }),
+      prinCols: s.narrow ? 'minmax(0,1fr)' : 'repeat(3,minmax(0,1fr))',
+      causeCols: s.narrow ? 'minmax(0,1fr)' : 'repeat(5,minmax(0,1fr))',
+      causeInner: s.narrow ? '30px minmax(0,1fr)' : 'minmax(0,1fr)',
+      rowCols: s.narrow ? 'minmax(0,1fr)' : '48px minmax(0,1fr) minmax(0,1.6fr)',
+      learnCols: s.narrow ? 'minmax(0,1fr)' : '48px minmax(0,1fr) minmax(0,1.4fr)',
+      metCols: s.narrow ? 'repeat(2,minmax(0,1fr))' : 'repeat(4,minmax(0,1fr))',
+      eduWide: !s.narrow,
+      panLoad: this.panLoad,
+      
+      shots: this.SHOTS.map(([t, d], i) => ({ n: pad(i), t, d, on: s.step === i, sel: s.step === i ? 'true' : 'false',
+        bg: s.step === i ? '#f1f1f4' : 'transparent', nc: s.step === i ? A : '#8b8d94', tc: s.step === i ? INK : '#55575e',
+        seg: i < s.step ? GRN : i === s.step ? A : 'rgba(15,16,19,.1)',
+        onClick: () => this.setState({ step: i, pinned: true }) })),
+      curSrc: `assets/screens/s${s.step + 1}.png`,
+      curAlt: `Step ${s.step + 1} of 7 — ${this.SHOTS[s.step][0]}`,
+      entry: this.ENTRY.map(([k, t, d], i) => ({ src: `assets/screens/${k}.png`, t, d, delay: String(i * 70) })),
+      errs: this.ERRS.map(([k, t, d], i) => ({ src: `assets/screens/${k}.png`, t, d, delay: String(i * 70) })),
+      fall: this.FALL.map(([k, t], i) => ({ src: `assets/screens/${k}.png`, t, delay: String(i * 120), mt: i ? '48px' : '0px' }))
+    };
+  }
+}
+</script>
+</body>
+</html>

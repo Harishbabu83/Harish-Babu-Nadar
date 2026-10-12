@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<script src="./theme.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:#f6f5f2;color:#0f1013;font-family:"Geist",system-ui,sans-serif;font-size:15px;line-height:1.55;text-wrap:pretty;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,figure,dl,dd,blockquote{margin:0}
+::selection{background:rgba(64,70,255,.18)}
+a{color:#4046ff}
+a:hover{color:#2a2fd6}
+:focus-visible{outline:2px solid #4046ff;outline-offset:3px}
+</style>
+</helmet>
+
+<div ref="{{ enterRef }}" aria-hidden="true" style="position:fixed; inset:0; z-index:100; background:#0f1013; clip-path:inset(0 0 100% 0); pointer-events:none; display:grid; place-items:center;"><div style="display:flex; flex-direction:column; align-items:center; gap:18px;"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#a3a5ad;">{{ s.num }} / 06</span><span style="font-size:clamp(32px,4vw,56px); line-height:1; font-weight:500; letter-spacing:-0.04em; color:#f6f5f2;">{{ s.ovA }} <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.01em; color:#a9adff;">{{ s.ovB }}</span></span><span style="width:160px; height:2px; border-radius:2px; background:rgba(255,255,255,.12); overflow:hidden;"><span style="display:block; height:100%; background:#4046ff;"></span></span></div></div>
+<div ref="{{ progressRef }}" style="position:fixed; left:0; right:0; top:0; height:2px; z-index:60; background:#4046ff; transform:scaleX(0); transform-origin:left;"></div>
+<header style="position:fixed; top:0; left:0; right:0; z-index:50; padding:12px clamp(12px,3vw,24px); pointer-events:none;">
+  <div style="pointer-events:auto; max-width:{{ navMax }}; margin:0 auto; display:flex; align-items:center; gap:16px; padding:8px; border-radius:999px; background:{{ navBg }}; box-shadow:{{ navShadow }}; backdrop-filter:blur(16px) saturate(160%); -webkit-backdrop-filter:blur(16px) saturate(160%); transition:max-width .6s cubic-bezier(.2,.8,.2,1), background .4s ease, box-shadow .4s ease;">
+    <a href="Education%20Lending%20Case%20Study.dc.html#cases" aria-label="Back to Student Loan App features" style="display:inline-flex; align-items:center; justify-content:center; flex:none; width:44px; height:44px; border-radius:50%; background:#0f1013; color:#f6f5f2; text-decoration:none; transition:background .2s ease, transform .2s ease;" style-hover="background:#4046ff; color:#ffffff;" style-active="transform:scale(.94);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg></a>
+    <span style="margin-right:auto; display:flex; align-items:center; gap:8px; min-width:0; font-size:15px; font-weight:500; letter-spacing:-0.01em; white-space:nowrap;"><a href="Portfolio%20Homepage.dc.html" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; color:#0f1013; text-decoration:none; transition:color .2s ease;" style-hover="color:#4046ff;">Home</a><span aria-hidden="true" style="color:#b9bac0; font-weight:400;">/</span><a href="Education%20Lending%20Case%20Study.dc.html#cases" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; min-width:0; overflow:hidden; text-overflow:ellipsis; color:#55575e; text-decoration:none; transition:color .2s ease;" style-hover="color:#0f1013;">Student Loan App</a></span>
+    <nav style="display:{{ navLinksDisplay }}; gap:2px;">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
+        <a href="{{ n.href }}" style="padding:8px 12px; border-radius:999px; color:{{ n.color }}; background:{{ n.bg }}; text-decoration:none; font-size:14px; transition:color .2s ease, background .2s ease;" style-hover="color:#0f1013; background:rgba(15,16,19,.05);">{{ n.label }}</a>
+      </sc-for>
+    </nav>
+    <button type="button" data-pf-theme="" aria-label="Switch to dark mode" title="Switch to dark mode" style="display:grid; place-items:center; flex:none; width:44px; height:44px; padding:0; border:0; border-radius:999px; background:transparent; color:#55575e; cursor:pointer; transition:color .2s ease, background .2s ease;" style-hover="color:#0f1013; background:rgba(15,16,19,.05);"><svg data-pf-icon="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg><svg data-pf-icon="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button>
+  </div>
+</header>
+
+<section id="top" style="max-width:1200px; margin:0 auto; padding:clamp(128px,18vh,184px) clamp(20px,5vw,72px) 0;">
+  <div data-reveal="0" style="display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;">
+    <span style="display:inline-flex; align-items:center; gap:8px; padding:6px 12px 6px 10px; border-radius:999px; background:#ffffff; border:1px solid rgba(15,16,19,.08);"><span style="width:7px; height:7px; border-radius:50%; background:#4046ff;"></span>{{ s.num }} / 06 · {{ s.name }}</span>
+    <span>{{ s.meta }}</span>
+  </div>
+  <h1 style="margin-top:28px; max-width:17ch; font-size:clamp(42px,6.2vw,96px); line-height:1; letter-spacing:-0.05em; font-weight:500;">
+    <sc-for list="{{ s.h1 }}" as="w" hint-placeholder-count="4"><span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="{{ w.d }}" data-up="" style="display:inline-block; font-family:{{ w.ff }}; font-style:{{ w.fs }}; font-weight:{{ w.fw }}; letter-spacing:{{ w.ls }}; color:{{ w.c }};">{{ w.t }}</span></span> </sc-for>
+  </h1>
+  <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:36px clamp(32px,6vw,96px); margin-top:40px;">
+    <p data-reveal="440" style="flex:1 1 380px; max-width:56ch; font-size:18px; line-height:1.6; color:#55575e;">{{ s.lede }}</p>
+    <dl data-reveal="520" style="flex:0 1 460px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px 24px;">
+      <sc-for list="{{ s.dl }}" as="m" hint-placeholder-count="3"><div><dt style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">{{ m.k }}</dt><dd style="margin-top:6px; font-size:15px;">{{ m.v }}</dd></div></sc-for>
+    </dl>
+  </div>
+  <div data-reveal="620" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr)); gap:16px; margin-top:clamp(56px,9vh,88px);">
+    <div style="padding:clamp(24px,3vw,36px); border-radius:28px; background:#ffffff; border:1px solid rgba(15,16,19,.07); display:flex; flex-direction:column; gap:16px;">
+      <div style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#4046ff;">{{ s.sumK }}</div>
+      <div style="font-size:clamp(22px,2.3vw,30px); line-height:1.15; letter-spacing:-0.035em; font-weight:500; max-width:24ch;">{{ s.sumT }}</div>
+      <p style="font-size:14px; line-height:1.6; color:#6c6e75;">{{ s.sumD }}</p>
+      <sc-if value="{{ s.hasChips }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:auto;"><sc-for list="{{ s.chips }}" as="c" hint-placeholder-count="4"><span style="padding:6px 12px; border-radius:999px; background:#eef0ff; color:#4046ff; font-size:12px;">{{ c.t }}</span></sc-for></div>
+      </sc-if>
+    </div>
+    <div style="position:relative; overflow:hidden; padding:clamp(24px,3vw,36px); border-radius:28px; background:#0f1013; color:#f6f5f2; display:flex; flex-direction:column; justify-content:space-between; gap:28px;">
+      <span aria-hidden="true" style="position:absolute; right:-80px; top:-120px; width:340px; height:340px; border-radius:50%; background:radial-gradient(closest-side, rgba(64,70,255,.6), transparent);"></span>
+      <div style="position:relative; font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#a3a5ad;">{{ s.hero.k }}</div>
+      <div style="position:relative; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;">
+        <span data-count="{{ s.hero.to }}" data-dec="{{ s.hero.dec }}" data-pre="{{ s.hero.pre }}" data-suf="{{ s.hero.suf }}" style="font-size:clamp(56px,6.4vw,96px); line-height:.9; letter-spacing:-0.06em; font-weight:500; font-variant-numeric:tabular-nums;">{{ s.hero.v }}</span>
+        <span style="font-family:'Instrument Serif',serif; font-style:italic; font-size:22px; color:#a9adff;">{{ s.hero.tag }}</span>
+      </div>
+      <div style="position:relative; display:grid; gap:10px;">
+        <sc-for list="{{ s.hero.bars }}" as="b" hint-placeholder-count="2">
+          <div style="display:grid; grid-template-columns:64px minmax(0,1fr) 56px; align-items:center; gap:12px; font-size:12px; color:{{ b.c }};"><span>{{ b.l }}</span><span style="height:6px; border-radius:6px; background:rgba(255,255,255,.08);"><span data-reveal="{{ b.d }}" data-rx="" style="display:block; width:{{ b.w }}; height:100%; border-radius:6px; background:{{ b.bg }}; transform-origin:left;"></span></span><span style="font-family:'Geist Mono',monospace; text-align:right;">{{ b.lab }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="problem" style="max-width:1200px; margin:0 auto; padding:clamp(112px,16vh,168px) clamp(20px,5vw,72px) 0;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#4046ff;">01</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>{{ s.pK }}</div>
+  <h2 style="margin-top:22px; max-width:18ch; font-size:clamp(34px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+    <sc-for list="{{ s.ph }}" as="w" hint-placeholder-count="3"><span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="{{ w.d }}" data-up="" style="display:inline-block; font-family:{{ w.ff }}; font-style:{{ w.fs }}; font-weight:{{ w.fw }}; letter-spacing:{{ w.ls }}; color:{{ w.c }};">{{ w.t }}</span></span> </sc-for>
+  </h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr)); gap:24px clamp(32px,6vw,96px); margin-top:40px;">
+    <p data-reveal="200" style="font-size:17px; line-height:1.65; color:#55575e; max-width:56ch;">{{ s.pBody }}</p>
+    <div data-reveal="280" style="padding:24px 26px; border-radius:22px; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+      <div style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#4046ff;">{{ s.pCardK }}</div>
+      <p style="margin-top:10px; font-size:15px; line-height:1.6; color:#33353b;">{{ s.pCardD }}</p>
+    </div>
+  </div>
+  <div style="display:grid; grid-template-columns:{{ statCols }}; gap:clamp(20px,3vw,40px); margin-top:clamp(48px,7vh,72px);">
+    <sc-for list="{{ s.stats }}" as="st" hint-placeholder-count="4">
+      <div data-reveal="{{ st.d }}" style="display:flex; flex-direction:column; gap:8px; padding-top:18px; border-top:1px solid rgba(15,16,19,.12);">
+        <span style="font-size:clamp(30px,3.2vw,44px); line-height:1; letter-spacing:-0.05em; font-weight:500;">{{ st.v }}</span>
+        <span style="font-size:14px; line-height:1.5; color:#6c6e75;">{{ st.l }}</span>
+      </div>
+    </sc-for>
+  </div>
+  <sc-if value="{{ s.hasFunnel }}" hint-placeholder-val="{{ false }}">
+    <figure data-reveal="0" style="margin-top:clamp(48px,7vh,72px); padding:clamp(22px,3vw,36px); border-radius:28px; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+      <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:8px 24px;">
+        <div style="font-size:18px; font-weight:500; letter-spacing:-0.02em;">{{ s.fT }} <span style="color:#8b8d94; font-weight:400;">· {{ s.fSub }}</span></div>
+        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; font-family:'Geist Mono',monospace; font-size:11px; color:#8b8d94;"><span style="display:inline-flex; align-items:center; gap:6px;"><span style="width:10px; height:10px; border-radius:3px; background:#c9cbff;"></span>Continued</span><span style="display:inline-flex; align-items:center; gap:6px;"><span style="width:10px; height:10px; border-radius:3px; background:repeating-linear-gradient(135deg, rgba(217,45,58,.45) 0 2px, rgba(217,45,58,.1) 2px 4px); box-shadow:inset 0 0 0 1px rgba(217,45,58,.45);"></span>Dropped</span></div>
+      </div>
+      <div style="display:grid; grid-template-columns:{{ s.fCols }}; gap:clamp(6px,1.4vw,18px); margin-top:28px;">
+        <sc-for list="{{ funnel }}" as="f" hint-placeholder-count="5">
+          <div onMouseEnter="{{ f.onEnter }}" onMouseLeave="{{ f.onLeave }}" style="display:flex; flex-direction:column; gap:8px; cursor:default;">
+            <span style="font-family:'Geist Mono',monospace; font-size:clamp(10px,1vw,12px); font-weight:500; color:#d92d3a; text-align:center; opacity:{{ f.lostO }};">{{ f.lost }}</span>
+            <span style="font-size:clamp(13px,1.5vw,20px); font-weight:500; letter-spacing:-0.02em; text-align:center; color:{{ f.vc }}; font-variant-numeric:tabular-nums; transition:color .2s ease;">{{ f.v }}</span>
+            <div style="height:clamp(160px,26vh,260px); display:flex; flex-direction:column; justify-content:flex-end; border-radius:12px; background:#f6f5f2;">
+              <span data-reveal="{{ f.ld }}" style="display:block; height:{{ f.lh }}; border-radius:10px 10px 0 0; background:repeating-linear-gradient(135deg, rgba(217,45,58,.30) 0 3px, rgba(217,45,58,.07) 3px 7px); box-shadow:inset 0 0 0 1px rgba(217,45,58,.4);"></span><span data-reveal="{{ f.d }}" data-ry="" style="display:block; height:{{ f.h }}; border-radius:{{ f.br }}; background:{{ f.bg }}; transform-origin:bottom; transition:background .25s ease;"></span>
+            </div>
+            <span style="font-size:clamp(10px,1vw,12px); color:#6c6e75; text-align:center; overflow-wrap:anywhere;">{{ f.l }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <figcaption style="margin-top:22px; max-width:68ch; font-size:14px; line-height:1.6; color:#6c6e75;">{{ s.fCap }}</figcaption>
+    </figure>
+  </sc-if>
+  <div data-reveal="0" style="margin-top:clamp(64px,9vh,96px); font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">{{ s.cK }}</div>
+  <div style="display:grid; grid-template-columns:{{ causeCols }}; gap:12px; margin-top:18px;">
+    <sc-for list="{{ s.causes }}" as="c" hint-placeholder-count="3">
+      <div data-reveal="{{ c.d }}" onMouseMove="{{ spot }}" style="padding:22px; border-radius:22px; border:1px solid rgba(15,16,19,.07); background:radial-gradient(260px circle at var(--mx,50%) var(--my,-40%), rgba(64,70,255,.10), transparent 70%), #ffffff; display:grid; grid-template-columns:{{ causeInner }}; align-content:start; align-items:start; gap:14px 16px; transition:border-color .25s ease, transform .3s cubic-bezier(.2,.8,.2,1);" style-hover="border-color:rgba(64,70,255,.35); transform:translateY(-3px);">
+        <span style="width:30px; height:30px; border-radius:50%; background:#eef0ff; color:#4046ff; display:grid; place-items:center; font-family:'Geist Mono',monospace; font-size:11px;">{{ c.n }}</span>
+        <div style="display:flex; flex-direction:column; gap:6px;"><span style="font-size:17px; font-weight:500; letter-spacing:-0.02em; line-height:1.25;">{{ c.t }}</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">{{ c.dd }}</span></div>
+      </div>
+    </sc-for>
+  </div>
+  <blockquote data-scrub="" style="margin-top:clamp(72px,10vh,112px); max-width:30ch; font-family:'Instrument Serif',serif; font-size:clamp(30px,3.8vw,52px); line-height:1.12; letter-spacing:-0.02em;">
+    <sc-for list="{{ s.qw }}" as="q" hint-placeholder-count="12"><span data-w="">{{ q.t }}</span> </sc-for>
+    <footer style="display:block; margin-top:22px; font-family:'Geist',sans-serif; font-size:14px; letter-spacing:0; color:#6c6e75;">{{ s.qBy }}</footer>
+  </blockquote>
+</section>
+
+<section id="approach" style="max-width:1200px; margin:0 auto; padding:clamp(112px,16vh,168px) clamp(20px,5vw,72px) 0;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#4046ff;">02</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>{{ s.aK }}</div>
+  <h2 style="margin-top:22px; max-width:18ch; font-size:clamp(34px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+    <sc-for list="{{ s.ah }}" as="w" hint-placeholder-count="3"><span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="{{ w.d }}" data-up="" style="display:inline-block; font-family:{{ w.ff }}; font-style:{{ w.fs }}; font-weight:{{ w.fw }}; letter-spacing:{{ w.ls }}; color:{{ w.c }};">{{ w.t }}</span></span> </sc-for>
+  </h2>
+  <p data-reveal="200" style="margin-top:28px; max-width:58ch; font-size:17px; line-height:1.65; color:#55575e;">{{ s.aBody }}</p>
+  <div style="display:grid; grid-template-columns:{{ prinCols }}; gap:16px; margin-top:clamp(40px,6vh,64px);">
+    <sc-for list="{{ s.principles }}" as="p" hint-placeholder-count="3">
+      <div data-reveal="{{ p.d }}" onMouseMove="{{ spot }}" style="position:relative; overflow:hidden; padding:clamp(24px,3vw,32px); border-radius:28px; background:radial-gradient(320px circle at var(--mx,50%) var(--my,-40%), rgba(64,70,255,.45), transparent 70%), #0f1013; color:#f6f5f2; display:flex; flex-direction:column; gap:12px;">
+        <span style="align-self:flex-start; padding:5px 10px; border-radius:999px; background:rgba(169,173,255,.12); font-family:'Geist Mono',monospace; font-size:11px; color:#a9adff;">Principle {{ p.n }}</span>
+        <span style="margin-top:20px; font-size:clamp(21px,2.1vw,27px); line-height:1.14; letter-spacing:-0.03em; font-weight:500;">{{ p.t }}</span>
+        <span style="font-size:14px; line-height:1.6; color:#b4b6bd;">{{ p.dd }}</span>
+      </div>
+    </sc-for>
+  </div>
+  <sc-if value="{{ s.hasDec }}" hint-placeholder-val="{{ true }}">
+    <div data-reveal="0" style="margin-top:clamp(56px,8vh,88px); font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">{{ s.decK }}</div>
+    <div style="margin-top:14px; border-top:1px solid rgba(15,16,19,.1);">
+      <sc-for list="{{ s.decisions }}" as="d" hint-placeholder-count="4">
+        <div data-reveal="{{ d.d }}" style="display:grid; grid-template-columns:{{ rowCols }}; gap:8px 24px; align-items:baseline; padding:24px 0; border-bottom:1px solid rgba(15,16,19,.1); transition:padding .3s cubic-bezier(.2,.8,.2,1);" style-hover="padding-left:10px;">
+          <span style="font-family:'Geist Mono',monospace; font-size:12px; color:#4046ff;">{{ d.n }}</span>
+          <span style="font-size:19px; font-weight:500; letter-spacing:-0.02em; line-height:1.3;">{{ d.t }}</span>
+          <span style="font-size:15px; line-height:1.6; color:#55575e;">{{ d.dd }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+</section>
+
+<section id="solution" style="max-width:1200px; margin:0 auto; padding:clamp(112px,16vh,168px) clamp(20px,5vw,72px) 0;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#4046ff;">03</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>{{ s.sK }}</div>
+  <h2 style="margin-top:22px; max-width:18ch; font-size:clamp(34px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+    <sc-for list="{{ s.sh }}" as="w" hint-placeholder-count="3"><span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="{{ w.d }}" data-up="" style="display:inline-block; font-family:{{ w.ff }}; font-style:{{ w.fs }}; font-weight:{{ w.fw }}; letter-spacing:{{ w.ls }}; color:{{ w.c }};">{{ w.t }}</span></span> </sc-for>
+  </h2>
+  <p data-reveal="200" style="margin-top:28px; max-width:58ch; font-size:17px; line-height:1.65; color:#55575e;">{{ s.sBody }}</p>
+
+  <sc-if value="{{ s.hasSteps }}" hint-placeholder-val="{{ true }}">
+    <div data-reveal="0" style="margin-top:clamp(48px,7vh,72px); display:flex; flex-direction:column; gap:8px;"><span style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">{{ s.flowK }}</span><span style="font-size:clamp(22px,2.4vw,30px); font-weight:500; letter-spacing:-0.03em;">{{ s.flowH }}</span></div>
+    <div data-reveal="80" style="margin-top:24px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr)); gap:clamp(24px,4vw,64px); align-items:center; padding:clamp(20px,4vw,56px); border-radius:32px; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+      <div style="display:flex; flex-direction:column; gap:2px;">
+        <div style="display:grid; grid-template-columns:{{ segCols }}; gap:5px; margin:0 16px 14px;">
+          <sc-for list="{{ shots }}" as="x" hint-placeholder-count="6"><span style="height:4px; border-radius:4px; background:{{ x.seg }}; transition:background .3s ease;"></span></sc-for>
+        </div>
+        <sc-for list="{{ shots }}" as="x" hint-placeholder-count="6">
+          <button type="button" aria-pressed="{{ x.sel }}" onClick="{{ x.onClick }}" style="display:grid; grid-template-columns:32px minmax(0,1fr); gap:4px 12px; align-items:baseline; width:100%; text-align:left; padding:12px 16px; border:0; border-radius:16px; background:{{ x.bg }}; font:inherit; color:inherit; cursor:pointer; transition:background .25s ease;" style-hover="background:#f1f1f4;">
+            <span style="font-family:'Geist Mono',monospace; font-size:12px; color:{{ x.nc }};">{{ x.n }}</span>
+            <span style="font-size:16px; font-weight:500; letter-spacing:-0.02em; color:{{ x.tc }}; transition:color .25s ease;">{{ x.t }}</span>
+            <sc-if value="{{ x.on }}" hint-placeholder-val="{{ false }}"><span style="grid-column:2; font-size:14px; line-height:1.55; color:#6c6e75;">{{ x.dd }}</span></sc-if>
+          </button>
+        </sc-for>
+      </div>
+      <div style="position:relative; display:grid; place-items:center; padding:12px 0;">
+        <span aria-hidden="true" style="position:absolute; width:min(110%,460px); aspect-ratio:1; border-radius:50%; background:radial-gradient(closest-side, rgba(64,70,255,.22), transparent);"></span>
+        <div style="position:relative; width:min(100%,290px); overflow:hidden; border-radius:42px; padding:8px; background:#0f1013; box-shadow:0 50px 90px -40px rgba(15,16,19,.6), 0 0 0 1px rgba(15,16,19,.1);">
+          <div style="width:100%; aspect-ratio:360/760; min-height:0; border-radius:34px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:rgba(15,16,19,.25) transparent; overflow-x:hidden; background:#ffffff;"><img data-pan="" src="{{ curSrc }}" alt="{{ curAlt }}" onLoad="{{ panLoad }}" style="display:block; width:100%; height:auto; min-height:100%; object-fit:cover; object-position:top;"></div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ s.hasFlows }}" hint-placeholder-val="{{ false }}">
+    <div data-reveal="0" style="margin-top:clamp(48px,7vh,72px); display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:12px 24px;">
+      <div style="display:flex; flex-direction:column; gap:8px;"><span style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">{{ s.flowK }}</span><span style="font-size:clamp(22px,2.4vw,30px); font-weight:500; letter-spacing:-0.03em;">{{ s.flowH }}</span></div>
+      <div style="display:flex; flex-wrap:wrap; gap:6px;"><sc-for list="{{ s.states }}" as="c" hint-placeholder-count="5"><span style="display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px; background:#ffffff; border:1px solid rgba(15,16,19,.08); font-size:12px; color:#33353b;"><span style="width:6px; height:6px; border-radius:50%; background:{{ c.c }};"></span>{{ c.t }}</span></sc-for></div>
+    </div>
+    <div style="display:grid; grid-template-columns:{{ flowCols }}; gap:16px; margin-top:24px;">
+      <sc-for list="{{ s.flows }}" as="f" hint-placeholder-count="6">
+        <div data-reveal="{{ f.d }}" style="padding:24px; border-radius:24px; background:#ffffff; border:1px solid rgba(15,16,19,.07); display:flex; flex-direction:column; gap:10px;">
+          <span style="font-family:'Geist Mono',monospace; font-size:12px; color:#4046ff;">Flow {{ f.n }}</span>
+          <span style="margin-top:10px; font-size:19px; font-weight:500; letter-spacing:-0.025em;">{{ f.t }}</span>
+          <span style="font-size:14px; line-height:1.6; color:#6c6e75;">{{ f.dd }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ s.hasCompare }}" hint-placeholder-val="{{ false }}">
+    <div data-reveal="0" style="margin-top:clamp(64px,9vh,96px); display:flex; flex-direction:column; gap:8px;"><span style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">{{ s.compK }}</span><span style="font-size:clamp(22px,2.4vw,30px); font-weight:500; letter-spacing:-0.03em;">{{ s.compH }}</span></div>
+    <div style="display:grid; grid-template-columns:{{ compCols }}; gap:16px; margin-top:24px;">
+      <sc-for list="{{ s.compare }}" as="c" hint-placeholder-count="3">
+        <figure data-reveal="{{ c.d }}" style="padding:20px; border-radius:28px; background:#ffffff; border:1px solid rgba(15,16,19,.07); display:flex; flex-direction:column; gap:16px;">
+          <span style="font-size:16px; font-weight:500; letter-spacing:-0.02em;">{{ c.t }}</span>
+          <div style="display:grid; grid-template-columns:repeat(2,minmax(0,170px)); justify-content:center; gap:12px;">
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <span style="align-self:flex-start; padding:4px 10px; border-radius:999px; background:#f1f1f4; font-family:'Geist Mono',monospace; font-size:10px; color:#6c6e75;">Before</span>
+              <div style="width:100%; overflow:hidden; border-radius:24px; padding:5px; background:#2a2b31;"><div style="width:100%; aspect-ratio:360/760; min-height:0; border-radius:20px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:rgba(15,16,19,.25) transparent; overflow-x:hidden; background:#ffffff;"><img data-pan="" src="{{ c.o }}" alt="{{ c.t }} — before" onLoad="{{ panLoad }}" style="display:block; width:100%; height:auto; min-height:100%; object-fit:cover; object-position:top;"></div></div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <span style="align-self:flex-start; padding:4px 10px; border-radius:999px; background:#eef0ff; font-family:'Geist Mono',monospace; font-size:10px; color:#4046ff;">After</span>
+              <div style="width:100%; overflow:hidden; border-radius:24px; padding:5px; background:#0f1013;"><div style="width:100%; aspect-ratio:360/760; min-height:0; border-radius:20px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:rgba(15,16,19,.25) transparent; overflow-x:hidden; background:#ffffff;"><img data-pan="" src="{{ c.n }}" alt="{{ c.t }} — after" onLoad="{{ panLoad }}" style="display:block; width:100%; height:auto; min-height:100%; object-fit:cover; object-position:top;"></div></div>
+            </div>
+          </div>
+          <figcaption style="font-size:13px; line-height:1.55; color:#6c6e75;">{{ c.dd }}</figcaption>
+        </figure>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ s.hasGallery }}" hint-placeholder-val="{{ true }}">
+    <div data-reveal="0" style="margin-top:clamp(64px,9vh,96px); display:flex; flex-direction:column; gap:8px;"><span style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">{{ s.galK }}</span><span style="font-size:clamp(22px,2.4vw,30px); font-weight:500; letter-spacing:-0.03em; max-width:36ch;">{{ s.galH }}</span></div>
+    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:36px 20px; margin-top:28px;">
+      <sc-for list="{{ s.gallery }}" as="g" hint-placeholder-count="7">
+        <figure data-reveal="{{ g.d }}" style="flex:0 0 clamp(150px,20vw,220px); display:flex; flex-direction:column; gap:16px;">
+          <div style="width:100%; overflow:hidden; border-radius:34px; padding:7px; background:#0f1013; box-shadow:0 30px 60px -30px rgba(15,16,19,.5); transition:transform .4s cubic-bezier(.2,.8,.2,1);" style-hover="transform:translateY(-6px);">
+            <div style="width:100%; aspect-ratio:360/760; min-height:0; border-radius:28px; overflow-y:auto; scrollbar-width:thin; scrollbar-color:rgba(15,16,19,.25) transparent; overflow-x:hidden; background:#ffffff;"><img data-pan="" src="{{ g.src }}" alt="{{ g.t }}" onLoad="{{ panLoad }}" style="display:block; width:100%; height:auto; min-height:100%; object-fit:cover; object-position:top;"></div>
+          </div>
+          <figcaption style="display:flex; flex-direction:column; gap:4px; padding:0 4px;"><span style="display:flex; align-items:center; gap:8px; font-size:15px; font-weight:500; letter-spacing:-0.015em;"><span style="flex:none; width:6px; height:6px; border-radius:50%; background:{{ g.c }};"></span>{{ g.t }}</span><span style="font-size:13px; line-height:1.5; color:#6c6e75;">{{ g.dd }}</span></figcaption>
+        </figure>
+      </sc-for>
+    </div>
+  </sc-if>
+</section>
+
+<section id="outcomes" style="max-width:1280px; margin:0 auto; padding:clamp(112px,16vh,168px) clamp(12px,2vw,24px) 0;">
+  <div style="padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px); border-radius:clamp(28px,4vw,48px); background:#0f1013; color:#f6f5f2; position:relative; overflow:hidden;">
+    <span aria-hidden="true" style="position:absolute; left:-160px; bottom:-220px; width:560px; height:560px; border-radius:50%; background:radial-gradient(closest-side, rgba(64,70,255,.45), transparent);"></span>
+    <div data-reveal="0" style="position:relative; display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#a3a5ad;"><span style="color:#a9adff;">04</span><span style="width:28px; height:1px; background:rgba(255,255,255,.25);"></span>Outcomes</div>
+    <h2 style="position:relative; margin-top:22px; max-width:19ch; font-size:clamp(34px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+      <sc-for list="{{ s.oh }}" as="w" hint-placeholder-count="3"><span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="{{ w.d }}" data-up="" style="display:inline-block; font-family:{{ w.ff }}; font-style:{{ w.fs }}; font-weight:{{ w.fw }}; letter-spacing:{{ w.ls }}; color:{{ w.c }};">{{ w.t }}</span></span> </sc-for>
+    </h2>
+    <p data-reveal="200" style="position:relative; margin-top:24px; max-width:62ch; font-size:16px; line-height:1.65; color:#b4b6bd;">{{ s.oBody }}</p>
+    <div style="position:relative; display:grid; grid-template-columns:{{ metCols }}; gap:1px; margin-top:clamp(36px,5vh,56px); border-radius:24px; overflow:hidden; background:rgba(255,255,255,.08);">
+      <sc-for list="{{ s.metrics }}" as="k" hint-placeholder-count="8">
+        <div data-reveal="{{ k.d }}" style="padding:24px; background:#141519; display:flex; flex-direction:column; gap:6px; min-height:170px;">
+          <span data-count="{{ k.to }}" data-dec="{{ k.dec }}" data-pre="{{ k.pre }}" data-suf="{{ k.suf }}" style="font-size:clamp(30px,3.2vw,44px); line-height:1; letter-spacing:-0.05em; font-weight:500; font-variant-numeric:tabular-nums; color:{{ k.c }};">{{ k.v }}</span>
+          <span style="margin-top:auto; font-size:14px; font-weight:500;">{{ k.l }}</span>
+          <span style="font-size:12px; line-height:1.5; color:#a3a5ad;">{{ k.sub }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section id="learnings" style="max-width:1200px; margin:0 auto; padding:clamp(112px,16vh,168px) clamp(20px,5vw,72px) 0;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#4046ff;">05</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Learnings</div>
+  <h2 style="margin-top:22px; max-width:18ch; font-size:clamp(34px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+    <sc-for list="{{ s.lh }}" as="w" hint-placeholder-count="3"><span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="{{ w.d }}" data-up="" style="display:inline-block; font-family:{{ w.ff }}; font-style:{{ w.fs }}; font-weight:{{ w.fw }}; letter-spacing:{{ w.ls }}; color:{{ w.c }};">{{ w.t }}</span></span> </sc-for>
+  </h2>
+  <div style="margin-top:clamp(40px,6vh,64px); border-top:1px solid rgba(15,16,19,.1);">
+    <sc-for list="{{ s.learn }}" as="l" hint-placeholder-count="3">
+      <div data-reveal="{{ l.d }}" style="display:grid; grid-template-columns:{{ rowCols }}; gap:8px 24px; align-items:baseline; padding:28px 0; border-bottom:1px solid rgba(15,16,19,.1);">
+        <span style="font-family:'Geist Mono',monospace; font-size:12px; color:#4046ff;">{{ l.n }}</span>
+        <span style="font-size:clamp(20px,2vw,26px); font-weight:500; letter-spacing:-0.03em; line-height:1.15;">{{ l.t }}</span>
+        <span style="font-size:15px; line-height:1.65; color:#55575e;">{{ l.dd }}</span>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<section style="max-width:1200px; margin:0 auto; padding:clamp(112px,16vh,168px) clamp(20px,5vw,72px) clamp(48px,7vh,72px);">
+  <div data-reveal="0" style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:32px;">
+    <div>
+      <div style="font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;">Next · {{ s.next.label }}</div>
+      <div style="margin-top:14px; font-size:clamp(36px,5vw,64px); line-height:1; letter-spacing:-0.045em; font-weight:500;">{{ s.next.name }}</div>
+    </div>
+    <a href="{{ s.next.href }}" onMouseMove="{{ magMove }}" onMouseLeave="{{ magLeave }}" style="display:inline-flex; align-items:center; gap:12px; height:56px; padding:0 10px 0 26px; border-radius:999px; background:#0f1013; color:#f6f5f2; text-decoration:none; font-size:15px; font-weight:500; transition:background .25s ease, box-shadow .25s ease, transform .3s cubic-bezier(.2,.8,.2,1);" style-hover="background:#4046ff; color:#ffffff; box-shadow:0 14px 40px -10px rgba(64,70,255,.6);">{{ s.next.cta }}<span style="display:grid; place-items:center; width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span></a>
+  </div>
+  <footer style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; margin-top:clamp(64px,9vh,96px); padding-top:24px; border-top:1px solid rgba(15,16,19,.1); font-size:13px; color:#6c6e75;">
+    <span style="color:#0f1013; font-weight:500;">Harish Babu Nadar</span>
+    <span style="font-family:'Geist Mono',monospace; font-size:12px;">© 2026 · All rights reserved</span>
+    <div style="display:flex; flex-wrap:wrap; gap:20px;"><a href="https://www.linkedin.com/in/harishbabuganesannadar" target="_blank" rel="noopener noreferrer" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; color:#55575e; text-decoration:none; transition:color .2s ease;" style-hover="color:#0f1013;">LinkedIn</a><a href="mailto:Harishbabuganesan@gmail.com" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; color:#55575e; text-decoration:none; transition:color .2s ease;" style-hover="color:#0f1013;">Email</a></div>
+  </footer>
+</section>
+<dc-import name="BackToTop" hint-size="0px,0px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;study&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dl&quot;,&quot;aa&quot;,&quot;ocr&quot;,&quot;pd&quot;],&quot;default&quot;:&quot;dl&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Content&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Full&quot;,&quot;Subtle&quot;,&quot;Off&quot;],&quot;default&quot;:&quot;Full&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Motion&quot;}}">
+class Component extends DCLogic {
+  progressRef = React.createRef();
+  enterRef = React.createRef();
+  state = { solid: false, nav: '', narrow: typeof window !== 'undefined' && window.innerWidth < 960, step: 0, pinned: false, bar: -1 };
+
+  STUDIES = {
+    dl: {
+      num: '02', name: 'DigiLocker', meta: 'DigiLocker integration · Student Loan App · 2025',
+      h1: ['Replacing the', 'document hunt', 'with a verified', ['shortcut.']],
+      lede: 'Students were abandoning the application at the document step — photographing cards under bad light, mistyping PAN numbers, waiting days for a rejection. A DigiLocker flow now pulls government-issued documents straight into the form, verified, in under two minutes — and handles the eleven ways it can fail without trapping anyone.',
+      dl: [['Role', 'Product Designer'], ['Timeline', '10 weeks · 2025'], ['Scope', '5 steps · 34 states']],
+      sum: ['Executive summary', 'Integrating the API was engineering. Designing eleven failure states was the product.', 'Partial consent, unissued documents, delinking and co-borrower consent — every non-happy path ends somewhere useful, with manual entry one tap away.', ['Student details', 'Previous education', 'Address', 'Co-borrower', 'Document locker']],
+      hero: { k: 'Drop-off at the document step', v: '−63%', to: 63, dec: 0, pre: '−', suf: '%', tag: '38% → 14%', max: 45, bars: [['Before', 38, '38%'], ['After', 14, '14%']] },
+      pK: 'Problem & opportunity', ph: ['The funnel was', 'bleeding at the', ['document step.']],
+      pBody: 'Out of every 100 eligible applicants, only 38 submitted. The sharpest cliff was the document step — where applicants had to leave the app, find files, judge photo quality and come back. Of those who did submit, 23% came back from ops for a document defect.',
+      pCard: ['Strategic opportunity', 'DigiLocker already existed in the codebase. Designing the consent journey, the eleven failure states and a fallback that never felt like punishment — that was the product problem.'],
+      stats: [['1,240', 'applications funnel-analysed, step by step'], ['14', 'interviews — 9 students, 5 co-borrowers'], ['480', 'support tickets coded for document issues'], ['6', 'ride-alongs with the credit-ops queue']],
+      funnel: { t: 'Application funnel', sub: 'before · per 100 eligible', items: [['Eligibility', 100], ['Student & education', 81], ['Co-borrower', 69], ['Document upload', 43], ['Submitted', 38]], cap: 'One step cost 26 points — more than the previous three combined. Hatched red segments show where applicants were lost.' },
+      cK: 'Three coupled problems',
+      causes: [['Effort', 'Nine fields typed by hand, then four photographs — often for two people.'], ['Accuracy', '61% of ops rejections were name, DOB or PAN mismatches — not fraud, just typing.'], ['Waiting', 'Verification was a human queue: a median 2.1 days before applicants knew if documents were accepted.']],
+      quote: '“I didn’t know my college even had a document in DigiLocker. I spent 20 minutes looking for my marksheet and just gave up.”', qBy: 'First-time applicant · user interview',
+      aK: 'Approach', ah: ['DigiLocker as', 'accelerator,', ['never a gate.']],
+      aBody: 'Four principles held the design together across product, compliance, credit ops and engineering.',
+      principles: [['DigiLocker is an accelerator, never a gate', 'Every screen that offers DigiLocker also offers manual entry. No state can be reached where the applicant cannot proceed.'], ['Partial success is success', 'If Aadhaar arrives but PAN doesn’t, we keep Aadhaar. Data merges per field, never per session.'], ['Verified data looks different', 'Fetched fields are read-only, flagged and collapsed into a summary card. Trust is visual.'], ['Name the failure, offer one way out', 'Each failure names the document and what happened, with one recovery action plus the manual escape.']],
+      decK: 'Key design decisions',
+      decisions: [['DigiLocker above the form, not behind a choice', '68% adoption with zero increase in step abandonment.'], ['Field-level merge, not session-level', 'Partial-consent users still complete at 79%.'], ['Permanent address fetched, current kept manual', 'Address-related ops queries down 44%.'], ['Delink is destructive, with a real warning', '1.9% of users delink; almost none contact support.']],
+      sK: 'Key flow & solution', sh: ['A trusted shortcut', 'with', ['no dead ends.']],
+      sBody: 'One consent journey, five entry points, eleven terminal states — and a single DigiLocker card whose state carries the whole story.',
+      flowK: 'The document step', flowH: 'From offer to submitted.',
+      steps: [['The offer', 'DigiLocker and Account Aggregator at the top of the step, manual upload right below — nobody has to choose before they understand.', 'dl-s1'], ['DigiLocker verified', 'Fetched documents collapse into a verified row; the next source is offered in place.', 'dl-s2'], ['Every source verified', 'Per-document status for both applicants, so “what’s left?” is answered before it’s asked.', 'dl-s3'], ['Verifying', 'Documents are checked in place with a visible count — never a blank spinner.', 'dl-s4'], ['Declaration', 'One explicit declaration before submission, expandable for the full text.', 'dl-s5'], ['Submitted', 'A clear end state with the next action: check status.', 'dl-s6']],
+      galK: 'Edge cases', galH: 'Eleven failure states — none of them a dead end.',
+      gallery: [['dl-e1', 'Consent denied', 'Card turns amber, names what’s missing and offers Relink — manual stays open below.', 'err'], ['dl-e2', 'Partial consent', 'Aadhaar kept and locked; only the PAN gap remains. Two exits, no restart.', 'err'], ['dl-e3', 'Unissued document', 'Not in the locker yet — fetch it from the board with three fields instead of retyping.', 'info'], ['dl-e4', 'Link failed', 'Relink DigiLocker or upload manually, on the same card.', 'err'], ['dl-e5', 'Upload couldn’t be verified', 'The error lives on the file, with the fix one tap away.', 'err'], ['dl-e6', 'Verification failed', 'A plain-language failure with a single retry path.', 'err'], ['dl-e7', 'Upload pending', 'Names exactly which documents are still pending.', 'info']],
+      oh: ['Six metrics moved.', 'Every one in the', ['right direction.']],
+      oBody: 'Measured across an eight-week controlled rollout (n ≈ 6,400 applications) against the eight weeks before. Figures are directional; volumes and costs indexed.',
+      metrics: [['−63%', 63, 0, '−', '%', 'Drop-off at the document step', '38% → 14%'], ['−84%', 84, 0, '−', '%', 'Median time on the step', '11m 20s → 1m 50s'], ['−74%', 74, 0, '−', '%', 'Ops document rejections', '23% → 6%'], ['−69%', 69, 0, '−', '%', 'Application → sanction TAT', '4.2 days → 31h'], ['+31%', 31, 0, '+', '%', 'Applications completed / week', 'indexed 100 → 131'], ['−57%', 57, 0, '−', '%', 'Document support tickets', 'indexed 100 → 43'], ['−66%', 66, 0, '−', '%', 'Verification cost per file', '₹148 → ₹51'], ['68%', 68, 0, '', '%', 'Applicants who linked DigiLocker', 'target was 45%']],
+      lh: ['What changed in the product —', ['and in how we worked.']],
+      learn: [['Design the seam', 'Three of ten weeks went to failure states. Partial consent alone was 21% of linked sessions — a fifth of users lived where competitors showed an error.'], ['Waiting is a product state', 'Showing verification in place, with a count, removed the “did it work?” anxiety that drove support tickets.'], ['Fallbacks signal confidence', '32% of applicants end up in a fallback tier, and 86% of them still submit.']],
+      next: ['03', 'Account Aggregator', 'Account%20Aggregator%20Case%20Study.dc.html']
+    },
+    aa: {
+      num: '03', name: 'Account Aggregator', meta: 'Account Aggregator · Student Loan App · 2025',
+      h1: ['Six months of', 'bank statements,', 'without losing', ['the applicant.']],
+      lede: 'Account Aggregator–based statement sharing inside an education-loan application — a regulated data handoff that had to feel like one continuous, trustworthy step rather than a detour into someone else’s app.',
+      dl: [['Role', 'Product Designer'], ['Window', '10 weeks post-launch'], ['Partner', 'Setu AA · RBI-licensed']],
+      sum: ['Executive summary', 'A trusted Account Aggregator flow replaced six months of statement uploads.', 'The redesign kept a complete manual fallback while improving consent, completion, analyst efficiency and the quality of statement data.', ['AA link', 'Manual upload', '12 screens', '38 states']],
+      hero: { k: 'Requirement drop-off', v: '16%', to: 16, dec: 0, pre: '', suf: '%', tag: 'from 38%', max: 45, bars: [['Before', 38, '38%'], ['After', 16, '16%']] },
+      pK: 'Problem & cost', ph: ['Eighteen files', 'for one', ['requirement.']],
+      pBody: 'Six months of savings statements, uploaded manually, means one PDF per month per bank — three banks is eighteen downloads, each often password-protected, each from a net-banking session on the same phone. 38% of applicants who reached this requirement never cleared it.',
+      pCard: ['Opportunity', 'Replace the upload burden with a trusted Account Aggregator flow — without ever making the manual path feel like a punishment, or the consent feel like a formality.'],
+      stats: [['38%', 'never cleared the statement requirement'], ['26 min', 'median time on the step, four app switches'], ['31%', 'first submissions with a rejected file'], ['12,400', 'applications in the evidence window']],
+      cK: 'One requirement, three costs',
+      causes: [['Applicant cost', 'Median 26 minutes, four app switches and a 31% file-rejection rate on first submission.'], ['Ops cost', '~14 minutes of analyst time per file, read and re-keyed by hand before scoring could run.'], ['Risk cost', 'A user-supplied PDF is editable. Bank-sourced data is signed at source.']],
+      quote: '“If you tell me which bank statement you need and why, I’m comfortable. ‘Financial data’ sounds like everything.”', qBy: 'Applicant · usability session',
+      aK: 'Strategy & principles', ah: ['Consent is', ['a screen,'], 'not a checkbox.'],
+      aBody: 'Two paths, one recommended, both complete. Aggregator coverage is uneven across banks, so the design carries both routes to completion and lets applicants switch at any point.',
+      principles: [['Recommend, don’t corner', 'AA carries a Recommended badge and its benefit in plain words; manual upload stays on the same card.'], ['Name the third party early', 'The aggregator and its licence appear at the moment of handoff, not in a footnote after it.'], ['Consent is a screen, not a checkbox', 'Purpose, data type and duration each get their own block above the approve button.'], ['Every exit lands somewhere', 'Reject, time out or switch — applicants return to the document list with progress intact.']],
+      decK: 'Four calls I had to defend',
+      decisions: [['Kept manual upload visible', 'Coverage isn’t universal; a hidden fallback turns a partner outage into an abandoned application.'], ['Accounts unchecked by default', 'Pre-ticking manufactures consent — indefensible in a regulated flow.'], ['Reject is a full peer of Approve', 'Structured reasons revealed a discovery bug behind 44% of declines.'], ['Status lives on the card', 'Applicants keep uploading other documents while the statement verifies.']],
+      sK: 'Ecosystem & flow', sh: ['A 10-step AA path', 'with a complete', ['manual fallback.']],
+      sBody: 'The applicant leaves the app once, into a named licensed aggregator, and returns to the exact card they left — now updating itself.',
+      flowK: 'Connecting the bank', flowH: 'Ten screens, end to end.',
+      steps: [['Choose path', 'One requirement, two ways to satisfy it — the recommended route leads with the benefit.', 'aa-s1'], ['Mobile number', 'Pre-filled but editable, with helper text naming exactly which number is wanted.', 'aa-s2'], ['Handoff', 'Co-branded handoff to Setu AA — a bare redirect reads as phishing.', 'aa-s3'], ['Identity OTP', 'Masked number, resend timer and remaining retries in one sheet.', 'aa-s4'], ['Select accounts', 'Nothing pre-selected; one instruction and a live count above the button.', 'aa-s5'], ['Verify accounts', 'Account by account, with a persistent “1 of 2 verified” footer.', 'aa-s6'], ['Approve sharing', 'Why, what and for how long — Reject is a full peer of Approve.', 'aa-s7'], ['Return', 'Approval confirmed, an SMS receipt, and a countdown back to the app.', 'aa-s8'], ['Verifying', 'The card verifies in place while the next document is highlighted.', 'aa-s9'], ['Verified', 'Bank account verified, with View details.', 'aa-s10']],
+      galK: 'Fallback & refusal', galH: 'Designing the no — and every way back.',
+      gallery: [['aa-e1', 'Explained before handoff', 'What an Account Aggregator is and how it works, before anything is asked.', 'info'], ['aa-e2', 'No accounts found', 'Points to the likely cause — the wrong mobile number — and lets the applicant fix it.', 'err'], ['aa-e3', 'Reject, with a reason', 'Irreversibility stated; four structured reasons; “Don’t reject” is the easy way back.', 'err'], ['aa-e4', 'No data shared', 'Confirms what didn’t happen — the reassurance a declining user wants.', 'info'], ['aa-e5', 'Switch to manual', 'A plain confirm, no warning language, reversible both ways.', 'info'], ['aa-e6', 'Manual upload, per bank', 'Explicit date range, grouped by bank, with Add another bank.', 'info'], ['aa-e7', 'Our issue, labelled as ours', 'Processing failed on our side — reconnect or upload instead.', 'err'], ['aa-e8', 'Name mismatch', 'The account name doesn’t match the applicant — reconnect another account.', 'err']],
+      oh: ['Clarity became', 'the measurable', ['advantage.']],
+      oBody: 'Specificity changed the emotional meaning of consent: applicants treated account linking as a useful, bounded action rather than a broad surrender of financial data. First 10 weeks post-launch vs the preceding 10 weeks, n = 12,400.',
+      metrics: [['38 → 16%', null, 0, '', '', 'Requirement drop-off', 'submissions 62% → 84%'], ['26 → 2 min', null, 0, '', '', 'Median step completion', 'four app switches → one'], ['71%', 71, 0, '', '%', 'Choose the AA path', 'over manual upload'], ['91%', 91, 0, '', '%', 'Approve consent', 'once the AA flow is entered'], ['14 → 3 min', null, 0, '', '', 'Analyst touch time per file', 'structured, bank-signed data'], ['94%', 94, 0, '', '%', 'First-pass acceptance', 'up from 69%'], ['9%', 9, 0, '', '%', 'Consent decline rate', 'from 14% after the week-4 fix'], ['+9 pts', 9, 0, '+', ' pts', 'End-to-end completion', 'application level']],
+      lh: ['What changed in the product —', ['and in how we worked.']],
+      learn: [['Purpose belongs before permission', 'Consent improved when benefit and boundaries came before the legal ask.'], ['Reversibility builds trust', 'A visible way to revoke increased willingness to connect, even though few people used it.'], ['Success needs proof', 'A connected state matters most when it’s shown as an immediate benefit on the card.']],
+      next: ['04', 'OCR', 'OCR%20Case%20Study.dc.html']
+    },
+    ocr: {
+      num: '04', name: 'OCR', meta: 'OCR & auto-validation · Student Loan App · 2025',
+      h1: ['Catching a bad', 'document in', 'two seconds', 'instead of', ['two days.']],
+      lede: 'We turned OCR from a typing shortcut into a validation gate. It runs the moment a file is uploaded, prevents ADR loops, gives applicants a clear next action, and cuts verifier time before the file ever reaches a human queue.',
+      dl: [['Role', 'Product Designer'], ['Timeline', '12 weeks · 2025'], ['Scope', '5 categories · 60+ states']],
+      sum: ['Executive summary', 'The uploaded file is now the source of truth. OCR runs immediately, and the verdict is written on the same document card.', 'We moved from a “type less” goal to “validate at upload”. The system classifies before it extracts, errors live on the failing file, and every issue includes the exact next action.', ['ID proof', 'Address', 'Academics', 'Employment', 'Admission']],
+      hero: { k: 'Verification turnaround', v: '−74%', to: 74, dec: 0, pre: '−', suf: '%', tag: 'days → hours', max: 4, bars: [['Before', 3.8, '3.8 d'], ['After', 1, '<24 h']] },
+      pK: 'Problem & opportunity', ph: ['The app accepted', 'anything.', ['The queue paid for it.']],
+      pBody: 'Applicants uploaded 14–18 documents, but validation happened manually, days later. Upload succeeded as long as the file was under 10 MB — whether it was the right document, readable, complete or password-protected was discovered by a human, in a different tool, on a different day.',
+      pCard: ['Opportunity', 'Validate at upload so the ADR loop is prevented rather than communicated — and only true judgement reaches the queue.'],
+      stats: [['~1,400', 'ADRs audited across a quarter'], ['~70%', 'of rework from four machine-detectable reasons'], ['1 in 4', 're-uploads were the identical file'], ['3.8 days', 'median from upload to knowing it was valid']],
+      cK: 'What the old app did',
+      causes: [['One document per screen', '14 taps of “Next” to find out nothing was checked.'], ['Status as tiny grey text', '“Upload pending”, “Processing failed” — no cause.'], ['Errors at the screen level', 'Never on the file that was actually wrong.'], ['Locked PDFs failed silently', 'The most common bank-statement format.']],
+      quote: '“I know in two seconds whether I can use it. The rest of my day is being a keyboard.”', qBy: 'Credit-ops verifier · 4 years in role',
+      aK: 'Approach', ah: ['Make the upload', 'the', ['source of truth'], 'for every decision.'],
+      aBody: 'We aligned product, credit ops, engineering and ML around one principle: validate at upload, not later.',
+      principles: [['OCR runs on upload, not on Next', 'The check happens on the card the student is looking at, while the document is still in their hand.'], ['Errors live on the failing file', 'Not a toast or the next screen — the failing filename carries its own message and fix.'], ['Say the fix, not the rule', '“Only a 1-month statement was provided. Please upload the last 6 months.” Never “does not meet requirements”.']],
+      decK: 'Trade-offs I’d defend',
+      decisions: [['No auto-reject, ever', 'OCR can ask for a better file; only a human rejects an application document.'], ['Validate on upload despite the cost', 'Per-file inference was priced against one ADR cycle — ~2 days of TAT — and it wasn’t close.'], ['Account Aggregator recommended, not forced', 'Manual upload stayed, and 40% of statements still moved off PDFs.'], ['Kept “Mandatory” badges out', 'Almost everything is mandatory; an asterisk and a clear pending state did the job.']],
+      sK: 'Key flow & solution', sh: ['One document card,', 'six states, and', ['one source of truth.']],
+      sBody: 'OCR fires the instant a file lands — classify first, then read — and the verdict is written back onto the same card, so every failure is answerable while the document is still on the table.',
+      flowK: 'Upload → OCR → verdict', flowH: 'It triggers right after the file is uploaded.',
+      steps: [['Upload pending', 'Required, not yet given. The format hint sits under the button.', 'ocr-s1'], ['Choose a source', 'Camera, gallery or files — constraints stated up front.', 'ocr-s2'], ['OCR on upload', 'The file lands and is read immediately (~2s), inline on the card. Nothing blocks.', 'ocr-s3'], ['Needs a fix', 'Classified before extraction — a wrong document is caught instantly, with one action.', 'ocr-s4'], ['Uploaded', 'Read cleanly. Filename shown, removable, nothing to do.', 'ocr-s5'], ['Category at a glance', 'Every document in a category on one screen, each card carrying its own state.', 'ocr-s6']],
+      compK: 'Before → after', compH: 'Same documents, a different conversation.',
+      compare: [['ID proof', 'ocr-o1', 'ocr-s4', 'Status moved from grey text to a named cause, on the file itself.'], ['Address proof', 'ocr-o2', 'ocr-n2', 'Front and back became separate slots, each with its own OCR result.'], ['Employment ADR', 'ocr-o3', 'ocr-e9', 'An internal note became a student-facing instruction with an alternative route.']],
+      galK: 'Edge cases', galH: 'The happy path took two weeks. The other sixty screens took the rest.',
+      gallery: [['ocr-e1', 'Name not matched', 'Catches the co-applicant mix-up that used to cost a full ADR cycle.', 'err'], ['ocr-e2', 'Couldn’t be verified', 'Unreadable scan — the fix sits inside the same red block.', 'err'], ['ocr-e3', 'Locked PDF', 'Password-protected statements are a first-class path, not a failure.', 'info'], ['ocr-e4', 'Wrong password', 'An error state on the prompt, with a reveal toggle.', 'err'], ['ocr-e5', 'Deletion is a decision', 'Removing a file is confirmed — it can reopen a closed check.', 'info'], ['ocr-e6', 'Multiple accounts', 'Detected at parse time, not as an ADR two days later.', 'err'], ['ocr-e7', 'Our failure, labelled', 'A service error offers retry — no need to re-shoot a good document.', 'err'], ['ocr-e8', 'Front and back, separately', 'A failing back doesn’t invalidate the front.', 'err']],
+      oh: ['Verification moved', 'from days to hours,', ['ADR cycles halved.']],
+      oBody: 'The strongest automation wasn’t invisible. Showing applicants where judgement mattered improved accuracy, reduced rework and made the system feel accountable. First 90 days post-launch vs an 8-week baseline.',
+      metrics: [['−74%', 74, 0, '−', '%', 'Verification turnaround', '3.8 days → under 24h'], ['68%', 68, 0, '', '%', 'Cleared without a verifier', 'target at kickoff was 45%'], ['−68%', 68, 0, '−', '%', 'Verifier minutes per application', '37 min → 12 min'], ['1.1', 1.1, 1, '', '', 'ADR cycles per application', 'from 2.4']],
+      lh: ['What changed in the product —', ['and in how we worked.']],
+      learn: [['Confidence is a routing tool', 'Scores worked best behind the scenes, deciding what needed a human — not as raw numbers in the UI.'], ['Review should be proportional', 'Fixing one flagged file felt faster than re-checking a whole category.'], ['Source context prevents errors', 'Keeping the document and its verdict together made corrections quicker and more confident.']],
+      next: ['05', 'Post disbursement', 'Post%20Disbursement%20Case%20Study.dc.html']
+    },
+    pd: {
+      num: '05', name: 'Post disbursement', meta: 'Post-disbursement servicing · Student Loan App · 2025',
+      h1: ['The loan', 'relationship', 'starts', ['after disbursement.']],
+      lede: 'An education loan is sanctioned once and lived with for years. The loan hub turns the contract into a living plan — every repayment state on one home card, and tranches, EMI schedule, transactions and documents one tap away, from first disbursal to the NOC.',
+      dl: [['Role', 'Product Designer'], ['Timeline', '14 weeks · 2025'], ['Scope', '110+ screens · 4 flows']],
+      sum: ['Post-disbursement feature', 'A contract transformed into a living repayment plan.', 'One loan card that changes with the repayment state, and one details view split into Loan details — plan, disbursement, EMI schedule, transactions, documents — and Action required.', ['BPI processing', 'Upcoming EMI', 'Processing', 'Overdue', 'Blocked', 'Completed']],
+      hero: { k: 'Tranche request → disbursal', v: '2.1 days', to: 2.1, dec: 1, pre: '', suf: ' days', tag: 'from 6.2 days', max: 7, bars: [['Before', 6.2, '6.2 d'], ['After', 2.1, '2.1 d']] },
+      pK: 'Problem & opportunity', ph: ['A successful', 'disbursement created', ['a new information gap.']],
+      pBody: 'A ₹25L sanction is paid out in tranches — one per semester, against fee invoices. None of that existed in the product. The app ended at “sanctioned”; everything after it was email, PDFs and a relationship manager on WhatsApp.',
+      pCard: ['Strategic opportunity', 'Create one living loan plan that makes obligations, progress and choices legible throughout repayment.'],
+      stats: [['71%', 'of support was “where is my tranche” and “what do I owe”'], ['6.2 days', 'median tranche request → disbursal, no status shown'], ['1 in 6', 'students paid their college fee after the deadline'], ['38%', 'of pre-EMI defaults came from misreading “moratorium”']],
+      cK: 'Four insights',
+      causes: [['The user and the payer are different people', 'The student holds the login; the co-borrower parent pays the EMI.'], ['Silence is the anxiety', 'A five-day review was fine — not knowing whether it had started wasn’t.'], ['Moratorium is misunderstood', 'Most read it as “pay nothing”; they owed pre-EMI interest from the first disbursal.'], ['Rejections were rarely credit calls', '79% were a wrong invoice, mismatched amount or missing receipt.']],
+      quote: '“The money arrived, but then I only heard from the lender when a payment was near. I wanted to see the whole plan — not just a reminder.”', qBy: 'Borrower interview · post-disbursement',
+      aK: 'Approach', ah: ['Make complexity', 'visible only when it', ['helps a decision.']],
+      aBody: 'The loan is the object, and the tranche is its unit of work. Facts live under Loan details; anything only the borrower can unblock lives under Action required — the rule that keeps 47 screens navigable.',
+      principles: [['Answer the question before it’s asked', 'Amount, due date, college and installments paid sit on the card, no tap needed.'], ['Every state owes a reason', 'Processing, overdue, revised or rejected — each carries the line item and what to do next.'], ['Overdue is a state, not a verdict', 'Factual copy from day 3 to day 60, a breakdown of what’s owed, and a clear blocked state at 90.'], ['Every action ends in proof', 'Welcome kit, transaction receipt, statement, interest certificate, NOC — trust is a file you can forward.']],
+      decK: 'Explorations — and the ones I killed',
+      decisions: [['“Disbursements” as a 4th tab — killed', 'Sat empty eleven months a year and still didn’t say whether an EMI was due.'], ['Semester timeline — killed', 'Showed the whole degree when only the next tranche matters. Survived as the collapsed tranche list.'], ['Loan card + details / action split — shipped', 'One card with the next due amount; every tranche state is a variant of the same row.']],
+      sK: 'Key flow & solution', sh: ['A contract', 'transformed into a', ['living repayment plan.']],
+      sBody: 'Four flows on one loan object: the home card’s repayment states, BPI and EMI overdue journeys, and the details view everything else lives in.',
+      flowK: 'The loan, end to end', flowH: 'From first disbursal to the NOC.',
+      steps: [['Upcoming EMI', 'The home card leads with the next amount and its date, in calm green copy.', 'pd-s1'], ['BPI processing', 'After a tranche is disbursed, broken-period interest shows as processing — no false alarm.', 'pd-s2'], ['Overdue', 'Days overdue on the card and in the banner, with an info icon beside the amount.', 'pd-s3'], ['What’s owed', 'The info icon opens a summary: each missed EMI, bounce and penalty charges, and the total.', 'pd-s4'], ['Plan details', 'Sanctioned amount, moratorium, pre-EMI and EMI terms for the borrower’s plan.', 'pd-s5'], ['Tranches', 'Every tranche with its state — disbursed, approved, review pending, revised or rejected.', 'pd-s6'], ['Revised tranche', 'Changed line items are marked “Revised”, so the borrower knows exactly what to check.', 'pd-s7'], ['EMI schedule', 'A timeline of paid, overdue and upcoming installments; each opens its breakdown.', 'pd-s8'], ['Transactions', 'Every payment, success or failure, with the method and amount.', 'pd-s9'], ['Transaction details', 'Where the money went, waived charges struck through, and which installments it cleared.', 'pd-s10'], ['Documents', 'Statement of account and interest certificate by financial year, on demand.', 'pd-s11'], ['Loan completed', 'Congratulations, a Download NOC button, and downloads that run in the background.', 'pd-s12']],
+      galK: 'States & edge cases', galH: 'Every state the loan can be in — and the way out of each.',
+      gallery: [['pd-e1', 'Action required', 'Payment, discussion, verification, agreement and documents — what only the borrower can unblock.', 'info'], ['pd-e2', 'EMI processing', 'Paid but not settled: a blue processing state stops anyone paying twice.', 'info'], ['pd-e3', '60 days overdue', 'The same factual copy at day 60 as at day 3 — escalation without blame.', 'err'], ['pd-e4', 'Blocked at 90 days', 'The loan is temporarily blocked; the card says why and to contact support.', 'err'], ['pd-e5', 'Loan cancelled', 'A clear end state with the college and course, and FAQs below.', 'err'], ['pd-e6', 'Tranche rejected', 'Rejected with its details still open, and a new request one tap away.', 'err'], ['pd-e7', 'Payment failed', 'The same breakdown as a success, in red — so nothing is ambiguous.', 'err'], ['pd-e8', 'Refund successful', 'Refunds get their own receipt, with UTR and time.', 'info'], ['pd-e9', 'Plan variants', 'Six plans — Scholar, Flexi Semester, Talent, Professional, Edge, Prime — one layout, own colour.', 'info'], ['pd-e10', 'Download failed', 'A toast with Try again, without leaving the screen.', 'err'], ['pd-e11', 'Background downloads', 'Several downloads can run at once; each reports on its own.', 'info'], ['pd-e12', 'Nothing yet', 'Empty tabs say details will appear as the loan progresses.', 'info'], ['pd-e13', 'Multiple loans', 'My loans lists each active loan with its own due date.', 'info'], ['pd-e14', 'Help', 'Support by WhatsApp, phone or email, and FAQs.', 'info']],
+      oh: ['Clarity became', 'the measurable', ['advantage.']],
+      oBody: 'The loan hub reduced anxiety by making time visible — borrowers understood what they owed next and how each payment changed the relationship. Two semesters after launch, against a held-back cohort.',
+      metrics: [['2.1 days', 2.1, 1, '', ' days', 'Request → disbursal', 'from 6.2 days'], ['83%', 83, 0, '', '%', 'Tranches requested in-app', 'from 0%'], ['−44%', 44, 0, '−', '%', 'Support contacts / 1k loans', '“where is my tranche” −78%'], ['81.2%', 81.2, 1, '', '%', 'On-time pre-EMI collection', '+12.7 pts from 68.5%'], ['78%', 78, 0, '', '%', 'Borrowers active monthly', 'from 19%'], ['+21', 21, 0, '+', '', 'NPS on active loans', 'referrals +8.4%'], ['1 in 19', null, 0, '', '', 'Late college-fee payments', 'from 1 in 6'], ['91%', 91, 0, '', '%', 'Open within 48h of disbursal', 'after each tranche']],
+      lh: ['What changed in the product —', ['and in how we worked.']],
+      learn: [['Repayment needs a narrative', 'Tranche, moratorium and EMI shown as one sequence made obligations legible where a ledger didn’t.'], ['Progress motivates readiness', 'Seeing installments paid against tenure helped borrowers prepare for dues instead of reacting to them.'], ['Support can be embedded', 'Phase-scoped explanations answered more questions than a help centre ever did.']],
+      next: ['06', 'Multi-loan', 'Multi-loan%20Case%20Study.dc.html']
+    },
+    ml: {
+      num: '06', name: 'Multi-loan', meta: 'Multi-loan · Student Loan App · 2025',
+      h1: ['A second loan,', 'without starting', ['from zero.']],
+      lede: 'Students come back mid-degree — for next semester’s fees, or a new course after the first. The app treated them like strangers and asked for everything again. Multi-loan lets the same borrower apply for a second education loan from home, carrying over what’s already known and asking only what’s new.',
+      dl: [['Role', 'Product Designer'], ['Timeline', '8 weeks · 2025'], ['Scope', '70+ screens · 2 paths']],
+      sum: ['Multi-loan', 'The second application starts where the first one ended.', 'One question — same course or new course — branches into a 4-step or 6-step eligibility. Both rejoin at the offer, then share co-borrower, review, documents and declaration.', ['Apply new loan', 'Same / new course', 'Eligibility', 'Co-borrower', 'Review', 'Documents']],
+      hero: { k: 'Eligibility steps · same course', v: '4', to: 4, dec: 0, pre: '', suf: '', tag: 'from 6', max: 6, bars: [['New course', 6, '6 steps'], ['Same course', 4, '4 steps']] },
+      pK: 'Problem & opportunity', ph: ['Returning borrowers', 'were treated', ['like strangers.']],
+      pBody: 'Education loans are disbursed semester by semester, and many borrowers come back for more. But the app only knew one loan: home showed the active loan with no way to start another, and a fresh application repeated eligibility, co-borrower details and documents already on file.',
+      pCard: ['Strategic opportunity', 'A returning borrower is the lowest-risk customer we have. Make applying again feel like a continuation, not a restart.'],
+      stats: [['2', 'entry paths — same course or new course'], ['4 / 6', 'eligibility steps, depending on the path'], ['3', 'co-borrowers reusable from earlier loans'], ['70+', 'screens and states across the flow']],
+      cK: 'Four constraints',
+      causes: [['No way back in', 'Home showed the active loan and its EMI — but nothing to start a second application.'], ['Same course, different need', 'Funding the next semester early isn’t a new degree — yet both went through the same long form.'], ['Data already on file', 'Grades, income and co-borrowers were verified for loan one, then asked for again.'], ['Co-borrowers change', 'A bigger loan may need a stronger co-borrower — or a new one, verified against PAN and mobile.']],
+      quote: '“I already gave you all of this last year. Why does it feel like I’m applying for the first time?”', qBy: 'Returning borrower · user interview',
+      aK: 'Approach', ah: ['Ask only', 'what’s', ['new.']],
+      aBody: 'The second application is the first one, edited. Known data arrives checked; only what changed is asked.',
+      principles: [['Start from home', 'Apply new loan sits in the home carousel, next to the active loan and disbursement updates.'], ['Branch by intent', 'Same course or new course — one question decides how much we need to ask.'], ['Pre-checked, not hidden', 'Carried-over sections show as complete and stay open to review and edit.'], ['Reuse people, verify changes', 'Existing co-borrowers are one tap away; a new one is verified by PAN–mobile match and OTP.']],
+      decK: 'Key design decisions',
+      decisions: [['Same course lists your courses', 'Pick IIT Bombay or NIFT and the institute, course and fees carry over — six steps become four.'], ['New course gets the full journey', 'Institute, previous education and entrance tests are asked again, because they actually changed.'], ['Review before re-entry', 'Review shows what’s done and locks plan and address until co-borrowers are complete.'], ['Nudge, don’t block, on co-borrowers', 'Another co-borrower improves approval chances; proceeding without one is a clear, explained choice.']],
+      sK: 'Key flow & solution', sh: ['One question,', 'two paths,', ['one finish line.']],
+      sBody: 'Two eligibility paths branch from a single choice and rejoin at the offer. Co-borrower, review, documents and declaration are shared by both.',
+      flowK: 'The application', flowH: 'From home to submitted.',
+      steps: [['Home', 'Apply new loan leads the home carousel, above the active loan and its next EMI.', 'ml-s1'], ['Same or new course', 'One choice sets the path. Same course lists the borrower’s existing courses.', 'ml-s3'], ['Shorter eligibility', 'Same course skips institute and course details — four steps instead of six.', 'ml-s4'], ['Work & income', 'Employment details, with Account Aggregator recommended to boost eligibility.', 'ml-s5'], ['The offer', 'Eligible amount and a recommended plan — add a co-borrower to unlock the best offer.', 'ml-s6'], ['Add co-borrower', 'Mobile from contacts plus PAN, matched and verified before moving on.', 'ml-s7'], ['Review application', 'Borrower details arrive complete; the carried-over co-borrower is pre-filled.', 'ml-s8'], ['Addresses', 'One tab per person, with a same-as-permanent shortcut.', 'ml-s9'], ['Documents', 'Per-person tabs and a running count of what’s uploaded.', 'ml-s10'], ['Verified income', 'Bank statement verified through Account Aggregator; ITR and business proof below.', 'ml-s11'], ['Declaration', 'One explicit declaration, then submit.', 'ml-s12']],
+      galK: 'Branches & edge cases', galH: 'The other paths — and every way back.',
+      gallery: [['ml-e10', 'Fee disbursed', 'The carousel says when the next disbursement opens — no guessing.', 'info'], ['ml-e11', 'Next semester due', 'A timely nudge to complete the DRF and initiate disbursement.', 'info'], ['ml-e1', 'New course: field of study', 'A new course starts with the field, so courses and lenders filter correctly.', 'info'], ['ml-e2', 'New course: full study plan', 'Institute, admission status and course — asked because they changed.', 'info'], ['ml-e3', 'Entrance tests', 'New-course path only; add as many tests as needed.', 'info'], ['ml-e12', 'Required fields', 'Inline errors on the sheet, without losing the offer behind it.', 'err'], ['ml-e4', 'Mobile verification', 'OTP to the co-borrower’s number before PAN is checked.', 'info'], ['ml-e5', 'Verification failed', 'PAN and mobile don’t match — named plainly, with one way to retry.', 'err'], ['ml-e6', 'Fix in place', 'The PAN field carries the error and the hint to fix it.', 'err'], ['ml-e7', 'Reuse co-borrowers', 'Co-borrowers from earlier loans are listed, expandable and editable.', 'info'], ['ml-e8', 'Improve approval chances', 'When income falls short, a nudge to add another family member.', 'info'], ['ml-e9', 'Proceed without', 'Benefits stated; going ahead without a co-borrower stays a clear choice.', 'info']],
+      oh: ['Applying again', 'became a', ['continuation.']],
+      oBody: 'Returning borrowers on the new flow, compared with second applications made through the standard flow before launch.',
+      metrics: [['4 steps', 4, 0, '', ' steps', 'Eligibility, same course', 'from 6'], ['−58%', 58, 0, '−', '%', 'Time to submit a second loan', 'vs. first application'], ['+34%', 34, 0, '+', '%', 'Borrowers who reapply', 'indexed'], ['−41%', 41, 0, '−', '%', 'Drop-off at co-borrower step', 'reuse + nudge']],
+      lh: ['What changed in the product —', ['and in how we worked.']],
+      learn: [['Intent beats form tuning', 'Asking “same course or new?” decided what not to ask — more than any field-level optimisation.'], ['Show what you already know', 'Pre-checked sections built trust; silent pre-fill made people re-check everything.'], ['Co-borrowers are a relationship', 'Most second loans reused the first co-borrower — so that had to be the easy path.']],
+      next: ['02', 'Loan Origination System', 'LOS%20Case%20Study.dc.html', 'Next project · 02 / 04', 'View project']
+    }
+  };
+
+  study() {
+    const q = typeof location !== 'undefined' ? new URLSearchParams(location.search).get('s') : null;
+    return this.STUDIES[this.props.study] || this.STUDIES[q] || this.STUDIES.dl;
+  }
+  motionOff() {
+    return (this.props.motion ?? 'Full') === 'Off' || (typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+  componentDidMount() {
+    this.onScroll = () => { if (this.raf) return; this.raf = requestAnimationFrame(() => { this.raf = 0; this.tick(); }); };
+    this.onResize = () => { const narrow = window.innerWidth < 960; if (narrow !== this.state.narrow) this.setState({ narrow }); this.onScroll();
+      clearTimeout(this.rpT); this.rpT = setTimeout(() => document.querySelectorAll('img[data-pan]').forEach(im => im.complete && 0), 200); };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', this.onResize);
+    const off = this.motionOff(), ov = this.enterRef.current;
+    if (ov && !off && !document.hidden) {
+      let viaT = false; try { viaT = sessionStorage.getItem('pf-transition') === '1'; sessionStorage.removeItem('pf-transition'); } catch (er) {}
+      if (viaT && ov.firstElementChild) ov.firstElementChild.style.visibility = 'hidden';
+      const a = ov.animate([{ clipPath: 'inset(0 0 0% 0)' }, { clipPath: 'inset(0 0 100% 0)' }], { duration: 600, delay: 80, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'backwards' });
+      if (ov.firstElementChild) ov.firstElementChild.animate([{ opacity: 1, transform: 'translateY(0px)' }, { opacity: 0, transform: 'translateY(-28px)' }], { duration: 300, delay: 0, easing: 'cubic-bezier(.6,0,.2,1)', fill: 'backwards' });
+      this.ovT = setTimeout(() => { try { a.finish(); } catch (e) {} }, 900);
+    }
+    this.setupReveal();
+    const S = this.study();
+    if (!off && S.steps) this.stepT = setInterval(() => { if (!this.state.pinned && !document.hidden) this.setState(x => ({ step: (x.step + 1) % S.steps.length })); }, 7000);
+    setTimeout(() => document.querySelectorAll('img[data-pan]').forEach(im => im.complete && 0), 300);
+    this.tick();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('resize', this.onResize);
+    if (this.io) this.io.disconnect();
+    clearInterval(this.stepT); clearTimeout(this.rpT); clearTimeout(this.fb); clearTimeout(this.ovT);
+    if (this.onVis) document.removeEventListener('visibilitychange', this.onVis);
+  }
+  tick() {
+    const y = window.scrollY, vh = window.innerHeight, max = document.documentElement.scrollHeight - vh;
+    if (this.progressRef.current) this.progressRef.current.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
+    if (!this.motionOff()) document.querySelectorAll('[data-scrub]').forEach(st => {
+      const r = st.getBoundingClientRect(), p = Math.max(0, Math.min(1, (vh * 0.85 - r.top) / (r.height + vh * 0.35)));
+      const ws = st.querySelectorAll('[data-w]'), n = ws.length;
+      ws.forEach((w, i) => { w.style.opacity = (0.16 + 0.84 * Math.max(0, Math.min(1, p * (n + 3) - i))).toFixed(3); });
+    });
+    const upd = {}, solid = y > 24;
+    if (solid !== this.state.solid) upd.solid = solid;
+    let nav = '';
+    ['problem', 'approach', 'solution', 'outcomes', 'learnings'].forEach(id => { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top < vh * 0.4) nav = id; });
+    if (nav !== this.state.nav) upd.nav = nav;
+    if (Object.keys(upd).length) this.setState(upd);
+  }
+  setupReveal() {
+    if (this.motionOff() || typeof IntersectionObserver === 'undefined' || document.hidden) return;
+    const subtle = this.props.motion === 'Subtle';
+    const kf = subtle ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: 'translateY(24px)', filter: 'blur(8px)' }, { opacity: 1, transform: 'translateY(0px)', filter: 'blur(0px)' }];
+    const vh = window.innerHeight, pending = [];
+    let fired = false;
+    const show = el => {
+      if (el.__rv) el.__rv.play();
+      if (this.io) this.io.unobserve(el);
+      setTimeout(() => { if (el.matches('[data-count]')) this.countUp(el); el.querySelectorAll('[data-count]').forEach(x => this.countUp(x)); }, Number(el.dataset.reveal || 0));
+    };
+    this.io = new IntersectionObserver(es => { fired = true; es.forEach(e => e.isIntersecting && show(e.target)); }, { rootMargin: '0px 0px -8% 0px', threshold: 0.01 });
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      const up = el.hasAttribute('data-up'), bx = el.hasAttribute('data-rx'), by = el.hasAttribute('data-ry');
+      const frames = up ? [{ transform: 'translateY(105%)' }, { transform: 'translateY(0%)' }] : bx ? [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }] : by ? [{ transform: 'scaleY(0)' }, { transform: 'scaleY(1)' }] : kf;
+      const a = el.animate(frames, { duration: up ? 1000 : (bx || by) ? 1100 : (subtle ? 500 : 900), delay: Number(el.dataset.reveal || 0), easing: up ? 'cubic-bezier(.2,.9,.1,1)' : 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' });
+      el.__rv = a;
+      const r = el.getBoundingClientRect();
+      if (r.top < vh && r.bottom > 0) { show(el); return; }
+      a.pause(); pending.push(a); this.io.observe(el);
+    });
+    this.fb = setTimeout(() => { if (!fired) pending.forEach(a => { try { a.finish(); } catch (e) {} }); }, 1000);
+    this.onVis = () => { if (document.hidden) pending.forEach(a => { try { a.finish(); } catch (e) {} }); };
+    document.addEventListener('visibilitychange', this.onVis);
+  }
+  countUp(el) {
+    if (!el || this.motionOff()) return;
+    const node = el.firstChild;
+    if (!node || node.nodeType !== 3) return;
+    const to = parseFloat(el.dataset.count), dec = Number(el.dataset.dec || 0), pre = el.dataset.pre || '', suf = el.dataset.suf || '';
+    if (isNaN(to)) return;
+    const final = node.nodeValue, t0 = performance.now(), tok = {};
+    el.__tok = tok;
+    const step = t => { if (el.__tok !== tok) return; const p = Math.min(1, (t - t0) / 1400), e = 1 - Math.pow(1 - p, 4); node.nodeValue = p < 1 ? pre + (to * e).toFixed(dec) + suf : final; if (p < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  }
+  pan(img, fade) {
+    if (!img) return;
+    if (img.parentElement) img.parentElement.scrollTop = 0;
+    if (fade && !this.motionOff()) img.animate([{ opacity: 0, transform: 'scale(.98)' }, { opacity: 1, transform: 'scale(1)' }], { duration: 420, easing: 'cubic-bezier(.2,.8,.2,1)' });
+  }
+  panLoad = e => this.pan(e.currentTarget, true);
+  magMove = e => {
+    if (this.motionOff()) return;
+    const el = e.currentTarget, r = el.getBoundingClientRect();
+    el.style.transform = `translate(${((e.clientX - r.left - r.width / 2) * 0.22).toFixed(1)}px, ${((e.clientY - r.top - r.height / 2) * 0.32).toFixed(1)}px)`;
+  };
+  magLeave = e => { e.currentTarget.style.transform = ''; };
+  spot = e => { const el = e.currentTarget, r = el.getBoundingClientRect(); el.style.setProperty('--mx', `${e.clientX - r.left}px`); el.style.setProperty('--my', `${e.clientY - r.top}px`); };
+  chunks(arr, base, dark) {
+    return arr.map((x, i) => { const a = Array.isArray(x); return { t: a ? x[0] : x, d: String(base + i * 70), ff: a ? "'Instrument Serif',serif" : 'inherit', fs: a ? 'italic' : 'normal', fw: a ? '400' : 'inherit', ls: a ? '-0.02em' : 'inherit', c: a ? (dark ? '#a9adff' : '#4046ff') : 'inherit' }; });
+  }
+
+  renderVals() {
+    const st = this.state, S = this.study(), A = '#4046ff', INK = '#0f1013', GRN = '#13805a', RED = '#d92d3a', nw = st.narrow;
+    const pad = i => String(i + 1).padStart(2, '0'), cols = n => `repeat(${n},minmax(0,1fr))`;
+    const words = S.name.split(' '), ovB = words.pop();
+    const steps = S.steps || [], cur = steps[st.step % (steps.length || 1)];
+    const F = S.funnel;
+    const s = {
+      num: S.num, name: S.name, meta: S.meta, ovA: words.join(' '), ovB, lede: S.lede,
+      h1: this.chunks(S.h1, 80), dl: S.dl.map(([k, v]) => ({ k, v })),
+      sumK: S.sum[0], sumT: S.sum[1], sumD: S.sum[2], hasChips: !!(S.sum[3] && S.sum[3].length), chips: (S.sum[3] || []).map(t => ({ t })),
+      hero: { ...S.hero, bars: S.hero.bars.map(([l, v, lab], i) => ({ l, lab, w: `${(v / S.hero.max) * 100}%`, d: String(900 + i * 150), bg: i ? 'linear-gradient(90deg,#4046ff,#8f94ff)' : '#6c6e75', c: i ? '#ffffff' : '#a3a5ad' })) },
+      pK: S.pK, ph: this.chunks(S.ph, 60), pBody: S.pBody, pCardK: S.pCard[0], pCardD: S.pCard[1],
+      stats: S.stats.map(([v, l], i) => ({ v, l, d: String(i * 80) })),
+      hasFunnel: !!F, fT: F ? F.t : '', fSub: F ? F.sub : '', fCap: F ? F.cap : '', fCols: F ? cols(F.items.length) : 'none',
+      cK: S.cK, causes: S.causes.map(([t, dd], i) => ({ n: pad(i), t, dd, d: String(i * 80) })),
+      qw: S.quote.split(' ').map(t => ({ t })), qBy: S.qBy,
+      aK: S.aK, ah: this.chunks(S.ah, 60), aBody: S.aBody,
+      principles: S.principles.map(([t, dd], i) => ({ n: pad(i), t, dd, d: String(i * 90) })),
+      hasDec: !!S.decisions, decK: S.decK || '', decisions: (S.decisions || []).map(([t, dd], i) => ({ n: pad(i), t, dd, d: String(i * 70) })),
+      sK: S.sK, sh: this.chunks(S.sh, 60), sBody: S.sBody, flowK: S.flowK, flowH: S.flowH,
+      hasSteps: steps.length > 0, hasFlows: !!S.flows,
+      flows: (S.flows || []).map(([t, dd], i) => ({ n: pad(i), t, dd, d: String((i % 3) * 80) })),
+      states: (S.states || []).map(([t, c]) => ({ t, c })),
+      hasCompare: !!S.compare, compK: S.compK || '', compH: S.compH || '',
+      compare: (S.compare || []).map(([t, o, n, dd], i) => ({ t, o: `assets/screens/${o}.jpg`, n: `assets/screens/${n}.jpg`, dd, d: String(i * 90) })),
+      hasGallery: !!S.gallery, galK: S.galK || '', galH: S.galH || '',
+      gallery: (S.gallery || []).map(([k, t, dd, tone], i) => ({ src: `assets/screens/${k}.jpg`, t, dd, c: tone === 'err' ? RED : A, d: String((i % 4) * 70) })),
+      oh: this.chunks(S.oh, 60, true), oBody: S.oBody,
+      metrics: S.metrics.map(([v, to, dec, pre, suf, l, sub], i) => ({ v, to: to == null ? undefined : to, dec, pre, suf, l, sub, c: '#ffffff', d: String((i % 4) * 80) })),
+      lh: this.chunks(S.lh, 60), learn: S.learn.map(([t, dd], i) => ({ n: pad(i), t, dd, d: String(i * 90) })),
+      next: { num: S.next[0], name: S.next[1], href: S.next[2], label: S.next[3] || `Next feature · Student Loan App · ${S.next[0]} / 06`, cta: S.next[4] || 'View feature' }
+    };
+    return {
+      s, progressRef: this.progressRef, enterRef: this.enterRef,
+      magMove: this.magMove, magLeave: this.magLeave, spot: this.spot, panLoad: this.panLoad,
+      
+      navMax: st.solid && !nw ? '900px' : '1200px',
+      navBg: st.solid ? 'rgba(255,255,255,.72)' : 'rgba(255,255,255,0)',
+      navShadow: st.solid ? '0 0 0 1px rgba(15,16,19,.06), 0 12px 32px -12px rgba(15,16,19,.18)' : '0 0 0 1px rgba(15,16,19,0)',
+      navLinksDisplay: nw ? 'none' : 'flex',
+      navItems: [['problem', 'Problem'], ['approach', 'Approach'], ['solution', 'Solution'], ['outcomes', 'Outcomes'], ['learnings', 'Learnings']].map(([id, label]) => ({ href: `#${id}`, label, color: st.nav === id ? INK : '#55575e', bg: st.nav === id ? 'rgba(15,16,19,.06)' : 'transparent' })),
+      statCols: nw ? cols(2) : cols(S.stats.length),
+      causeCols: nw ? 'minmax(0,1fr)' : cols(S.causes.length),
+      causeInner: nw ? '30px minmax(0,1fr)' : 'minmax(0,1fr)',
+      prinCols: nw ? 'minmax(0,1fr)' : cols(S.principles.length === 4 ? 2 : S.principles.length),
+      rowCols: nw ? 'minmax(0,1fr)' : '48px minmax(0,1fr) minmax(0,1.5fr)',
+      flowCols: nw ? 'minmax(0,1fr)' : cols(3),
+      compCols: nw ? 'minmax(0,1fr)' : cols(3),
+      metCols: nw ? cols(2) : cols(4),
+      segCols: cols(steps.length || 1),
+      funnel: F ? F.items.map(([l, v], i) => {
+        const hi = st.bar === i, last = i === F.items.length - 1, lost = i ? F.items[i - 1][1] - v : 0;
+        return { l, v: `${v}%`, h: `${v}%`, lh: `${lost}%`, lost: i ? `−${lost}` : '—', lostO: i ? 1 : 0, d: String(i * 90), ld: String(i * 90 + 700), br: i ? '0 0 12px 12px' : '12px',
+          bg: hi || last ? A : '#c9cbff', vc: hi || last ? A : '#55575e', onEnter: () => this.setState({ bar: i }), onLeave: () => this.setState({ bar: -1 }) };
+      }) : [],
+      shots: steps.map(([t, dd], i) => ({ n: pad(i), t, dd, on: st.step === i, sel: st.step === i ? 'true' : 'false',
+        bg: st.step === i ? '#f1f1f4' : 'transparent', nc: st.step === i ? A : '#8b8d94', tc: st.step === i ? INK : '#55575e',
+        seg: i < st.step ? GRN : i === st.step ? A : 'rgba(15,16,19,.1)', onClick: () => this.setState({ step: i, pinned: true }) })),
+      curSrc: cur ? `assets/screens/${cur[2]}.jpg` : '',
+      curAlt: cur ? `Step ${st.step + 1} — ${cur[0]}` : ''
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><title>Harish Babu Nadar — Product Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg,#f6f5f2);color:var(--ink,#0f1013);font-family:"Geist",system-ui,sans-serif;font-size:15px;line-height:1.55;text-wrap:pretty;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,figure,dl,dd{margin:0}
+::selection{background:var(--sel,rgba(64,70,255,.18))}
+a{color:var(--link,#4046ff)}
+a:hover{color:var(--linkH,#2a2fd6)}
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+:focus-visible{outline:2px solid #4046ff;outline-offset:3px}
+</style>
+</helmet>
+<sc-if value="{{ mobileView }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed; inset:0; z-index:1000; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; padding:24px; background:#e9e8e4;">
+    <div style="width:410px; max-width:100%; height:min(864px, calc(100vh - 84px)); padding:10px; border-radius:54px; background:#0f1013; box-shadow:0 40px 80px -30px rgba(15,16,19,.45);">
+      <iframe data-mobile-frame="1" src="{{ mobileSrc }}" title="Mobile preview" style="display:block; width:100%; height:100%; border:0; border-radius:44px; background:#f6f5f2;"></iframe>
+    </div>
+    <span style="font-family:'Geist Mono',monospace; font-size:12px; color:#55575e;">Mobile · 390 px</span>
+  </div>
+</sc-if>
+
+<div ref="{{ introRef }}" aria-hidden="true" style="position:fixed; inset:0; z-index:300; background:#0f1013; display:grid; place-items:center; clip-path:inset(0 0 0 0);">
+  <div ref="{{ introTxtRef }}" style="display:flex; flex-direction:column; align-items:center; gap:18px; padding:0 24px; text-align:center; opacity:0;">
+    <span ref="{{ introNumRef }}" style="font-family:'Geist Mono',monospace; font-size:12px; color:#a3a5ad; font-variant-numeric:tabular-nums;">0%</span>
+    <span style="font-size:clamp(32px,4vw,56px); line-height:1; font-weight:500; letter-spacing:-0.04em; color:#f6f5f2;">Harish Babu <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.01em; color:#a9adff;">Nadar</span></span>
+    <span style="width:160px; height:2px; border-radius:2px; background:rgba(255,255,255,.12); overflow:hidden;"><span ref="{{ introBarRef }}" style="display:block; height:100%; background:#4046ff; transform-origin:left; transform:scaleX(0);"></span></span>
+    <span ref="{{ introMobRef }}" style="display:none; align-items:center; gap:10px; max-width:30ch; margin-top:14px; padding:12px 16px; border-radius:14px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); text-align:left;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a9adff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none;"><rect x="2" y="4" width="20" height="13" rx="2"></rect><path d="M8 21h8"></path><path d="M12 17v4"></path></svg><span style="display:flex; flex-direction:column; gap:2px;"><span style="font-size:14px; font-weight:500; color:#f6f5f2;">Best viewed on desktop</span><span style="font-size:13px; line-height:1.45; color:#b4b6bd;">Mobile works too. The interactive product demos are easier to explore on a bigger screen.</span></span></span>
+  </div>
+</div>
+<div ref="{{ leaveRef }}" aria-hidden="true" style="position:fixed; inset:0; z-index:200; background:#0f1013; clip-path:circle(0px at 50% 50%); pointer-events:none; display:grid; place-items:center;"><div ref="{{ leaveTxtRef }}" style="display:flex; flex-direction:column; align-items:center; gap:18px; opacity:0;"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#a3a5ad;">{{ lvTop }}</span><span style="font-size:clamp(32px,4vw,56px); line-height:1; font-weight:500; letter-spacing:-0.04em; color:#f6f5f2;">{{ lvA }} <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.01em; color:#a9adff;">{{ lvB }}</span></span><span style="width:160px; height:2px; border-radius:2px; background:rgba(255,255,255,.12); overflow:hidden;"><span ref="{{ leaveBarRef }}" style="display:block; height:100%; background:#4046ff; transform-origin:left; transform:scaleX(0);"></span></span></div></div>
+<div ref="{{ progressRef }}" style="position:fixed; left:0; right:0; top:0; height:2px; z-index:60; background:#4046ff; transform:scaleX(0); transform-origin:left;"></div>
+
+<header style="position:fixed; top:0; left:0; right:0; z-index:50; padding:12px clamp(12px,3vw,24px); pointer-events:none;">
+  <div style="pointer-events:auto; max-width:{{ navMax }}; margin:0 auto; display:flex; align-items:center; gap:24px; padding:8px 8px 8px 18px; border-radius:999px; background:{{ navBg }}; box-shadow:{{ navShadow }}; backdrop-filter:blur(16px) saturate(160%); -webkit-backdrop-filter:blur(16px) saturate(160%); transition:max-width .6s cubic-bezier(.2,.8,.2,1), background .4s ease, box-shadow .4s ease;">
+    <a href="#top" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; display:flex; align-items:center; gap:10px; margin-right:auto; color:var(--ink,#0f1013); text-decoration:none; font-size:15px; font-weight:500; letter-spacing:-0.01em; white-space:nowrap;">Home</a>
+    <nav style="display:flex; gap:4px;">
+      <a href="#work" style="padding:12px 12px; border-radius:999px; color:var(--muted,#55575e); text-decoration:none; font-size:14px; transition:color .2s ease, background .2s ease;" style-hover="color:var(--ink,#0f1013); background:var(--hover,rgba(15,16,19,.05));">Work</a>
+      <a href="#contact" style="padding:12px 12px; border-radius:999px; color:var(--muted,#55575e); text-decoration:none; font-size:14px; transition:color .2s ease, background .2s ease;" style-hover="color:var(--ink,#0f1013); background:var(--hover,rgba(15,16,19,.05));">Contact</a>
+      <button onClick="{{ toggleTheme }}" aria-label="{{ themeLabel }}" title="{{ themeLabel }}" style="display:grid; place-items:center; flex:none; width:44px; height:44px; padding:0; border:0; border-radius:999px; background:transparent; color:var(--muted,#55575e); cursor:pointer; transition:color .2s ease, background .2s ease;" style-hover="color:var(--ink,#0f1013); background:var(--hover,rgba(15,16,19,.05));">
+        <sc-if value="{{ light }}" hint-placeholder-val="{{ true }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></sc-if>
+        <sc-if value="{{ dark }}" hint-placeholder-val="{{ false }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></sc-if>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<section id="top" style="max-width:1200px; margin:0 auto; padding:clamp(120px,min(24vh,32vw),240px) clamp(20px,5vw,72px) 0;">
+  <div style="display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:space-between; gap:32px 48px;">
+  <div ref="{{ heroTextRef }}" style="flex:1 1 420px; min-width:0;">
+  <h1 style="font-size:clamp(30px,5.6vw,76px); line-height:.98; letter-spacing:-0.055em; font-weight:500;">
+    <span style="display:block;"><span style="display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em;"><span data-reveal="80" data-up="" style="display:inline-block; white-space:nowrap;">Harish Babu Nadar</span></span></span>
+    <span style="display:block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.025em; color:var(--muted,#55575e);"><span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="240" data-up="" style="display:inline-block;">Product Designer.</span></span></span>
+  </h1>
+    <p data-reveal="320" style="margin-top:clamp(28px,4vw,44px); max-width:36ch; font-size:clamp(18px,2vw,24px); line-height:1.45; letter-spacing:-0.015em; color:var(--muted,#55575e); text-wrap:pretty;">I design products that balance user needs, business goals, clean aesthetics and minimal design backed by empathy, research, and logic.</p>
+  </div>
+    <a data-reveal="420" ref="{{ heroRef }}" href="#work" aria-label="View projects" onMouseEnter="{{ badgeIn }}" onMouseLeave="{{ badgeOut }}" style="position:relative; display:block; flex:none; width:300px; height:212px; border-radius:18px; color:var(--ink,#0f1013); text-decoration:none;" style-hover="color:var(--ink,#0f1013);">
+      <div aria-hidden="true" style="position:absolute; inset:0; border-radius:18px; background:var(--surface,#ffffff); border:1px solid var(--line,rgba(15,16,19,.08)); box-shadow:0 1px 2px rgba(15,16,19,.04), 0 14px 34px -14px rgba(15,16,19,.16); overflow:hidden; transition:transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease;" style-hover="transform:translateY(-3px); box-shadow:0 1px 2px rgba(15,16,19,.04), 0 22px 46px -16px rgba(15,16,19,.24);">
+        <div style="position:absolute; left:0; right:0; top:0; height:34px; display:flex; align-items:center; justify-content:space-between; padding:0 12px; border-bottom:1px solid var(--line,rgba(15,16,19,.07)); font-family:'Geist Mono',monospace; font-size:10px; letter-spacing:.02em;">
+          <span style="display:flex; align-items:center; gap:7px; color:var(--muted,#55575e);">
+            <span style="width:6px; height:6px; border-radius:50%; background:#4046ff;"></span>
+            <span style="position:relative; display:block; width:90px; height:12px;">
+              <span data-h="lab1" style="position:absolute; left:0; top:0; line-height:12px; white-space:nowrap; opacity:0;">01 Wireframe</span>
+              <span data-h="lab2" style="position:absolute; left:0; top:0; line-height:12px; white-space:nowrap; opacity:0;">02 Visual</span>
+              <span data-h="lab3" style="position:absolute; left:0; top:0; line-height:12px; white-space:nowrap;">03 Prototype</span>
+            </span>
+          </span>
+          <span data-h="cta" style="display:flex; align-items:center; gap:5px; color:var(--ink,#0f1013); transition:color .25s ease;">View work<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="m19 12-7 7-7-7"></path></svg></span>
+        </div>
+        <span data-h="prog" style="position:absolute; left:0; top:33px; width:100%; height:1px; background:#4046ff; opacity:.55; transform-origin:0 50%;"></span>
+        <div style="position:absolute; left:0; right:0; top:34px; bottom:0; background-color:var(--canvas,#f7f7f5); background-image:radial-gradient(var(--dot,rgba(15,16,19,.11)) 1px, transparent 1px); background-size:12px 12px;">
+          <span style="position:absolute; left:22px; top:5px; font-family:'Geist Mono',monospace; font-size:8.5px; line-height:10px; color:var(--faint2,#6b6d75);">Home</span>
+          <div style="position:absolute; left:22px; top:18px; width:124px; height:146px; background:var(--board,#ffffff); border-radius:10px; border:1px solid var(--bline,rgba(15,16,19,.1)); box-shadow:0 8px 18px -12px rgba(15,16,19,.28);">
+            <span data-h="wImg" style="position:absolute; left:9px; top:9px; width:104px; height:50px; border-radius:6px; border:1px dashed var(--wire,#c3c5cc);"></span>
+            <span data-h="wT" style="position:absolute; left:9px; top:69px; width:72px; height:8px; border-radius:3px; background:var(--wf,#e9eaed);"></span>
+            <span data-h="wL1" style="position:absolute; left:9px; top:83px; width:98px; height:5px; border-radius:3px; background:var(--wf2,#eeeff1);"></span>
+            <span data-h="wL2" style="position:absolute; left:9px; top:93px; width:64px; height:5px; border-radius:3px; background:var(--wf2,#eeeff1);"></span>
+            <span data-h="wB" style="position:absolute; left:9px; top:111px; width:104px; height:22px; border-radius:6px; border:1px dashed var(--wire,#c3c5cc);"></span>
+            <span data-h="fImg" style="position:absolute; left:9px; top:9px; width:104px; height:50px; border-radius:6px; background:var(--img,linear-gradient(135deg,#e6e8ff,#cdd0ff)); overflow:hidden;"><span style="position:absolute; left:12px; top:10px; width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,.9);"></span><span style="position:absolute; left:-8px; bottom:-20px; width:72px; height:38px; border-radius:50%; background:var(--h1,#aeb3ff);"></span><span style="position:absolute; right:-12px; bottom:-24px; width:82px; height:42px; border-radius:50%; background:var(--h2,#959cff);"></span></span>
+            <span data-h="fT" style="position:absolute; left:9px; top:69px; width:72px; height:8px; border-radius:3px; background:var(--ink,#0f1013);"></span>
+            <span data-h="fL1" style="position:absolute; left:9px; top:83px; width:98px; height:5px; border-radius:3px; background:var(--sk,#c9cbd1);"></span>
+            <span data-h="fL2" style="position:absolute; left:9px; top:93px; width:64px; height:5px; border-radius:3px; background:var(--sk,#c9cbd1);"></span>
+            <span data-h="fB" style="position:absolute; left:9px; top:111px; width:104px; height:22px; border-radius:6px; background:#4046ff; display:grid; place-items:center;"><span style="width:38px; height:4px; border-radius:2px; background:#ffffff;"></span></span>
+          </div>
+          <div data-h="s2" style="position:absolute; left:196px; top:17px; width:84px;">
+            <span style="display:block; margin-bottom:3px; font-family:'Geist Mono',monospace; font-size:8.5px; line-height:10px; color:var(--faint2,#6b6d75);">Success</span>
+            <div style="position:relative; width:84px; height:112px; background:var(--board,#ffffff); border-radius:9px; border:1px solid var(--bline,rgba(15,16,19,.1)); box-shadow:0 8px 18px -12px rgba(15,16,19,.28);">
+              <span style="position:absolute; left:28px; top:16px; width:26px; height:26px; border-radius:50%; background:var(--tint,#ecedff); display:grid; place-items:center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4046ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+              <span style="position:absolute; left:17px; top:52px; width:48px; height:6px; border-radius:3px; background:var(--ink,#0f1013);"></span>
+              <span style="position:absolute; left:12px; top:64px; width:58px; height:4px; border-radius:2px; background:var(--sk,#c9cbd1);"></span>
+              <span style="position:absolute; left:22px; top:72px; width:38px; height:4px; border-radius:2px; background:var(--sk,#c9cbd1);"></span>
+              <span style="position:absolute; left:8px; top:86px; width:66px; height:16px; border-radius:5px; background:var(--ink,#0f1013);"></span>
+              <span data-h="s2ring" style="position:absolute; inset:-5px; border-radius:13px; border:1.5px solid #4046ff; opacity:0;"></span>
+            </div>
+          </div>
+          <svg width="300" height="178" viewBox="0 0 300 178" aria-hidden="true" style="position:absolute; left:0; top:0; overflow:visible; pointer-events:none;">
+            <path data-h="conn" d="M137 141 C 168 141, 164 88, 194 88" fill="none" stroke="#4046ff" stroke-width="1.5" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0"></path>
+            <circle data-h="connA" cx="137" cy="141" r="3" fill="#ffffff" stroke="#4046ff" stroke-width="1.5" style="fill:var(--board,#ffffff); transform-box:fill-box; transform-origin:center;"></circle>
+            <path data-h="connB" d="M190 84 L195 88 L190 92" fill="none" stroke="#4046ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="transform-box:fill-box; transform-origin:center;"></path>
+          </svg>
+          <div data-h="sel" style="position:absolute; left:30px; top:128px; width:108px; height:26px; border:1.5px solid #4046ff; border-radius:7px; opacity:0;">
+            <span style="position:absolute; left:-4px; top:-4px; width:6px; height:6px; background:var(--board,#ffffff); border:1.5px solid #4046ff; border-radius:1.5px;"></span>
+            <span style="position:absolute; right:-4px; top:-4px; width:6px; height:6px; background:var(--board,#ffffff); border:1.5px solid #4046ff; border-radius:1.5px;"></span>
+            <span style="position:absolute; left:-4px; bottom:-4px; width:6px; height:6px; background:var(--board,#ffffff); border:1.5px solid #4046ff; border-radius:1.5px;"></span>
+            <span style="position:absolute; right:-4px; bottom:-4px; width:6px; height:6px; background:var(--board,#ffffff); border:1.5px solid #4046ff; border-radius:1.5px;"></span>
+          </div>
+          <span data-h="dim" style="position:absolute; left:61px; top:158px; padding:2px 5px; border-radius:4px; background:#4046ff; color:#ffffff; font-family:'Geist Mono',monospace; font-size:8.5px; line-height:10px; white-space:nowrap; opacity:0;">104 × 22</span>
+          <div data-h="pop" style="position:absolute; left:154px; top:94px; width:86px; padding:7px 8px 8px; background:var(--board,#ffffff); border-radius:9px; border:1px solid var(--bline,rgba(15,16,19,.08)); box-shadow:0 12px 26px -12px rgba(15,16,19,.32); opacity:0;">
+            <span style="display:block; margin-bottom:6px; font-family:'Geist Mono',monospace; font-size:8px; line-height:10px; color:var(--faint2,#6b6d75);">Fill</span>
+            <span style="display:flex; gap:5px;">
+              <span style="width:13px; height:13px; border-radius:50%; background:var(--ink,#0f1013);"></span>
+              <span style="position:relative; width:13px; height:13px; border-radius:50%; background:#4046ff;"><span data-h="ring" style="position:absolute; inset:-3px; border-radius:50%; border:1.5px solid #4046ff; opacity:0;"></span></span>
+              <span style="width:13px; height:13px; border-radius:50%; background:#ff9f6b;"></span>
+              <span style="width:13px; height:13px; border-radius:50%; background:#49c79a;"></span>
+            </span>
+          </div>
+          <span data-h="rip" style="position:absolute; left:86px; top:131px; width:24px; height:24px; border-radius:50%; border:2px solid #4046ff; opacity:0;"></span>
+          <svg data-h="cur" width="16" height="20" viewBox="0 0 16 20" style="position:absolute; left:0; top:0; transform:translate(98px,143px) scale(1); transform-origin:2px 2px; filter:drop-shadow(0 2px 3px rgba(15,16,19,.25));"><path d="M1.5 1.5v14.2l3.9-3.6 2.4 5.6 2.7-1.2-2.4-5.5h5.3z" fill="#0f1013" stroke="#ffffff" stroke-width="1.2" stroke-linejoin="round" style="fill:var(--ink,#0f1013); stroke:var(--curS,#ffffff);"></path></svg>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section id="work" style="max-width:1200px; margin:0 auto; padding:clamp(88px,min(20vh,22vw),200px) clamp(20px,5vw,72px) 0; scroll-margin-top:40px;">
+  <h2 data-reveal="0" style="font-size:clamp(32px,4.4vw,56px); line-height:1.05; letter-spacing:-0.04em; font-weight:500;">Projects</h2>
+  <p data-reveal="60" style="margin-top:14px; max-width:52ch; font-size:18px; line-height:1.6; color:var(--muted,#55575e);">Four products across fintech and conservation — from customer apps to the internal tools teams rely on every day.</p>
+
+  <div style="position:relative; isolation:isolate; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr)); gap:clamp(16px,2vw,24px); margin-top:clamp(36px,5vw,56px);">
+    <div aria-hidden="true" style="position:absolute; inset:-48px 0; z-index:-1; pointer-events:none;"><span data-blob="" style="position:absolute; left:0%; top:0%; width:46%; aspect-ratio:1; border-radius:50%; background:radial-gradient(closest-side, rgba(96,84,255,.34), rgba(255,255,255,0));"></span><span data-blob="" style="position:absolute; left:52%; top:6%; width:44%; aspect-ratio:1; border-radius:50%; background:radial-gradient(closest-side, rgba(200,50,130,.26), rgba(255,255,255,0));"></span><span data-blob="" style="position:absolute; left:4%; top:50%; width:44%; aspect-ratio:1; border-radius:50%; background:radial-gradient(closest-side, rgba(255,128,64,.3), rgba(255,255,255,0));"></span><span data-blob="" style="position:absolute; left:54%; top:54%; width:44%; aspect-ratio:1; border-radius:50%; background:radial-gradient(closest-side, rgba(46,150,90,.28), rgba(255,255,255,0));"></span></div>
+
+    <a data-reveal="0" href="Education%20Lending%20Case%20Study.dc.html" id="loan" onClick="{{ goLoan }}" onMouseEnter="{{ cardIn }}" onMouseLeave="{{ cardOut }}" style="scroll-margin-top:110px; display:flex; flex-direction:column; padding:0; overflow:hidden; border-radius:30px; background:linear-gradient(155deg, var(--glassHi,rgba(255,255,255,.78)) 0%, var(--glass,rgba(255,255,255,.4)) 100%); -webkit-backdrop-filter:blur(28px) saturate(170%); backdrop-filter:blur(28px) saturate(170%); box-shadow:inset 0 1px 0 var(--glassEdge,rgba(255,255,255,.95)), 0 0 0 1px var(--glassLine,rgba(15,16,19,.07)), 0 24px 48px -32px var(--sh,rgba(15,16,19,.28)); color:var(--ink,#0f1013); text-decoration:none; transition:box-shadow .45s ease, transform .45s cubic-bezier(.2,.8,.2,1);" style-hover="color:var(--ink,#0f1013); transform:translateY(-4px); box-shadow:inset 0 1px 0 var(--glassEdge,rgba(255,255,255,.95)), 0 0 0 1px var(--glassLine2,rgba(15,16,19,.1)), 0 40px 70px -36px var(--sh,rgba(15,16,19,.36));">
+      <div style="position:relative; aspect-ratio:4/3; border-radius:0; overflow:hidden; isolation:isolate; background:radial-gradient(70% 60% at 50% 0%, rgba(160,150,255,.95) 0%, rgba(160,150,255,0) 100%), linear-gradient(180deg, #4b3ef2 0%, #2a1fc0 100%);"><div aria-hidden="true" style="position:absolute; inset:0; background:repeating-radial-gradient(circle at 50% 72%, rgba(255,255,255,0) 0 63px, rgba(255,255,255,.1) 63px 64px); -webkit-mask-image:radial-gradient(circle at 50% 72%, #000 20%, transparent 75%); mask-image:radial-gradient(circle at 50% 72%, #000 20%, transparent 75%);"></div><div data-h="translate(-10px, 6px)" style="position:absolute; left:8%; top:33%; width:24%; z-index:1; aspect-ratio:9/19.5; padding:1%; border-radius:14%/6.5%; background:#0f1013; box-shadow:inset 0 0 0 1px rgba(255,255,255,.16), 0 50px 70px -28px rgba(12,6,90,.8); transition:transform .9s cubic-bezier(.2,.8,.2,1);"><div style="position:relative; width:100%; height:100%; border-radius:11.5%/5.3%; overflow:hidden; background:#ffffff;"><img src="assets/screens/r1.png" alt="Kuhoo login screen" loading="lazy" style="display:block; width:100%; height:100%; object-fit:cover; object-position:top;"><span style="position:absolute; left:35%; top:1.6%; width:30%; height:3%; border-radius:99px; background:#0f1013;"></span></div></div><div data-h="translate(10px, 6px)" style="position:absolute; left:68%; top:33%; width:24%; z-index:1; aspect-ratio:9/19.5; padding:1%; border-radius:14%/6.5%; background:#0f1013; box-shadow:inset 0 0 0 1px rgba(255,255,255,.16), 0 50px 70px -28px rgba(12,6,90,.8); transition:transform .9s cubic-bezier(.2,.8,.2,1);"><div style="position:relative; width:100%; height:100%; border-radius:11.5%/5.3%; overflow:hidden; background:#ffffff;"><img src="assets/screens/ml-s2.jpg" alt="Apply for a new loan screen" loading="lazy" style="display:block; width:100%; height:100%; object-fit:cover; object-position:top;"><span style="position:absolute; left:35%; top:1.6%; width:30%; height:3%; border-radius:99px; background:#0f1013;"></span></div></div><div data-h="translate(0px, -10px)" style="position:absolute; left:35.5%; top:18%; width:29%; z-index:2; aspect-ratio:9/19.5; padding:1%; border-radius:14%/6.5%; background:#0f1013; box-shadow:inset 0 0 0 1px rgba(255,255,255,.16), 0 50px 70px -28px rgba(12,6,90,.8); transition:transform .9s cubic-bezier(.2,.8,.2,1);"><div style="position:relative; width:100%; height:100%; border-radius:11.5%/5.3%; overflow:hidden; background:#ffffff;"><img src="assets/screens/ml-s1.jpg" alt="Kuhoo student loan home screen" loading="lazy" style="display:block; width:100%; height:100%; object-fit:cover; object-position:top;"><span style="position:absolute; left:35%; top:1.6%; width:30%; height:3%; border-radius:99px; background:#0f1013;"></span></div></div><div aria-hidden="true" style="position:absolute; inset:0; z-index:5; border-radius:inherit; box-shadow:inset 0 0 0 1px rgba(255,255,255,.14); pointer-events:none;"></div></div>
+      <h3 style="margin-top:24px; padding:0 24px; font-size:clamp(22px,2.2vw,28px); line-height:1.2; font-weight:500; letter-spacing:-0.025em;">Student Loan App</h3>
+      <p style="margin-top:10px; padding:0 24px; max-width:calc(46ch + 48px); font-size:16px; line-height:1.6; color:var(--muted,#55575e);">A digital education loan platform simplifying student financing through intuitive UX and streamlined loan journeys.</p>
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:auto; padding:24px 16px 16px 24px;">
+        <div style="display:flex; flex-wrap:wrap; gap:8px;"><span style="padding:7px 14px; border-radius:999px; background:var(--glassChip,rgba(255,255,255,.6)); box-shadow:inset 0 0 0 1px var(--glassLine,rgba(15,16,19,.07)); font-size:13px; color:var(--chipInk,#3d3f45);">FinTech</span><span style="padding:7px 14px; border-radius:999px; background:var(--glassChip,rgba(255,255,255,.6)); box-shadow:inset 0 0 0 1px var(--glassLine,rgba(15,16,19,.07)); font-size:13px; color:var(--chipInk,#3d3f45);">UX Design</span><span style="padding:7px 14px; border-radius:999px; background:var(--glassChip,rgba(255,255,255,.6)); box-shadow:inset 0 0 0 1px var(--glassLine,rgba(15,16,19,.07)); font-size:13px; color:var(--chipInk,#3d3f45);">Mobile</span></div>
+        <span data-arrow="" style="display:grid; place-items:center; flex:none; width:48px; height:48px; border-radius:50%; border:1px solid var(--line2,rgba(15,16,19,.18)); color:var(--ink,#0f1013); transition:background .3s ease, color .3s ease, border-color .3s ease, transform .4s cubic-bezier(.2,.8,.2,1);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
+      </div>
+    </a>
+
+    <a data-reveal="120" href="LOS%20Case%20Study.dc.html" id="los" onClick="{{ goLos }}" onMouseEnter="{{ cardIn }}" onMouseLeave="{{ cardOut }}" style="scroll-margin-top:110px; display:flex; flex-direction:column; padding:0; overflow:hidden; border-radius:30px; background:linear-gradient(155deg, var(--glassHi,rgba(255,255,255,.78)) 0%, var(--glass,rgba(255,255,255,.4)) 100%); -webkit-backdrop-filter:blur(28px) saturate(170%); backdrop-filter:blur(28px) saturate(170%); box-shadow:inset 0 1px 0 var(--glassEdge,rgba(255,255,255,.95)), 0 0 0 1px var(--glassLine,rgba(15,16,19,.07)), 0 24px 48px -32px var(--sh,rgba(15,16,19,.28)); color:var(--ink,#0f1013); text-decoration:none; transition:box-shadow .45s ease, transform .45s cubic-bezier(.2,.8,.2,1);" style-hover="color:var(--ink,#0f1013); transform:translateY(-4px); box-shadow:inset 0 1px 0 var(--glassEdge,rgba(255,255,255,.95)), 0 0 0 1px var(--glassLine2,rgba(15,16,19,.1)), 0 40px 70px -36px var(--sh,rgba(15,16,19,.36));">
+      <div style="position:relative; aspect-ratio:4/3; border-radius:0; overflow:hidden; isolation:isolate; background:radial-gradient(90% 80% at 0% 0%, rgba(236,110,170,.85) 0%, rgba(236,110,170,0) 60%), linear-gradient(160deg, #a3266c 0%, #5e123c 100%);"><div aria-hidden="true" style="position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.09) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.09) 1px, transparent 1px); background-size:36px 36px; -webkit-mask-image:radial-gradient(ellipse 80% 75% at 20% 10%, #000 0%, transparent 78%); mask-image:radial-gradient(ellipse 80% 75% at 20% 10%, #000 0%, transparent 78%);"></div><div data-h="translate(-6px, -6px)" style="position:absolute; left:15%; top:12%; right:-4%; bottom:-6%; display:flex; flex-direction:column; border-radius:12px 0 0 0; overflow:hidden; background:#f6f6f7; box-shadow:0 0 0 1px rgba(255,255,255,.2), 0 50px 80px -30px rgba(48,6,30,.7); transition:transform .9s cubic-bezier(.2,.8,.2,1);"><div style="display:flex; align-items:center; gap:6px; flex:none; height:26px; padding:0 12px; background:#ffffff; border-bottom:1px solid rgba(15,16,19,.06);"><span style="width:7px; height:7px; border-radius:50%; background:#dcdce1;"></span><span style="width:7px; height:7px; border-radius:50%; background:#dcdce1;"></span><span style="width:7px; height:7px; border-radius:50%; background:#dcdce1;"></span><span style="width:32%; height:12px; margin-left:12px; border-radius:4px; background:#f0f0f3;"></span></div><img src="assets/los/pd-02.jpg" alt="Loan origination system application view" loading="lazy" style="display:block; width:100%; height:auto;"></div><div data-h="translate(8px, -10px)" style="position:absolute; left:5%; bottom:9%; width:64%; border-radius:12px; overflow:hidden; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.06), 0 2px 6px rgba(15,16,19,.08), 0 36px 60px -20px rgba(48,6,30,.7); transition:transform .9s cubic-bezier(.2,.8,.2,1);"><div style="position:relative; aspect-ratio:1240/408; overflow:hidden;"><img src="assets/los/cam/cam-hero.jpg" alt="" loading="lazy" style="position:absolute; left:-2.419%; top:-57.843%; width:105.968%; max-width:none; height:auto;"></div></div><div aria-hidden="true" style="position:absolute; inset:0; z-index:5; border-radius:inherit; box-shadow:inset 0 0 0 1px rgba(255,255,255,.14); pointer-events:none;"></div></div>
+      <h3 style="margin-top:24px; padding:0 24px; font-size:clamp(22px,2.2vw,28px); line-height:1.2; font-weight:500; letter-spacing:-0.025em;">Loan Origination System</h3>
+      <p style="margin-top:10px; padding:0 24px; max-width:calc(46ch + 48px); font-size:16px; line-height:1.6; color:var(--muted,#55575e);">A complex, multi-role product designed to simplify loan processing across applicants, operations, credit, and risk teams.</p>
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:auto; padding:24px 16px 16px 24px;">
+        <div style="display:flex; flex-wrap:wrap; gap:8px;"><span style="padding:7px 14px; border-radius:999px; background:var(--glassChip,rgba(255,255,255,.6)); box-shadow:inset 0 0 0 1px var(--glassLine,rgba(15,16,19,.07)); font-size:13px; color:var(--chipInk,#3d3f45);">SaaS</span><span style="padding:7px 14px; border-radius:999px; background:var(--glassChip,rgba(255,255,255,.6)); box-shadow:inset 0 0 0 1px var(--glassLine,rgba(15,16,19,.07)); font-size:13px; color:var(--chipInk,#3d3f45);">B2B</span><span style="padding:7px 14px; border-radius:999px; background:var(--glassChip,rgba(255,255,255,.6)); box-shadow:inset 0 0 0 1px var(--glassLine,rgba(15,16,19,.07)); font-size:13px; color:var(--chipInk,#3d3f45);">Operations</span></div>
+        <span data-arrow="" style="display:grid; place-items:center; flex:none; width:48px; height:48px; border-radius:50%; border:1px solid var(--line2,rgba(15,16,19,.18)); color:var(--ink,#0f1013); transition:background .3s ease, color .3s ease, border-color .3s ease, transform .4s cubic-bezier(.2,.8,.2,1);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
+      </div>
+    </a>
+
+    <a data-reveal="0" href="Collection%20System%20Case%20Study.dc.html" id="collection" onClick="{{ goCol }}" onMouseEnter="{{ cardIn }}" onMouseLeave="{{ cardOut }}" style="scroll-margin-top:110px; display:flex; flex-direction:column; padding:0; overflow:hidden; border-radius:30px; background:linear-gradient(155deg, var(--glassHi,rgba(255,255,255,.78)) 0%, var(--glass,rgba(255,255,255,.4)) 100%); -webkit-backdrop-filter:blur(28px) saturate(170%); backdrop-filter:blur(28px) saturate(170%); box-shadow:inset 0 1px 0 var(--glassEdge,rgba(255,255,255,.95)), 0 0 0 1px var(--glassLine,rgba(15,16,19,.07)), 0 24px 48px -32px var(--sh,rgba(15,16,19,.28)); color:var(--ink,#0f1013); text-decoration:none; transition:box-shadow .45s ease, transform .45s cubic-bezier(.2,.8,.2,1);" style-hover="color:var(--ink,#0f1013); transform:translateY(-4px); box-shadow:inset 0 1px 0 var(--glassEdge,rgba(255,255,255,.95)), 0 0 0 1px var(--glassLine2,rgba(15,16,19,.1)), 0 40px 70px -36px var(--sh,rgba(15,16,19,.36));">
+      <div style="position:relative; aspect-ratio:4/3; border-radius:0; overflow:hidden; isolation:isolate; background:radial-gradient(90% 80% at 100% 0%, rgba(255,160,110,.85) 0%, rgba(255,160,110,0) 60%), linear-gradient(160deg, #c4541f 0%, #8a3311 100%);"><div aria-hidden="true" style="position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.09) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.09) 1px, transparent 1px); background-size:36px 36px; -webkit-mask-image:radial-gradient(ellipse 80% 75% at 80% 10%, #000 0%, transparent 78%); mask-image:radial-gradient(ellipse 80% 75% at 80% 10%, #000 0%, transparent 78%);"></div><div data-h="translate(-6px, -6px)" style="position:absolute; left:8%; top:12%; width:150%; border-radius:12px 0 0 0; overflow:hidden; background:#fbfbfc; box-shadow:0 0 0 1px rgba(255,255,255,.2), 0 50px 80px -30px rgba(60,18,4,.7); transition:transform .9s cubic-bezier(.2,.8,.2,1);"><div style="display:flex; align-items:center; gap:6px; height:26px; padding:0 12px; background:#ffffff; border-bottom:1px solid rgba(15,16,19,.06);"><span style="width:7px; height:7px; border-radius:50%; background:#dcdce1;"></span><span style="width:7px; height:7px; border-radius:50%; background:#dcdce1;"></span><span style="width:7px; height:7px; border-radius:50%; background:#dcdce1;"></span><span style="width:18%; height:12px; margin-left:12px; border-radius:4px; background:#f0f0f3;"></span></div><img src="assets/collections/overview-thumb.jpg" alt="Collection system overview dashboard" loading="lazy" style="display:block; width:100%; height:auto;"></div><div data-h="translate(8px, -10px)" style="position:absolute; right:4%; bottom:5%; width:24%; border-radius:12px; overflow:hidden; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.06), 0 2px 6px rgba(15,16,19,.08), 0 36px 60px -20px rgba(60,18,4,.7); transition:transform .9s cubic-bezier(.2,.8,.2,1);"><div style="position:relative; aspect-ratio:190/144; overflow:hidden;"><img src="assets/collections/overview-thumb.jpg" alt="" loading="lazy" style="position:absolute; left:-315.789%; top:-68.056%; width:431.579%; max-width:none; height:auto;"></div></div><div aria-hidden="true" style="position:absolute; inset:0; z-index:5; border-radius:inherit; box-shadow:inset 0 0 0 1px rgba(255,255,255,.14); pointer-events:none;"></div></div>
+      <h3 style="margin-top:24px; padding:0 24px; font-size:clamp(22px,2.2vw,28px); line-height:1.2; font-weight:500; letter-spacing:-0.025em;">Collection System</h3>
+      <p style="margin-top:10px; padding:0 24px; max-width:calc(46ch + 48px); font-size:16px; line-height:1.6; color:var(--muted,#55575e);">A collections platform to help teams manage overdue accounts, streamline outreach, and improve recovery through data-driven insights.</p>
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:auto; padding:24px 16px 16px 24px;">
+        <div style="display:flex; flex-wrap:wrap; gap:8px;"><span style="padding:7px 14px; border-radius:999px; background:var(--glassChip,rgba(255,255,255,.6)); box-shadow:inset 0 0 0 1px var(--glassLine,rgba(15,16,19,.07)); font-size:13px; color:var(--chipInk,#3d3f45);">SaaS</span><span style="padding:7px 14px; border-radius:999px; background:var(--glassChip,rgba(255,255,255,.6)); box-shadow:inset 0 0 0 1px var(--glassLine,rgba(15,16,19,.07)); font-size:13px; color:var(--chipInk,#3d3f45);">Collections</span><span style="padding:7px 14px; border-radius:999px; background:var(--glassChip,rgba(255,255,255,.6)); box-shadow:inset 0 0 0 1px var(--glassLine,rgba(15,16,19,.07)); font-size:13px; color:var(--chipInk,#3d3f45);">Data &amp; Analytics</span></div>
+        <span data-arrow="" style="display:grid; place-items:center; flex:none; width:48px; height:48px; border-radius:50%; border:1px solid var(--line2,rgba(15,16,19,.18)); color:var(--ink,#0f1013); transition:background .3s ease, color .3s ease, border-color .3s ease, transform .4s cubic-bezier(.2,.8,.2,1);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
+      </div>
+    </a>
+
+    <a data-reveal="120" href="Brida%20Case%20Study.dc.html" id="brida" onClick="{{ goBrida }}" onMouseEnter="{{ cardIn }}" onMouseLeave="{{ cardOut }}" style="scroll-margin-top:110px; display:flex; flex-direction:column; padding:0; overflow:hidden; border-radius:30px; background:linear-gradient(155deg, var(--glassHi,rgba(255,255,255,.78)) 0%, var(--glass,rgba(255,255,255,.4)) 100%); -webkit-backdrop-filter:blur(28px) saturate(170%); backdrop-filter:blur(28px) saturate(170%); box-shadow:inset 0 1px 0 var(--glassEdge,rgba(255,255,255,.95)), 0 0 0 1px var(--glassLine,rgba(15,16,19,.07)), 0 24px 48px -32px var(--sh,rgba(15,16,19,.28)); color:var(--ink,#0f1013); text-decoration:none; transition:box-shadow .45s ease, transform .45s cubic-bezier(.2,.8,.2,1);" style-hover="color:var(--ink,#0f1013); transform:translateY(-4px); box-shadow:inset 0 1px 0 var(--glassEdge,rgba(255,255,255,.95)), 0 0 0 1px var(--glassLine2,rgba(15,16,19,.1)), 0 40px 70px -36px var(--sh,rgba(15,16,19,.36));">
+      <div style="position:relative; aspect-ratio:4/3; border-radius:0; overflow:hidden; isolation:isolate; background:#1f3d2b;"><div data-img="" style="position:absolute; inset:0; transition:transform 1.2s cubic-bezier(.2,.8,.2,1);"><img src="assets/brida/plover.jpg" alt="Shorebird on a mudflat" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:0% 50%;"></div><div aria-hidden="true" style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(22,50,33,.94) 0%, rgba(22,50,33,.62) 40%, rgba(22,50,33,0) 66%), linear-gradient(0deg, rgba(22,50,33,.55) 0%, rgba(22,50,33,0) 45%);"></div><img data-h="translate(-6px, -6px)" src="assets/brida/t1.webp" alt="Brida tablet record form" loading="lazy" style="position:absolute; left:3%; top:20%; width:40%; height:auto; filter:drop-shadow(0 30px 30px rgba(6,20,12,.45)); transition:transform .9s cubic-bezier(.2,.8,.2,1);"><img data-h="translate(8px, -12px)" src="assets/brida/m1.webp" alt="Brida mobile sessions screen" loading="lazy" style="position:absolute; left:30%; top:34%; width:21%; height:auto; filter:drop-shadow(0 30px 30px rgba(6,20,12,.5)); transition:transform .9s cubic-bezier(.2,.8,.2,1);"><div aria-hidden="true" style="position:absolute; inset:0; z-index:5; border-radius:inherit; box-shadow:inset 0 0 0 1px rgba(255,255,255,.14); pointer-events:none;"></div></div>
+      <h3 style="margin-top:24px; padding:0 24px; font-size:clamp(22px,2.2vw,28px); line-height:1.2; font-weight:500; letter-spacing:-0.025em;">Brida</h3>
+      <p style="margin-top:10px; padding:0 24px; max-width:calc(46ch + 48px); font-size:16px; line-height:1.6; color:var(--muted,#55575e);">A digital platform to record and store historical data of migratory birds for research purposes.</p>
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:auto; padding:24px 16px 16px 24px;">
+        <div style="display:flex; flex-wrap:wrap; gap:8px;"><span style="padding:7px 14px; border-radius:999px; background:var(--glassChip,rgba(255,255,255,.6)); box-shadow:inset 0 0 0 1px var(--glassLine,rgba(15,16,19,.07)); font-size:13px; color:var(--chipInk,#3d3f45);">Conservation</span><span style="padding:7px 14px; border-radius:999px; background:var(--glassChip,rgba(255,255,255,.6)); box-shadow:inset 0 0 0 1px var(--glassLine,rgba(15,16,19,.07)); font-size:13px; color:var(--chipInk,#3d3f45);">Research</span><span style="padding:7px 14px; border-radius:999px; background:var(--glassChip,rgba(255,255,255,.6)); box-shadow:inset 0 0 0 1px var(--glassLine,rgba(15,16,19,.07)); font-size:13px; color:var(--chipInk,#3d3f45);">Web</span></div>
+        <span data-arrow="" style="display:grid; place-items:center; flex:none; width:48px; height:48px; border-radius:50%; border:1px solid var(--line2,rgba(15,16,19,.18)); color:var(--ink,#0f1013); transition:background .3s ease, color .3s ease, border-color .3s ease, transform .4s cubic-bezier(.2,.8,.2,1);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<section id="contact" style="max-width:1200px; margin:0 auto; padding:clamp(64px,10vw,120px) clamp(20px,5vw,72px) clamp(40px,6vw,64px); scroll-margin-top:40px;">
+  <div data-reveal="0" style="position:relative; overflow:hidden; isolation:isolate; display:flex; flex-direction:column; gap:clamp(24px,3vw,36px); padding:clamp(28px,5vw,56px); border-radius:32px; background:var(--panel,#0f1013); border:1px solid var(--panelLine,transparent); color:#f6f5f2;">
+    <div ref="{{ blobRef }}" aria-hidden="true" style="position:absolute; z-index:-1; right:-12%; top:-60%; width:min(620px,80%); height:180%; border-radius:45% 55% 60% 40%; background:radial-gradient(closest-side, rgba(64,70,255,.6), rgba(143,148,255,.18) 60%, transparent); filter:blur(40px);"></div>
+    <div style="display:flex; flex-direction:column; gap:18px;">
+      <span style="display:inline-flex; align-items:center; gap:10px; font-family:'Geist Mono',monospace; font-size:12px; color:#a3a5ad;"><span style="position:relative; width:8px; height:8px;"><span ref="{{ pulseRef }}" style="position:absolute; inset:0; border-radius:50%; background:#3ddc84;"></span><span style="position:absolute; inset:0; border-radius:50%; background:#3ddc84;"></span></span>Available for new roles</span>
+      <h2 style="font-size:clamp(30px,4.6vw,60px); line-height:1.02; letter-spacing:-0.045em; font-weight:500; text-wrap:balance;">Let’s design products people can <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#a9adff;">trust.</span></h2>
+    </div>
+    <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:20px 48px; padding-top:clamp(20px,2.4vw,28px); border-top:1px solid rgba(255,255,255,.1);">
+      <p style="max-width:44ch; font-size:16px; line-height:1.6; color:#a3a5ad;">Open to product design leadership, zero-to-one systems and complex fintech journeys.</p>
+      <div style="display:flex; flex-wrap:wrap; gap:10px;">
+      <button onClick="{{ copyEmail }}" onMouseMove="{{ magMove }}" onMouseLeave="{{ magLeave }}" style="display:inline-flex; align-items:center; gap:10px; height:56px; padding:0 clamp(18px,4vw,26px); white-space:nowrap; border:0; border-radius:999px; background:#4046ff; color:#ffffff; font:inherit; font-size:16px; font-weight:500; cursor:pointer; transition:transform .35s cubic-bezier(.2,.8,.2,1), background .25s ease, color .25s ease;" style-hover="background:#f6f5f2; color:#0f1013;">Get in touch<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer style="max-width:1200px; margin:0 auto; padding:0 clamp(20px,5vw,72px);">
+  <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 32px; padding:24px 0 32px; border-top:1px solid var(--line,rgba(15,16,19,.08)); font-size:13px; color:var(--faint,#6c6e75);">
+    <span style="color:var(--ink,#0f1013); font-weight:500;">Harish Babu Nadar</span>
+    <span style="font-family:'Geist Mono',monospace; font-size:12px;">© 2026 · All rights reserved</span>
+    <div style="display:flex; gap:20px;">
+      <a href="https://www.linkedin.com/in/harishbabuganesannadar" target="_blank" rel="noopener noreferrer" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; color:var(--muted,#55575e); text-decoration:none; transition:color .2s ease;" style-hover="color:var(--link,#4046ff);">LinkedIn</a>
+      <a href="mailto:Harishbabuganesan@gmail.com" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; color:var(--muted,#55575e); text-decoration:none; transition:color .2s ease;" style-hover="color:var(--link,#4046ff);">Email</a>
+    </div>
+  </div>
+</footer>
+
+<div role="status" aria-live="polite" style="position:fixed; left:50%; bottom:28px; z-index:60; display:flex; align-items:center; gap:10px; padding:12px 18px 12px 14px; border-radius:999px; background:var(--panel,#0f1013); color:#f6f5f2; font-size:13px; box-shadow:0 0 0 1px var(--panelLine,transparent), 0 20px 40px -16px rgba(15,16,19,.5); pointer-events:none; opacity:{{ toastO }}; transform:{{ toastT }}; transition:opacity .3s ease, transform .45s cubic-bezier(.2,.9,.2,1.2);">
+  <span style="width:20px; height:20px; border-radius:50%; background:#4046ff; display:grid; place-items:center;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+  Email copied — Harishbabuganesan@gmail.com
+</div>
+<dc-import name="BackToTop" bg="var(--ink,#0f1013)" fg="var(--inkInv,#f6f5f2)" hint-size="0px,0px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;viewport&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Desktop&quot;,&quot;Mobile&quot;],&quot;default&quot;:&quot;Desktop&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Preview&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Full&quot;,&quot;Subtle&quot;,&quot;Off&quot;],&quot;default&quot;:&quot;Full&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Motion&quot;}}">
+class Component extends DCLogic {
+  progressRef = React.createRef(); leaveRef = React.createRef(); leaveTxtRef = React.createRef(); leaveBarRef = React.createRef();
+  introRef = React.createRef(); introTxtRef = React.createRef(); introBarRef = React.createRef(); introNumRef = React.createRef(); introMobRef = React.createRef();
+  blobRef = React.createRef(); heroRef = React.createRef(); pulseRef = React.createRef(); heroTextRef = React.createRef();
+  fitHero = () => {
+    const t = this.heroTextRef.current, a = this.heroRef.current; if (!t || !a) return;
+    const row = t.parentElement, nm = t.querySelector('[data-up]'), nameW = Math.max(420, nm ? nm.offsetWidth + 8 : 0);
+    const z = Math.min(2.4, t.offsetHeight / 212, (row.clientWidth - 48 - nameW) / 300);
+    a.style.zoom = z >= .8 ? z.toFixed(3) : '1';
+  };
+  palette = { glass: 'rgba(24,25,30,.5)', glassHi: 'rgba(38,40,46,.62)', glassEdge: 'rgba(255,255,255,.08)', glassLine: 'rgba(255,255,255,.08)', glassLine2: 'rgba(255,255,255,.16)', glassChip: 'rgba(255,255,255,.06)', bg: '#0d0e11', ink: '#f1f0ec', inkInv: '#0d0e11', muted: '#a2a4ab', faint: '#8b8d94', faint2: '#8b8d94', surface: '#16171b', line: 'rgba(255,255,255,.08)', line2: 'rgba(255,255,255,.2)', hover: 'rgba(255,255,255,.07)', ring: 'rgba(255,255,255,.07)', ring2: 'rgba(255,255,255,.13)', sh: 'rgba(0,0,0,.75)', chip: '#23252b', chipInk: '#c9cbd1', canvas: '#111216', dot: 'rgba(255,255,255,.07)', board: '#1d1e23', bline: 'rgba(255,255,255,.1)', wire: '#4a4c54', wf: '#2b2d33', wf2: '#26282d', sk: '#3e4047', tint: 'rgba(64,70,255,.22)', img: 'linear-gradient(135deg,#262a66,#343a9c)', h1: '#474dc4', h2: '#5a60e0', curS: '#0d0e11', panel: '#16171b', panelLine: 'rgba(255,255,255,.08)', nav: 'rgba(22,23,27,.72)', link: '#8f94ff', linkH: '#b6b9ff', sel: 'rgba(143,148,255,.3)' };
+  state = { dark: false, toast: false, lv: ['01 / 04', 'Student loan', 'app'], mobile: typeof window !== 'undefined' && window.innerWidth < 720 };
+
+  mobileView() { let fr = /[?&]frame=mobile/.test(location.search); try { fr = fr || !!(window.frameElement && window.frameElement.hasAttribute('data-mobile-frame')); } catch (e) {} return this.props.viewport === 'Mobile' && !fr; }
+  mobileSrc() { const u = new URL(location.href); u.searchParams.set('frame', 'mobile'); u.hash = ''; return u.toString(); }
+  syncMobile() { document.body.style.overflow = this.mobileView() ? 'hidden' : ''; }
+  motionOff() {
+    return (this.props.motion ?? 'Full') === 'Off' || (typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+
+  goPage = e => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
+    const href = e.currentTarget.getAttribute('href'), ov = this.leaveRef.current;
+    if (!ov || !ov.animate || this.motionOff()) return;
+    e.preventDefault();
+    const W = innerWidth, H = innerHeight, x = e.clientX || W / 2, y = e.clientY || H / 2, R = Math.hypot(Math.max(x, W - x), Math.max(y, H - y));
+    const go = () => { clearTimeout(this.leaveT); try { sessionStorage.setItem('pf-transition', '1'); } catch (er) {} location.href = href; };
+    ov.style.pointerEvents = 'auto';
+    ov.animate([{ clipPath: `circle(0px at ${x}px ${y}px)` }, { clipPath: `circle(${R}px at ${x}px ${y}px)` }], { duration: 520, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'forwards' });
+    if (this.leaveTxtRef.current) this.leaveTxtRef.current.animate([{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'translateY(0px)' }], { duration: 280, delay: 220, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' });
+    const bar = this.leaveBarRef.current;
+    if (bar) bar.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration: 380, delay: 260, easing: 'cubic-bezier(.6,0,.2,1)', fill: 'both' }).onfinish = go;
+    this.leaveT = setTimeout(go, 900);
+  };
+  go(lv) { return e => { this.setState({ lv }); this.goPage(e); }; }
+
+  runIntro(cb) {
+    const done = () => { if (this.introDone) return; this.introDone = true; cb(); };
+    const ov = this.introRef.current, nav = performance.getEntriesByType ? performance.getEntriesByType('navigation')[0] : null;
+    const end = () => { clearTimeout(this.introT); if (ov) ov.style.display = 'none'; document.documentElement.style.overflow = ''; };
+    if (!ov || !ov.animate || this.motionOff() || (nav && nav.type === 'back_forward')) { end(); done(); return; }
+    let viaT = false; try { viaT = sessionStorage.getItem('pf-transition') === '1'; sessionStorage.removeItem('pf-transition'); } catch (er) {}
+    if (viaT) { if (this.introTxtRef.current) this.introTxtRef.current.style.display = 'none'; done(); ov.animate([{ clipPath: 'inset(0 0 0% 0)' }, { clipPath: 'inset(0 0 100% 0)' }], { duration: 600, delay: 80, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'forwards' }).onfinish = end; this.introT = setTimeout(end, 1200); return; }
+    document.documentElement.style.overflow = 'hidden';
+    const small = window.innerWidth < 760 || (typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse)').matches && window.innerWidth < 1024);
+    if (small && this.introMobRef.current) this.introMobRef.current.style.display = 'flex';
+    const D = small ? 2200 : 850, t0 = performance.now(), num = this.introNumRef.current, txt = this.introTxtRef.current;
+    const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    if (txt) txt.animate([{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'translateY(0px)' }], { duration: 380, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' });
+    const step = () => {
+      const p = ease(Math.min(1, (performance.now() - t0) / D));
+      if (this.introBarRef.current) this.introBarRef.current.style.transform = `scaleX(${p})`;
+      if (num) num.textContent = Math.round(p * 100) + '%';
+      if (p < 1) { this.introRaf = requestAnimationFrame(step); return; }
+      document.documentElement.style.overflow = '';
+      done();
+      if (txt) txt.animate([{ transform: 'translateY(0px)', opacity: 1 }, { transform: 'translateY(-28px)', opacity: 0 }], { duration: 300, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'forwards' });
+      ov.animate([{ clipPath: 'inset(0 0 0% 0)' }, { clipPath: 'inset(0 0 100% 0)' }], { duration: 600, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'forwards' }).onfinish = end;
+    };
+    this.introRaf = requestAnimationFrame(step);
+    this.introT = setTimeout(() => { cancelAnimationFrame(this.introRaf); end(); done(); }, D + 1200);
+  }
+  resetLeave() {
+    clearTimeout(this.leaveT);
+    const ov = this.leaveRef.current;
+    if (!ov) return;
+    [ov, ...ov.querySelectorAll('*')].forEach(el => el.getAnimations().forEach(a => a.cancel()));
+    ov.style.pointerEvents = 'none';
+  }
+
+  componentDidMount() {
+    this.onShow = e => { if (e.persisted) this.resetLeave(); };
+    window.addEventListener('pageshow', this.onShow);
+    this.onScroll = () => { if (this.raf) return; this.raf = requestAnimationFrame(() => { this.raf = 0; this.tick(); }); };
+    this.onResize = () => { const mobile = window.innerWidth < 720; if (mobile !== this.state.mobile) this.setState({ mobile }); this.onScroll(); };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', this.onResize);
+    this.runIntro(() => this.setupReveal());
+    this.heroLoop();
+    if (window.ResizeObserver && this.heroTextRef.current) { this.heroRO = new ResizeObserver(() => this.fitHero()); this.heroRO.observe(this.heroTextRef.current); this.heroRO.observe(this.heroTextRef.current.parentElement); }
+    this.fitHero(); if (document.fonts) document.fonts.ready.then(this.fitHero);
+    if (!this.motionOff()) document.querySelectorAll('[data-blob]').forEach((b, i) => b.animate && b.animate([{ transform: 'translate(0,0) scale(1)' }, { transform: `translate(${i % 2 ? -8 : 8}%, ${i < 2 ? 10 : -10}%) scale(1.12)` }], { duration: 14000 + i * 2600, iterations: Infinity, direction: 'alternate', easing: 'ease-in-out' }));
+    let dk = false; try { const st = localStorage.getItem('pf-theme'); dk = st === 'dark'; } catch (er) {}
+    this.applyTheme(dk); if (dk) this.setState({ dark: true });
+    if (!this.motionOff()) {
+      const pu = this.pulseRef.current;
+      if (pu) pu.animate([{ transform: 'scale(1)', opacity: .7 }, { transform: 'scale(2.6)', opacity: 0 }], { duration: 1800, iterations: Infinity, easing: 'cubic-bezier(.2,.8,.2,1)' });
+      const b = this.blobRef.current;
+      if (b) b.animate([{ transform: 'translate(-10%, -6%) rotate(0deg) scale(1)' }, { transform: 'translate(12%, 8%) rotate(160deg) scale(1.15)' }], { duration: 14000, iterations: Infinity, direction: 'alternate', easing: 'ease-in-out' });
+    }
+    this.syncMobile();
+    if (/[?&]frame=mobile/.test(location.search)) document.documentElement.style.scrollbarWidth = 'none';
+    this.tick();
+  }
+  heroLoop() {
+    const root = this.heroRef.current;
+    this.heroAnims = [];
+    if (!root || !root.animate || this.motionOff()) return;
+    const D = 9000, E = 'cubic-bezier(.2,.8,.2,1)';
+    const run = (k, pts, ease = E) => {
+      const el = root.querySelector('[data-h="' + k + '"]'); if (!el) return;
+      const f = pts.map(([offset, p]) => ({ offset, easing: ease, ...p }));
+      if (f[0].offset > 0) f.unshift({ ...f[0], offset: 0 });
+      if (f[f.length - 1].offset < 1) f.push({ ...f[f.length - 1], offset: 1 });
+      this.heroAnims.push(el.animate(f, { duration: D, iterations: Infinity }));
+    };
+    const show = (k, a, b, from = 'translateY(4px)', to = 'translateY(0px)') => run(k, [[a, { opacity: 0, transform: from }], [a + .035, { opacity: 1, transform: to }], [b, { opacity: 1, transform: to }], [b + .03, { opacity: 0, transform: to }]]);
+    const lab = (k, a, b) => run(k, [[a, { opacity: 0, transform: 'translateY(5px)' }], [a + .025, { opacity: 1, transform: 'translateY(0px)' }], [b, { opacity: 1, transform: 'translateY(0px)' }], [b + .025, { opacity: 0, transform: 'translateY(-5px)' }]]);
+    [['wImg', .03], ['wT', .06], ['wL1', .075], ['wL2', .09], ['wB', .11]].forEach(([k, a]) => show(k, a, .93, 'scale(.94)', 'scale(1)'));
+    [['fImg', .37], ['fT', .4], ['fL1', .42], ['fL2', .43], ['fB', .47]].forEach(([k, a]) => show(k, a, .93, 'scale(1)', 'scale(1)'));
+    show('sel', .25, .58, 'scale(1.06)', 'scale(1)');
+    show('dim', .27, .58);
+    show('pop', .36, .54, 'translateY(6px)', 'translateY(0px)');
+    show('ring', .445, .54, 'scale(.6)', 'scale(1)');
+    run('conn', [[.63, { strokeDashoffset: 1, opacity: 1 }], [.72, { strokeDashoffset: 0, opacity: 1 }], [.93, { strokeDashoffset: 0, opacity: 1 }], [.96, { strokeDashoffset: 0, opacity: 0 }]]);
+    show('connA', .63, .93, 'scale(0)', 'scale(1)');
+    show('connB', .71, .93, 'translateX(-4px)', 'translateX(0px)');
+    show('s2', .67, .93, 'translateX(10px)', 'translateX(0px)');
+    show('s2ring', .83, .93, 'scale(1.06)', 'scale(1)');
+    run('rip', [[.795, { opacity: 0, transform: 'scale(.3)' }], [.8, { opacity: .9, transform: 'scale(.3)' }], [.88, { opacity: 0, transform: 'scale(2.2)' }]]);
+    const P = (x, y, s = 1) => 'translate(' + x + 'px,' + y + 'px) scale(' + s + ')';
+    run('cur', [[.15, { opacity: 0, transform: P(250, 172) }], [.17, { opacity: 1, transform: P(236, 160) }], [.24, { opacity: 1, transform: P(98, 142) }], [.255, { opacity: 1, transform: P(98, 142, .8) }], [.27, { opacity: 1, transform: P(98, 142) }], [.35, { opacity: 1, transform: P(98, 142) }], [.42, { opacity: 1, transform: P(187, 124) }], [.435, { opacity: 1, transform: P(187, 124, .8) }], [.45, { opacity: 1, transform: P(187, 124) }], [.53, { opacity: 1, transform: P(160, 150) }], [.71, { opacity: 1, transform: P(160, 150) }], [.78, { opacity: 1, transform: P(98, 143) }], [.795, { opacity: 1, transform: P(98, 143, .8) }], [.81, { opacity: 1, transform: P(98, 143) }], [.88, { opacity: 1, transform: P(98, 143) }], [.93, { opacity: 0, transform: P(124, 166) }]]);
+    run('lab1', [[0, { opacity: 1, transform: 'translateY(0px)' }], [.32, { opacity: 1, transform: 'translateY(0px)' }], [.345, { opacity: 0, transform: 'translateY(-5px)' }], [.975, { opacity: 0, transform: 'translateY(5px)' }], [1, { opacity: 1, transform: 'translateY(0px)' }]]);
+    lab('lab2', .345, .61);
+    lab('lab3', .635, .95);
+    run('prog', [[0, { transform: 'scaleX(0)' }], [1, { transform: 'scaleX(1)' }]], 'linear');
+  }
+  applyTheme(dark) {
+    const s = document.documentElement.style;
+    Object.keys(this.palette).forEach(k => dark ? s.setProperty('--' + k, this.palette[k]) : s.removeProperty('--' + k));
+    s.colorScheme = dark ? 'dark' : 'light';
+  }
+  toggleTheme = e => {
+    const dark = !this.state.dark;
+    try { localStorage.setItem('pf-theme', dark ? 'dark' : 'light'); } catch (er) {}
+    if (!document.startViewTransition || this.motionOff()) { this.applyTheme(dark); this.setState({ dark }); return; }
+    const r = e.currentTarget.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+    const R = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)), RD = window.ReactDOM;
+    const vt = document.startViewTransition(() => { this.applyTheme(dark); if (RD && RD.flushSync) RD.flushSync(() => this.setState({ dark })); else this.setState({ dark }); });
+    vt.ready.then(() => document.documentElement.animate({ clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + R + 'px at ' + x + 'px ' + y + 'px)'] }, { duration: 700, easing: 'cubic-bezier(.7,0,.2,1)', pseudoElement: '::view-transition-new(root)' })).catch(() => {});
+  };
+  heroRate(r) {
+    (this.heroAnims || []).forEach(a => a.updatePlaybackRate ? a.updatePlaybackRate(r) : (a.playbackRate = r));
+    const c = this.heroRef.current && this.heroRef.current.querySelector('[data-h="cta"]');
+    if (c) c.style.color = r > 1 ? 'var(--link,#4046ff)' : 'var(--ink,#0f1013)';
+  }
+  componentWillUnmount() {
+    (this.heroAnims || []).forEach(a => a.cancel());
+    if (this.heroRO) this.heroRO.disconnect();
+    window.removeEventListener('pageshow', this.onShow);
+    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('resize', this.onResize);
+    clearTimeout(this.leaveT); clearTimeout(this.tt); clearTimeout(this.fb);
+    if (this.io) this.io.disconnect();
+    if (this.onVis) document.removeEventListener('visibilitychange', this.onVis);
+  }
+  componentDidUpdate() { this.syncMobile(); }
+
+  tick() {
+    const y = window.scrollY, max = document.documentElement.scrollHeight - window.innerHeight;
+    if (this.progressRef.current) this.progressRef.current.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
+    const solid = y > 24; if (solid !== this.state.solid) this.setState({ solid });
+  }
+  setupReveal() {
+    if (this.motionOff() || typeof IntersectionObserver === 'undefined' || document.hidden) return;
+    const subtle = this.props.motion === 'Subtle';
+    const kf = subtle ? [{ opacity: 0 }, { opacity: 1 }]
+      : [{ opacity: 0, transform: 'translateY(24px)', filter: 'blur(8px)' }, { opacity: 1, transform: 'translateY(0px)', filter: 'blur(0px)' }];
+    const vh = window.innerHeight, pending = [];
+    let fired = false;
+    const show = el => { if (el.__rv) el.__rv.play(); if (this.io) this.io.unobserve(el); };
+    this.io = new IntersectionObserver(es => { fired = true; es.forEach(e => e.isIntersecting && show(e.target)); }, { rootMargin: '0px 0px -8% 0px', threshold: 0.01 });
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      const up = el.hasAttribute('data-up');
+      const a = el.animate(up ? [{ transform: 'translateY(105%)' }, { transform: 'translateY(0%)' }] : kf, {
+        duration: up ? 1000 : (subtle ? 500 : 900), delay: Number(el.dataset.reveal || 0),
+        easing: up ? 'cubic-bezier(.2,.9,.1,1)' : 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' });
+      el.__rv = a;
+      const r = el.getBoundingClientRect();
+      if (r.top < vh && r.bottom > 0) { show(el); return; }
+      a.pause(); pending.push(a); this.io.observe(el);
+    });
+    this.fb = setTimeout(() => { if (!fired) pending.forEach(a => { try { a.finish(); } catch (e) {} }); }, 1000);
+    this.onVis = () => { if (document.hidden) pending.forEach(a => { try { a.finish(); } catch (e) {} }); };
+    document.addEventListener('visibilitychange', this.onVis);
+  }
+
+  cardIn = e => {
+    const el = e.currentTarget, img = el.querySelector('[data-img]'), ar = el.querySelector('[data-arrow]');
+    if (!this.motionOff()) { if (img) img.style.transform = 'scale(1.05)'; el.querySelectorAll('[data-h]').forEach(n => { n.style.transform = n.dataset.h; }); }
+    if (ar) Object.assign(ar.style, { background: 'var(--ink,#0f1013)', color: 'var(--inkInv,#ffffff)', borderColor: 'var(--ink,#0f1013)', transform: this.motionOff() ? '' : 'translateX(4px)' });
+  };
+  cardOut = e => {
+    const el = e.currentTarget, img = el.querySelector('[data-img]'), ar = el.querySelector('[data-arrow]');
+    if (img) img.style.transform = '';
+    el.querySelectorAll('[data-h]').forEach(n => { n.style.transform = ''; });
+    if (ar) Object.assign(ar.style, { background: '', color: '', borderColor: '', transform: '' });
+  };
+  magMove = e => {
+    if (this.motionOff()) return;
+    const el = e.currentTarget, r = el.getBoundingClientRect();
+    const x = e.clientX - r.left - r.width / 2, y = e.clientY - r.top - r.height / 2;
+    el.style.transform = `translate(${(x * 0.22).toFixed(1)}px, ${(y * 0.32).toFixed(1)}px)`;
+  };
+  magLeave = e => { e.currentTarget.style.transform = ''; };
+  copyEmail = () => {
+    window.location.href = 'mailto:Harishbabuganesan@gmail.com'; try { navigator.clipboard && navigator.clipboard.writeText('Harishbabuganesan@gmail.com').catch(() => {}); } catch (e) {}
+    this.setState({ toast: true });
+    clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toast: false }), 2400);
+  };
+
+  renderVals() {
+    const s = this.state, mv = this.mobileView();
+    return {
+      mobileView: mv, mobileSrc: mv ? this.mobileSrc() : '',
+      progressRef: this.progressRef, leaveRef: this.leaveRef, leaveTxtRef: this.leaveTxtRef, leaveBarRef: this.leaveBarRef,
+      introRef: this.introRef, introTxtRef: this.introTxtRef, introBarRef: this.introBarRef, introNumRef: this.introNumRef, introMobRef: this.introMobRef,
+      blobRef: this.blobRef, heroRef: this.heroRef, heroTextRef: this.heroTextRef,
+      badgeIn: () => this.heroRate(1.8), badgeOut: () => this.heroRate(1),
+      pulseRef: this.pulseRef,
+      lvTop: s.lv[0], lvA: s.lv[1], lvB: s.lv[2],
+      goLoan: this.go(['01 / 04', 'Student loan', 'app']),
+      goLos: this.go(['02 / 04', 'Loan origination', 'system']),
+      goCol: this.go(['03 / 04', 'Collection', 'system']),
+      goBrida: this.go(['04 / 04', 'Brida', 'field app']),
+      navMax: s.solid && !s.mobile ? '560px' : 'calc(1200px - 2 * clamp(20px, 5vw, 72px) + 36px)',
+      navBg: s.solid ? 'var(--nav,rgba(255,255,255,.72))' : 'rgba(255,255,255,0)',
+      navShadow: s.solid ? '0 0 0 1px var(--ring,rgba(15,16,19,.06)), 0 12px 32px -12px rgba(15,16,19,.18)' : '0 0 0 1px rgba(15,16,19,0)',
+      dark: !!s.dark, light: !s.dark, toggleTheme: this.toggleTheme, themeLabel: s.dark ? 'Switch to light mode' : 'Switch to dark mode',
+      cardIn: this.cardIn, cardOut: this.cardOut, magMove: this.magMove, magLeave: this.magLeave,
+      copyEmail: this.copyEmail, toTop: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
+      toastO: s.toast ? 1 : 0, toastT: s.toast ? 'translate(-50%, 0px) scale(1)' : 'translate(-50%, 16px) scale(.96)'
+    };
+  }
+}
+</script>
+</body>
+</html>

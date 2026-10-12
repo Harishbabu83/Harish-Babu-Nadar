@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div style="position:fixed; right:calc(clamp(16px,3vw,32px) + env(safe-area-inset-right,0px)); bottom:calc(clamp(16px,3vw,32px) + env(safe-area-inset-bottom,0px)); z-index:60; --fab:{{ bg }}; --fabInk:{{ fg }}; opacity:{{ op }}; transform:{{ tf }}; pointer-events:{{ pe }}; transition:opacity .3s ease, transform .45s cubic-bezier(.2,.8,.2,1);">
+  <button onClick="{{ toTop }}" aria-label="Back to top" title="Back to top" tabIndex="{{ tab }}" style="position:relative; display:grid; place-items:center; width:52px; height:52px; padding:0; border:0; border-radius:50%; background-color:var(--fab); color:var(--fabInk); cursor:pointer; box-shadow:0 12px 32px -10px rgba(15,16,19,.45); transition:background-color .25s ease, color .25s ease, transform .25s cubic-bezier(.2,.8,.2,1);" style-hover="background-color:#0b7f86; color:#ffffff; transform:translateY(-2px);">
+    <svg width="52" height="52" viewBox="0 0 52 52" aria-hidden="true" style="position:absolute; inset:0; transform:rotate(-90deg); pointer-events:none;"><circle cx="26" cy="26" r="22" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.22;"></circle><circle ref="{{ ringRef }}" cx="26" cy="26" r="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="138.23" stroke-dashoffset="138.23"></circle></svg>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg>
+  </button>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:120,&quot;height&quot;:120},&quot;bg&quot;:{&quot;editor&quot;:null,&quot;default&quot;:&quot;#0f1013&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;fg&quot;:{&quot;editor&quot;:null,&quot;default&quot;:&quot;#f6f5f2&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { show: false };
+  ringRef = React.createRef();
+  componentDidMount() {
+    this.onScroll = () => { if (this.raf) return; this.raf = requestAnimationFrame(() => { this.raf = 0; this.update(); }); };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', this.onScroll);
+    this.update();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('resize', this.onScroll);
+    cancelAnimationFrame(this.raf);
+  }
+  update() {
+    const de = document.documentElement, y = window.scrollY || de.scrollTop || 0, max = de.scrollHeight - window.innerHeight;
+    const hero = document.getElementById('top') || document.querySelector('section');
+    const show = max > 0 && (hero ? hero.getBoundingClientRect().bottom <= 0 : y > window.innerHeight * 0.8);
+    if (show !== this.state.show) this.setState({ show });
+    const c = this.ringRef.current;
+    if (c) c.setAttribute('stroke-dashoffset', (138.23 * (1 - (max > 0 ? Math.min(1, y / max) : 0))).toFixed(2));
+  }
+  toTop = () => {
+    const rm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: rm ? 'auto' : 'smooth' });
+  };
+  renderVals() {
+    const s = this.state.show;
+    return {
+      bg: this.props.bg ?? '#0f1013', fg: this.props.fg ?? '#f6f5f2',
+      op: s ? 1 : 0, tf: s ? 'translateY(0px) scale(1)' : 'translateY(16px) scale(.9)', pe: s ? 'auto' : 'none', tab: s ? 0 : -1,
+      ringRef: this.ringRef, toTop: this.toTop
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><title>Part Payments &amp; Servicing · LOS — Harish Babu Nadar</title>
+<script src="./theme.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:#f6f5f2;color:#0f1013;font-family:"Geist",system-ui,sans-serif;font-size:15px;line-height:1.55;text-wrap:pretty;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,figure,dl,dd,ol,ul{margin:0}
+ol,ul{padding:0;list-style:none}
+::selection{background:rgba(163,38,108,.18)}
+a{color:#a3266c}
+a:hover{color:#7e1a52}
+:focus-visible{outline:2px solid #a3266c;outline-offset:3px}
+</style>
+</helmet>
+
+<div ref="{{ enterRef }}" aria-hidden="true" style="position:fixed; inset:0; z-index:100; background:#0f1013; clip-path:inset(0 0 100% 0); pointer-events:none; display:grid; place-items:center;"><div style="display:flex; flex-direction:column; align-items:center; gap:18px;"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#a3a5ad;">LOS · 02</span><span style="font-size:clamp(32px,4vw,56px); line-height:1; font-weight:500; letter-spacing:-0.04em; color:#f6f5f2;">Part <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.01em; color:#ec9ac4;">payments</span></span><span style="width:160px; height:2px; border-radius:2px; background:rgba(255,255,255,.12); overflow:hidden;"><span style="display:block; height:100%; background:#a3266c;"></span></span></div></div>
+<div ref="{{ progressRef }}" style="position:fixed; left:0; right:0; top:0; height:2px; z-index:60; background:#a3266c; transform:scaleX(0); transform-origin:left;"></div>
+<header style="position:fixed; top:0; left:0; right:0; z-index:50; padding:12px clamp(12px,3vw,24px); pointer-events:none;">
+  <div style="pointer-events:auto; max-width:{{ navMax }}; margin:0 auto; display:flex; align-items:center; gap:16px; padding:8px; border-radius:999px; background:{{ navBg }}; box-shadow:{{ navShadow }}; backdrop-filter:blur(16px) saturate(160%); -webkit-backdrop-filter:blur(16px) saturate(160%); transition:max-width .6s cubic-bezier(.2,.8,.2,1), background .4s ease, box-shadow .4s ease;">
+    <a href="LOS%20Case%20Study.dc.html#cases" aria-label="Back to LOS features" style="display:inline-flex; align-items:center; justify-content:center; flex:none; width:44px; height:44px; border-radius:50%; background:#0f1013; color:#f6f5f2; text-decoration:none; transition:background .2s ease, transform .2s ease;" style-hover="background:#a3266c; color:#ffffff;" style-active="transform:scale(.94);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg></a>
+    <span style="margin-right:auto; display:flex; align-items:center; gap:8px; min-width:0; font-size:15px; font-weight:500; letter-spacing:-0.01em; white-space:nowrap;"><a href="Portfolio%20Homepage.dc.html" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; color:#0f1013; text-decoration:none; transition:color .2s ease;" style-hover="color:#a3266c;">Home</a><span aria-hidden="true" style="color:#b9bac0; font-weight:400;">/</span><a href="LOS%20Case%20Study.dc.html#cases" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; min-width:0; overflow:hidden; text-overflow:ellipsis; color:#55575e; text-decoration:none; transition:color .2s ease;" style-hover="color:#0f1013;">Loan Origination System</a></span>
+    <nav style="display:{{ navLinksDisplay }}; gap:2px;">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
+        <a href="{{ n.href }}" style="padding:8px 12px; border-radius:999px; color:{{ n.color }}; background:{{ n.bg }}; text-decoration:none; font-size:14px; transition:color .2s ease, background .2s ease;" style-hover="color:#0f1013; background:rgba(15,16,19,.05);">{{ n.label }}</a>
+      </sc-for>
+    </nav>
+    <button type="button" data-pf-theme="" aria-label="Switch to dark mode" title="Switch to dark mode" style="display:grid; place-items:center; flex:none; width:44px; height:44px; padding:0; border:0; border-radius:999px; background:transparent; color:#55575e; cursor:pointer; transition:color .2s ease, background .2s ease;" style-hover="color:#0f1013; background:rgba(15,16,19,.05);"><svg data-pf-icon="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg><svg data-pf-icon="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button>
+  </div>
+</header>
+
+<section id="top" style="max-width:1200px; margin:0 auto; padding:clamp(120px,18vh,184px) clamp(20px,5vw,72px) 0;">
+  <div data-reveal="0" style="display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;">
+    <span style="display:inline-flex; align-items:center; gap:8px; padding:6px 12px 6px 10px; border-radius:999px; background:#ffffff; border:1px solid rgba(15,16,19,.08);"><span style="width:7px; height:7px; border-radius:50%; background:#a3266c;"></span>LOS · 02 · Part payments &amp; servicing</span>
+    <span>Loan origination system · Post disbursement</span>
+  </div>
+  <h1 style="margin-top:28px; max-width:17ch; font-size:clamp(40px,6.2vw,96px); line-height:1; letter-spacing:-0.05em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="80" data-up="" style="display:inline-block;">Part payments, simulated</span></span>
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="180" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#a3266c;">before they’re booked.</span></span>
+  </h1>
+  <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:32px clamp(32px,6vw,96px); margin-top:clamp(28px,4vw,40px);">
+    <p data-reveal="300" style="flex:1 1 360px; max-width:56ch; font-size:18px; line-height:1.6; color:#55575e;">Once a loan is disbursed, customers still call — to prepay part of it, to check their schedule, to ask for a certificate. The Post Disbursement tab gives the operations team one place for all three, and every part payment is simulated and reviewed before it changes the loan.</p>
+    <dl data-reveal="380" style="flex:0 1 460px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px 24px;">
+      <div><dt style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Role</dt><dd style="margin-top:6px; font-size:15px;">Product Designer</dd></div>
+      <div><dt style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Platform</dt><dd style="margin-top:6px; font-size:15px;">Web</dd></div>
+      <div><dt style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Users</dt><dd style="margin-top:6px; font-size:15px;">Operations team</dd></div>
+    </dl>
+  </div>
+  <div data-reveal="460" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr)); gap:16px; margin-top:clamp(40px,9vh,88px);">
+    <div style="padding:clamp(24px,3vw,36px); border-radius:28px; background:#ffffff; border:1px solid rgba(15,16,19,.07); display:flex; flex-direction:column; gap:16px;">
+      <div style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#a3266c;">Executive summary</div>
+      <div style="font-size:clamp(22px,2.3vw,30px); line-height:1.15; letter-spacing:-0.035em; font-weight:500; max-width:24ch;">A prepayment desk inside the loan file.</div>
+      <p style="font-size:14px; line-height:1.6; color:#6c6e75;">Enter an amount and date, compare two revised schedules, record how the money arrived, then confirm. Each finished step locks behind an Edit button, and every booking lands in a history the whole team can read.</p>
+      <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:auto;">
+        <span style="padding:6px 12px; border-radius:999px; background:#f8e6ef; color:#7e1a52; font-size:12px;">Repayment schedule</span>
+        <span style="padding:6px 12px; border-radius:999px; background:#a3266c; color:#ffffff; font-size:12px; font-weight:500;">Part payment</span>
+        <span style="padding:6px 12px; border-radius:999px; background:#f8e6ef; color:#7e1a52; font-size:12px;">Other actions</span>
+      </div>
+    </div>
+    <div style="position:relative; overflow:hidden; padding:clamp(24px,3vw,36px); border-radius:28px; background:#0f1013; color:#f6f5f2; display:flex; flex-direction:column; justify-content:space-between; gap:28px;">
+      <span aria-hidden="true" style="position:absolute; right:-80px; top:-120px; width:340px; height:340px; border-radius:50%; background:radial-gradient(closest-side, rgba(163,38,108,.6), transparent);"></span>
+      <div style="position:relative; font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#a3a5ad;">Every part payment</div>
+      <div style="position:relative; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;">
+        <span style="font-size:clamp(56px,6.4vw,96px); line-height:.9; letter-spacing:-0.06em; font-weight:500; font-variant-numeric:tabular-nums;">4</span>
+        <span style="font-family:'Instrument Serif',serif; font-style:italic; font-size:22px; color:#ec9ac4;">steps, each locked once done</span>
+      </div>
+      <div style="position:relative; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:4px;">
+        <span style="display:flex; flex-direction:column; gap:8px;"><span style="height:8px; border-radius:4px; background:#a3266c;"></span><span style="font-size:12px; color:#b4b6bd;">Amount</span></span>
+        <span style="display:flex; flex-direction:column; gap:8px;"><span style="height:8px; border-radius:4px; background:#a3266c;"></span><span style="font-size:12px; color:#b4b6bd;">Outcome</span></span>
+        <span style="display:flex; flex-direction:column; gap:8px;"><span style="height:8px; border-radius:4px; background:#a3266c;"></span><span style="font-size:12px; color:#b4b6bd;">Method</span></span>
+        <span style="display:flex; flex-direction:column; gap:8px;"><span style="height:8px; border-radius:4px; background:#ec9ac4;"></span><span style="font-size:12px; color:#b4b6bd;">Review</span></span>
+      </div>
+    </div>
+  </div>
+  <div data-reveal="540" style="margin-top:16px; border-radius:20px; overflow:hidden; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.08), 0 50px 100px -50px rgba(163,38,108,.45), 0 20px 40px -24px rgba(15,16,19,.18);">
+    <div style="display:flex; align-items:center; gap:14px; height:44px; padding:0 16px; border-bottom:1px solid rgba(15,16,19,.07); background:#fbfbfa;">
+      <div style="display:flex; gap:6px;"><span style="width:10px; height:10px; border-radius:50%; background:#e2e2e6;"></span><span style="width:10px; height:10px; border-radius:50%; background:#e2e2e6;"></span><span style="width:10px; height:10px; border-radius:50%; background:#e2e2e6;"></span></div>
+      <div style="flex:1; max-width:360px; margin:0 auto; height:26px; border-radius:8px; background:#f1f1f4; display:flex; align-items:center; justify-content:center; font-family:'Geist Mono',monospace; font-size:11px; color:#8b8d94; white-space:nowrap; overflow:hidden;; min-width:0; padding:0 10px;"><span style="min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">los / post-disbursement / part-payment</span></div>
+      <span style="width:46px;"></span>
+    </div>
+    <div style="aspect-ratio:16/10;"><img src="assets/los/servicing/pp-07.jpg" alt="Part payment simulation comparing reduce tenure and reduce EMI" style="display:block; width:100%; height:100%; object-fit:cover; object-position:50% 84%;"></div>
+  </div>
+</section>
+
+<section id="context" style="max-width:1200px; margin:0 auto; padding:clamp(88px,16vh,168px) clamp(20px,5vw,72px) 0; scroll-margin-top:40px;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#a3266c;">01</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Context</div>
+  <h2 style="margin-top:22px; max-width:18ch; font-size:clamp(32px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="60" data-up="" style="display:inline-block;">Servicing,</span></span>
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="140" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#a3266c;">without leaving the file.</span></span>
+  </h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr)); gap:24px clamp(32px,6vw,96px); margin-top:40px;">
+    <p data-reveal="200" style="font-size:17px; line-height:1.65; color:#55575e; max-width:56ch;">A part payment changes the loan: either the tenure gets shorter or the EMI gets smaller, and the customer usually wants to know which before they pay. The team needed to show both outcomes, record the payment against the right reference and keep a trail — on the same application page they already use for everything else.</p>
+    <div data-reveal="280" style="padding:24px 26px; border-radius:22px; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+      <div style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#a3266c;">Where it lives</div>
+      <p style="margin-top:10px; font-size:15px; line-height:1.6; color:#33353b;">A last tab in the application, after Disbursement — with three sub-tabs for the jobs that come after the money moves.</p>
+      <ol style="display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:20px; padding-top:18px; border-top:1px solid rgba(15,16,19,.08);">
+        <li style="padding:6px 12px; border-radius:999px; background:#f4f4f2; font-size:13px; color:#55575e;">CAM</li>
+        <li style="padding:6px 12px; border-radius:999px; background:#f4f4f2; font-size:13px; color:#55575e;">Decision update</li>
+        <li style="padding:6px 12px; border-radius:999px; background:#f4f4f2; font-size:13px; color:#55575e;">Post sanction</li>
+        <li style="padding:6px 12px; border-radius:999px; background:#f4f4f2; font-size:13px; color:#55575e;">Disbursement</li>
+        <li style="padding:6px 12px; border-radius:999px; background:#a3266c; font-size:13px; font-weight:500; color:#ffffff;">Post disbursement</li>
+      </ol>
+    </div>
+  </div>
+  <div data-reveal="0" style="margin-top:clamp(56px,9vh,96px); font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Three sub-tabs</div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(max(33.33% - 24px, min(100%, (720px - 100%) * 999)),1fr)); gap:12px; margin-top:18px;">
+    <a data-reveal="0" href="#schedule" style="padding:22px; border-radius:22px; border:1px solid rgba(15,16,19,.07); background:#ffffff; display:flex; flex-direction:column; gap:18px; color:#0f1013; text-decoration:none; transition:border-color .2s ease;" style-hover="color:#0f1013; border-color:rgba(163,38,108,.4);">
+      <span style="width:30px; height:30px; border-radius:50%; background:#f8e6ef; color:#a3266c; display:grid; place-items:center; font-family:'Geist Mono',monospace; font-size:11px;">01</span>
+      <span style="display:flex; flex-direction:column; gap:6px;"><span style="font-size:17px; font-weight:500; letter-spacing:-0.02em; line-height:1.25;">Repayment schedule</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">Rate, repayment type and amount for every pre-EMI and EMI period.</span></span>
+    </a>
+    <a data-reveal="90" href="#flow" style="padding:22px; border-radius:22px; border:1px solid rgba(15,16,19,.07); background:#ffffff; display:flex; flex-direction:column; gap:18px; color:#0f1013; text-decoration:none; transition:border-color .2s ease;" style-hover="color:#0f1013; border-color:rgba(163,38,108,.4);">
+      <span style="width:30px; height:30px; border-radius:50%; background:#f8e6ef; color:#a3266c; display:grid; place-items:center; font-family:'Geist Mono',monospace; font-size:11px;">02</span>
+      <span style="display:flex; flex-direction:column; gap:6px;"><span style="font-size:17px; font-weight:500; letter-spacing:-0.02em; line-height:1.25;">Part payment</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">Simulate, choose an outcome, record the payment and book it.</span></span>
+    </a>
+    <a data-reveal="180" href="#documents" style="padding:22px; border-radius:22px; border:1px solid rgba(15,16,19,.07); background:#ffffff; display:flex; flex-direction:column; gap:18px; color:#0f1013; text-decoration:none; transition:border-color .2s ease;" style-hover="color:#0f1013; border-color:rgba(163,38,108,.4);">
+      <span style="width:30px; height:30px; border-radius:50%; background:#f8e6ef; color:#a3266c; display:grid; place-items:center; font-family:'Geist Mono',monospace; font-size:11px;">03</span>
+      <span style="display:flex; flex-direction:column; gap:6px;"><span style="font-size:17px; font-weight:500; letter-spacing:-0.02em; line-height:1.25;">Other actions</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">Interest certificate, statement of account and NOC downloads.</span></span>
+    </a>
+  </div>
+</section>
+
+<section id="flow" style="max-width:1200px; margin:0 auto; padding:clamp(88px,16vh,168px) clamp(20px,5vw,72px) 0; scroll-margin-top:40px;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#a3266c;">02</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Part payment</div>
+  <h2 style="margin-top:22px; max-width:18ch; font-size:clamp(32px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="60" data-up="" style="display:inline-block;">From amount</span></span>
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="140" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#a3266c;">to booked.</span></span>
+  </h2>
+  <p data-reveal="200" style="margin-top:28px; max-width:58ch; font-size:17px; line-height:1.65; color:#55575e;">One page that builds downward: each finished card locks, the next opens below it, and the outstanding amount stays pinned at the top throughout.</p>
+
+  <div data-reveal="80" style="margin-top:clamp(40px,7vh,72px); display:grid; grid-template-columns:{{ flowCols }}; gap:clamp(20px,3vw,48px); align-items:center; padding:clamp(12px,3vw,40px); border-radius:32px; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+    <div style="display:flex; flex-direction:column; gap:2px; max-width:420px; min-width:0;">
+      <div style="display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:5px; margin:0 16px 14px;">
+        <sc-for list="{{ steps }}" as="x" hint-placeholder-count="6"><span style="height:4px; border-radius:4px; background:{{ x.seg }}; transition:background .3s ease;"></span></sc-for>
+      </div>
+      <sc-for list="{{ steps }}" as="x" hint-placeholder-count="6">
+        <button type="button" aria-pressed="{{ x.sel }}" onClick="{{ x.onClick }}" style="display:grid; grid-template-columns:32px minmax(0,1fr); gap:4px 12px; align-items:baseline; width:100%; text-align:left; padding:12px 16px; border:0; border-radius:16px; background:{{ x.bg }}; font:inherit; color:inherit; cursor:pointer; transition:background .25s ease;" style-hover="background:#f1f1f4;">
+          <span style="font-family:'Geist Mono',monospace; font-size:12px; color:{{ x.nc }};">{{ x.n }}</span>
+          <span style="font-size:16px; font-weight:500; letter-spacing:-0.02em; color:{{ x.tc }}; transition:color .25s ease;">{{ x.t }}</span>
+          <sc-if value="{{ x.on }}" hint-placeholder-val="{{ false }}"><span style="grid-column:2; font-size:14px; line-height:1.55; color:#6c6e75;">{{ x.dd }}</span></sc-if>
+        </button>
+      </sc-for>
+    </div>
+    <div style="min-width:0; border-radius:16px; overflow:hidden; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.08), 0 40px 80px -44px rgba(163,38,108,.5);">
+      <div style="display:flex; align-items:center; gap:12px; height:36px; padding:0 14px; border-bottom:1px solid rgba(15,16,19,.07); background:#fbfbfa;">
+        <div style="display:flex; gap:5px;"><span style="width:9px; height:9px; border-radius:50%; background:#e2e2e6;"></span><span style="width:9px; height:9px; border-radius:50%; background:#e2e2e6;"></span><span style="width:9px; height:9px; border-radius:50%; background:#e2e2e6;"></span></div>
+        <div style="flex:1; text-align:center; font-family:'Geist Mono',monospace; font-size:11px; color:#8b8d94; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ curT }}</div>
+        <span style="width:37px;"></span>
+      </div>
+      <div ref="{{ viewRef }}" style="aspect-ratio:16/11; overflow-y:auto; overflow-x:hidden; scrollbar-width:thin; scrollbar-color:rgba(15,16,19,.25) transparent;"><img ref="{{ viewImgRef }}" src="assets/los/servicing/pp-05.jpg" alt="{{ curT }}" style="display:block; width:100%; height:auto;"></div>
+    </div>
+  </div>
+
+  <div data-reveal="0" style="margin-top:clamp(56px,9vh,96px); display:flex; flex-direction:column; gap:8px;"><span style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Guardrails</span><span style="font-size:clamp(22px,2.4vw,30px); font-weight:500; letter-spacing:-0.03em; max-width:36ch;">Checked at the field, before anything is simulated.</span></div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:clamp(24px,3vw,40px) clamp(16px,2vw,24px); margin-top:28px;">
+    <figure data-reveal="0" style="display:flex; flex-direction:column; gap:16px;">
+      <div style="aspect-ratio:2/1; border-radius:16px; overflow:hidden; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.08), 0 30px 60px -36px rgba(163,38,108,.4);"><img src="assets/los/servicing/pp-02.jpg" alt="Amount field flagged as required" style="display:block; width:100%; height:100%; object-fit:cover; object-position:50% 64%;"></div>
+      <figcaption style="display:flex; flex-direction:column; gap:4px; padding:0 4px;"><span style="display:flex; align-items:center; gap:8px; font-size:15px; font-weight:500; letter-spacing:-0.015em;"><span style="flex:none; width:6px; height:6px; border-radius:50%; background:#d63b3b;"></span>Required</span><span style="font-size:13px; line-height:1.5; color:#6c6e75;">Simulate won’t run without an amount; the field says so inline.</span></figcaption>
+    </figure>
+    <figure data-reveal="90" style="display:flex; flex-direction:column; gap:16px;">
+      <div style="aspect-ratio:2/1; border-radius:16px; overflow:hidden; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.08), 0 30px 60px -36px rgba(163,38,108,.4);"><img src="assets/los/servicing/pp-03.jpg" alt="Amount equal to the outstanding balance flagged" style="display:block; width:100%; height:100%; object-fit:cover; object-position:50% 64%;"></div>
+      <figcaption style="display:flex; flex-direction:column; gap:4px; padding:0 4px;"><span style="display:flex; align-items:center; gap:8px; font-size:15px; font-weight:500; letter-spacing:-0.015em;"><span style="flex:none; width:6px; height:6px; border-radius:50%; background:#d63b3b;"></span>Same as outstanding</span><span style="font-size:13px; line-height:1.5; color:#6c6e75;">Paying the full balance isn’t a part payment, so it’s stopped here.</span></figcaption>
+    </figure>
+    <figure data-reveal="180" style="display:flex; flex-direction:column; gap:16px;">
+      <div style="aspect-ratio:2/1; border-radius:16px; overflow:hidden; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.08), 0 30px 60px -36px rgba(163,38,108,.4);"><img src="assets/los/servicing/pp-04.jpg" alt="Amount above the outstanding balance flagged" style="display:block; width:100%; height:100%; object-fit:cover; object-position:50% 64%;"></div>
+      <figcaption style="display:flex; flex-direction:column; gap:4px; padding:0 4px;"><span style="display:flex; align-items:center; gap:8px; font-size:15px; font-weight:500; letter-spacing:-0.015em;"><span style="flex:none; width:6px; height:6px; border-radius:50%; background:#d63b3b;"></span>More than outstanding</span><span style="font-size:13px; line-height:1.5; color:#6c6e75;">An amount above the balance is caught before it reaches the calculation.</span></figcaption>
+    </figure>
+  </div>
+
+  <div data-reveal="0" style="margin-top:clamp(56px,9vh,96px); display:flex; flex-direction:column; gap:8px;"><span style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Loans with several EMI periods</span><span style="font-size:clamp(22px,2.4vw,30px); font-weight:500; letter-spacing:-0.03em; max-width:36ch;">Every period’s new EMI, before and at review.</span></div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:clamp(24px,3vw,40px) clamp(20px,3vw,32px); margin-top:28px;">
+    <figure data-reveal="0" style="display:flex; flex-direction:column; gap:16px;">
+      <div style="aspect-ratio:4/3; border-radius:16px; overflow:hidden; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.08), 0 30px 60px -36px rgba(163,38,108,.4);"><img src="assets/los/servicing/pp-08.jpg" alt="Reduce EMI option broken out by EMI period" style="display:block; width:100%; height:100%; object-fit:cover; object-position:50% 100%;"></div>
+      <figcaption style="display:flex; flex-direction:column; gap:4px; padding:0 4px;"><span style="display:flex; align-items:center; gap:8px; font-size:15px; font-weight:500; letter-spacing:-0.015em;"><span style="flex:none; width:6px; height:6px; border-radius:50%; background:#a3266c;"></span>Simulation, period by period</span><span style="font-size:13px; line-height:1.5; color:#6c6e75;">The EMI option lists the pre-EMI and each EMI period, with the changed instalment highlighted.</span></figcaption>
+    </figure>
+    <figure data-reveal="90" style="display:flex; flex-direction:column; gap:16px;">
+      <div style="aspect-ratio:4/3; border-radius:16px; overflow:hidden; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.08), 0 30px 60px -36px rgba(163,38,108,.4);"><img src="assets/los/servicing/pp-16.jpg" alt="Review and confirm with the per-period schedule" style="display:block; width:100%; height:100%; object-fit:cover; object-position:50% 100%;"></div>
+      <figcaption style="display:flex; flex-direction:column; gap:4px; padding:0 4px;"><span style="display:flex; align-items:center; gap:8px; font-size:15px; font-weight:500; letter-spacing:-0.015em;"><span style="flex:none; width:6px; height:6px; border-radius:50%; background:#a3266c;"></span>Same breakdown at review</span><span style="font-size:13px; line-height:1.5; color:#6c6e75;">The revised schedule card repeats it in full, so nothing new appears at the moment of booking.</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="schedule" style="max-width:1200px; margin:0 auto; padding:clamp(88px,16vh,168px) clamp(20px,5vw,72px) 0; scroll-margin-top:40px;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#a3266c;">03</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Repayment schedule</div>
+  <h2 style="margin-top:22px; max-width:18ch; font-size:clamp(32px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="60" data-up="" style="display:inline-block;">A schedule that</span></span>
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="140" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#a3266c;">grows sideways.</span></span>
+  </h2>
+  <p data-reveal="200" style="margin-top:28px; max-width:58ch; font-size:17px; line-height:1.65; color:#55575e;">Education loans move through pre-EMI and EMI periods, each with its own rate, repayment type and amount. Periods are columns and attributes are rows, so a loan with six periods reads the same way as one with two.</p>
+  <div data-reveal="80" style="margin-top:clamp(32px,5vh,48px); display:flex; flex-wrap:wrap; gap:6px;">
+    <sc-for list="{{ sched }}" as="c" hint-placeholder-count="3">
+      <button type="button" aria-pressed="{{ c.sel }}" onClick="{{ c.onClick }}" style="display:inline-flex; align-items:center; gap:8px; height:40px; padding:0 16px; border:0; border-radius:999px; background:{{ c.bg }}; color:{{ c.color }}; box-shadow:{{ c.sh }}; font:inherit; font-size:14px; cursor:pointer; transition:background .25s ease, color .25s ease;">{{ c.label }}</button>
+    </sc-for>
+  </div>
+  <div data-reveal="120" style="margin-top:16px; border-radius:20px; overflow:hidden; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.08), 0 50px 100px -50px rgba(163,38,108,.45), 0 20px 40px -24px rgba(15,16,19,.18);">
+    <div style="display:flex; align-items:center; gap:14px; height:44px; padding:0 16px; border-bottom:1px solid rgba(15,16,19,.07); background:#fbfbfa;">
+      <div style="display:flex; gap:6px;"><span style="width:10px; height:10px; border-radius:50%; background:#e2e2e6;"></span><span style="width:10px; height:10px; border-radius:50%; background:#e2e2e6;"></span><span style="width:10px; height:10px; border-radius:50%; background:#e2e2e6;"></span></div>
+      <div style="flex:1; max-width:360px; margin:0 auto; height:26px; border-radius:8px; background:#f1f1f4; display:flex; align-items:center; justify-content:center; font-family:'Geist Mono',monospace; font-size:11px; color:#8b8d94; white-space:nowrap; overflow:hidden;">{{ schedT }}</div>
+      <span style="width:46px;"></span>
+    </div>
+    <div style="aspect-ratio:16/9;"><img ref="{{ schedImgRef }}" src="assets/los/servicing/rs-03.jpg" alt="{{ schedT }}" style="display:block; width:100%; height:100%; object-fit:cover; object-position:50% 74%;"></div>
+  </div>
+</section>
+
+<section id="documents" style="max-width:1200px; margin:0 auto; padding:clamp(88px,16vh,168px) clamp(20px,5vw,72px) 0; scroll-margin-top:40px;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#a3266c;">04</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Other actions</div>
+  <h2 style="margin-top:22px; max-width:18ch; font-size:clamp(32px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="60" data-up="" style="display:inline-block;">Three documents,</span></span>
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="140" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#a3266c;">one click each.</span></span>
+  </h2>
+  <p data-reveal="200" style="margin-top:28px; max-width:58ch; font-size:17px; line-height:1.65; color:#55575e;">The documents customers ask for most sit as three cards: an interest certificate by financial year, a statement of account, and the no-objection certificate needed to release papers.</p>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); gap:clamp(24px,3vw,40px) clamp(20px,3vw,32px); margin-top:clamp(32px,5vh,48px);">
+    <figure data-reveal="0" style="display:flex; flex-direction:column; gap:16px;">
+      <div style="aspect-ratio:5/2; border-radius:16px; overflow:hidden; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.08), 0 30px 60px -36px rgba(163,38,108,.4);"><img src="assets/los/servicing/oa-02.jpg" alt="Other actions with NOC disabled and EMIs left shown" style="display:block; width:100%; height:100%; object-fit:cover; object-position:50% 50%;"></div>
+      <figcaption style="display:flex; flex-direction:column; gap:4px; padding:0 4px;"><span style="display:flex; align-items:center; gap:8px; font-size:15px; font-weight:500; letter-spacing:-0.015em;"><span style="flex:none; width:6px; height:6px; border-radius:50%; background:#e8890c;"></span>While EMIs remain</span><span style="font-size:13px; line-height:1.5; color:#6c6e75;">The NOC stays disabled with the count of EMIs left beside it, and the statement shows the full tenure.</span></figcaption>
+    </figure>
+    <figure data-reveal="90" style="display:flex; flex-direction:column; gap:16px;">
+      <div style="aspect-ratio:5/2; border-radius:16px; overflow:hidden; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.08), 0 30px 60px -36px rgba(163,38,108,.4);"><img src="assets/los/servicing/oa-01.jpg" alt="Other actions with all three downloads available" style="display:block; width:100%; height:100%; object-fit:cover; object-position:50% 50%;"></div>
+      <figcaption style="display:flex; flex-direction:column; gap:4px; padding:0 4px;"><span style="display:flex; align-items:center; gap:8px; font-size:15px; font-weight:500; letter-spacing:-0.015em;"><span style="flex:none; width:6px; height:6px; border-radius:50%; background:#2fae66;"></span>Once the loan is closed</span><span style="font-size:13px; line-height:1.5; color:#6c6e75;">All three downloads are available, each with one plain line on what it’s for.</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="decisions" style="max-width:1200px; margin:0 auto; padding:clamp(88px,16vh,168px) clamp(20px,5vw,72px) 0; scroll-margin-top:40px;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#a3266c;">05</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Key design decisions</div>
+  <h2 style="margin-top:22px; max-width:18ch; font-size:clamp(32px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="60" data-up="" style="display:inline-block;">Show the result</span></span>
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="140" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#a3266c;">before the commitment.</span></span>
+  </h2>
+  <div style="margin-top:clamp(40px,6vh,64px); border-top:1px solid rgba(15,16,19,.1);">
+    <div data-reveal="0" style="display:grid; grid-template-columns:{{ rowCols }}; gap:8px 24px; align-items:baseline; padding:24px 0; border-bottom:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#a3266c;">01</span><span style="font-size:19px; font-weight:500; letter-spacing:-0.02em; line-height:1.3;">Simulate before anything is saved</span><span style="font-size:15px; line-height:1.6; color:#55575e;">Both revised schedules are calculated from the amount and date alone, so the customer can decide on the call.</span></div>
+    <div data-reveal="60" style="display:grid; grid-template-columns:{{ rowCols }}; gap:8px 24px; align-items:baseline; padding:24px 0; border-bottom:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#a3266c;">02</span><span style="font-size:19px; font-weight:500; letter-spacing:-0.02em; line-height:1.3;">Recommend, don’t decide</span><span style="font-size:15px; line-height:1.6; color:#55575e;">Reduce tenure carries a Recommended tag, but both options sit side by side with interest saved on each.</span></div>
+    <div data-reveal="120" style="display:grid; grid-template-columns:{{ rowCols }}; gap:8px 24px; align-items:baseline; padding:24px 0; border-bottom:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#a3266c;">03</span><span style="font-size:19px; font-weight:500; letter-spacing:-0.02em; line-height:1.3;">Lock each step, keep an Edit</span><span style="font-size:15px; line-height:1.6; color:#55575e;">Finished cards grey out with a single Edit button, so the review always matches what was entered.</span></div>
+    <div data-reveal="180" style="display:grid; grid-template-columns:{{ rowCols }}; gap:8px 24px; align-items:baseline; padding:24px 0; border-bottom:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#a3266c;">04</span><span style="font-size:19px; font-weight:500; letter-spacing:-0.02em; line-height:1.3;">Ask only for what the method needs</span><span style="font-size:15px; line-height:1.6; color:#55575e;">A payment link takes a reference ID; a bank transfer asks for the bank and UTR number — nothing else.</span></div>
+  </div>
+</section>
+
+<section id="outcomes" style="max-width:1280px; margin:0 auto; padding:clamp(88px,16vh,168px) clamp(12px,2vw,24px) 0; scroll-margin-top:40px;">
+  <div style="padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px); border-radius:clamp(28px,4vw,48px); background:#0f1013; color:#f6f5f2; position:relative; overflow:hidden;">
+    <span aria-hidden="true" style="position:absolute; left:-160px; bottom:-220px; width:560px; height:560px; border-radius:50%; background:radial-gradient(closest-side, rgba(163,38,108,.45), transparent);"></span>
+    <div data-reveal="0" style="position:relative; display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#a3a5ad;"><span style="color:#ec9ac4;">06</span><span style="width:28px; height:1px; background:rgba(255,255,255,.25);"></span>Outcomes</div>
+    <h2 style="position:relative; margin-top:22px; max-width:19ch; font-size:clamp(32px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+      <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="60" data-up="" style="display:inline-block;">Part payments booked</span></span>
+      <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="140" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#ec9ac4;">on the first call.</span></span>
+    </h2>
+    <p data-reveal="200" style="position:relative; margin-top:24px; max-width:62ch; font-size:16px; line-height:1.65; color:#b4b6bd;">With both outcomes simulated in the tab and every step locked before review, the team stopped calculating schedules offline and correcting bookings afterwards. First 12 weeks after rollout vs the 12 weeks before; figures are directional.</p>
+    <div style="position:relative; display:grid; grid-template-columns:repeat(auto-fit,minmax(max(25% - 24px, min(50% - 16px, (880px - 100%) * 999), min(100%, (460px - 100%) * 999)),1fr)); gap:1px; margin-top:clamp(36px,5vh,56px); border-radius:24px; overflow:hidden; background:rgba(255,255,255,.08);">
+      <div data-reveal="0" style="padding:24px; background:#141519; display:flex; flex-direction:column; gap:6px; min-height:170px;"><span style="font-size:clamp(30px,3.2vw,44px); line-height:1; letter-spacing:-0.05em; font-weight:500; color:#ec9ac4;">−58%</span><span style="margin-top:auto; font-size:14px; font-weight:500;">Time to book a part payment</span><span style="font-size:12px; line-height:1.5; color:#a3a5ad;">24 min → 10 min per request</span></div>
+      <div data-reveal="60" style="padding:24px; background:#141519; display:flex; flex-direction:column; gap:6px; min-height:170px;"><span style="font-size:clamp(30px,3.2vw,44px); line-height:1; letter-spacing:-0.05em; font-weight:500; color:#ec9ac4;">100%</span><span style="margin-top:auto; font-size:14px; font-weight:500;">Bookings with a simulation</span><span style="font-size:12px; line-height:1.5; color:#a3a5ad;">both outcomes shown before every booking</span></div>
+      <div data-reveal="120" style="padding:24px; background:#141519; display:flex; flex-direction:column; gap:6px; min-height:170px;"><span style="font-size:clamp(30px,3.2vw,44px); line-height:1; letter-spacing:-0.05em; font-weight:500; color:#ec9ac4;">−72%</span><span style="margin-top:auto; font-size:14px; font-weight:500;">Bookings corrected afterwards</span><span style="font-size:12px; line-height:1.5; color:#a3a5ad;">wrong outcome, amount or UTR · 11% → 3%</span></div>
+      <div data-reveal="180" style="padding:24px; background:#141519; display:flex; flex-direction:column; gap:6px; min-height:170px;"><span style="font-size:clamp(30px,3.2vw,44px); line-height:1; letter-spacing:-0.05em; font-weight:500; color:#ec9ac4;">−64%</span><span style="margin-top:auto; font-size:14px; font-weight:500;">Document turnaround</span><span style="font-size:12px; line-height:1.5; color:#a3a5ad;">certificates and statements · 1 day → same call</span></div>
+    </div>
+  </div>
+</section>
+
+<section style="max-width:1200px; margin:0 auto; padding:clamp(88px,16vh,168px) clamp(20px,5vw,72px) clamp(48px,7vh,72px);">
+  <div data-reveal="0" style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:32px;">
+    <div>
+      <div style="font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;">Next feature · LOS · 03 / 04</div>
+      <div style="margin-top:14px; font-size:clamp(36px,5vw,64px); line-height:1; letter-spacing:-0.045em; font-weight:500;">Partial approval</div>
+    </div>
+    <a href="Partial%20Approval%20Case%20Study.dc.html" style="display:inline-flex; align-items:center; gap:12px; height:56px; padding:0 10px 0 26px; border-radius:999px; background:#0f1013; color:#f6f5f2; text-decoration:none; font-size:15px; font-weight:500; transition:background .25s ease, box-shadow .25s ease;" style-hover="background:#a3266c; color:#ffffff; box-shadow:0 14px 40px -10px rgba(163,38,108,.6);">View feature<span style="display:grid; place-items:center; width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span></a>
+  </div>
+  <footer style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; margin-top:clamp(64px,9vh,96px); padding-top:24px; border-top:1px solid rgba(15,16,19,.1); font-size:13px; color:#6c6e75;">
+    <span style="color:#0f1013; font-weight:500;">Harish Babu Nadar</span>
+    <span style="font-family:'Geist Mono',monospace; font-size:12px;">© 2026 · All rights reserved</span>
+    <div style="display:flex; flex-wrap:wrap; gap:20px;"><a href="https://www.linkedin.com/in/harishbabuganesannadar" target="_blank" rel="noopener noreferrer" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; color:#55575e; text-decoration:none; transition:color .2s ease;" style-hover="color:#0f1013;">LinkedIn</a><a href="mailto:Harishbabuganesan@gmail.com" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; color:#55575e; text-decoration:none; transition:color .2s ease;" style-hover="color:#0f1013;">Email</a></div>
+  </footer>
+</section>
+<dc-import name="BackToTop" hint-size="0px,0px"></dc-import>
+<dc-import name="MobilePreview" viewport="{{ viewport }}" hint-size="0px,0px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;motion&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Full&quot;,&quot;Subtle&quot;,&quot;Off&quot;],&quot;default&quot;:&quot;Full&quot;,&quot;tsType&quot;:&quot;'Full' | 'Subtle' | 'Off'&quot;},&quot;viewport&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Desktop&quot;,&quot;Mobile&quot;],&quot;default&quot;:&quot;Desktop&quot;,&quot;tsType&quot;:&quot;'Desktop' | 'Mobile'&quot;}}">
+class Component extends DCLogic {
+  progressRef = React.createRef();
+  enterRef = React.createRef();
+  viewRef = React.createRef();
+  viewImgRef = React.createRef();
+  schedImgRef = React.createRef();
+  state = { solid: false, nav: '', narrow: typeof window !== 'undefined' && window.innerWidth < 960, step: 0, pinned: false, sched: 2 };
+  STEPS = [
+    ['Enter amount and date', 'The amount is spelled out under the field — “40 thousand” — to catch a missing zero before simulating.', 'pp-05'],
+    ['Simulate', 'A short blocking state while both revised schedules are calculated, asking the team not to close the tab.', 'pp-06'],
+    ['Compare two outcomes', 'Reduce tenure or reduce EMI, side by side: new EMI, tenure, interest saved and outstanding. The inputs lock behind Edit.', 'pp-07'],
+    ['Record the payment', 'Payment link or bank transfer. A link takes a reference ID; a transfer asks for the bank and UTR number.', 'pp-13'],
+    ['Review and confirm', 'Three summary cards — payment, revised schedule, method — and one action: Book part payment.', 'pp-14'],
+    ['Booked and on record', 'A confirmation, then a history table with date, amount, method, outcome, EMI, tenure and UTR for every part payment.', 'pp-20']
+  ];
+  SCHED = [
+    ['2 periods', '1 pre-EMI · 1 EMI', 'rs-01'],
+    ['4 periods', '1 pre-EMI · 3 EMI', 'rs-02'],
+    ['6 periods', '2 pre-EMI · 4 EMI', 'rs-03']
+  ];
+  motionOff() {
+    return (this.props.motion ?? 'Full') === 'Off' || (typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+  componentDidMount() {
+    this.onScroll = () => { if (this.raf) return; this.raf = requestAnimationFrame(() => { this.raf = 0; this.tick(); }); };
+    this.onResize = () => { const narrow = window.innerWidth < 960; if (narrow !== this.state.narrow) this.setState({ narrow }); this.onScroll(); };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', this.onResize);
+    const off = this.motionOff(), ov = this.enterRef.current;
+    if (ov && !off && !document.hidden) {
+      let viaT = false; try { viaT = sessionStorage.getItem('pf-transition') === '1'; sessionStorage.removeItem('pf-transition'); } catch (er) {}
+      if (viaT && ov.firstElementChild) ov.firstElementChild.style.visibility = 'hidden';
+      const a = ov.animate([{ clipPath: 'inset(0 0 0% 0)' }, { clipPath: 'inset(0 0 100% 0)' }], { duration: 600, delay: 80, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'backwards' });
+      if (ov.firstElementChild) ov.firstElementChild.animate([{ opacity: 1, transform: 'translateY(0px)' }, { opacity: 0, transform: 'translateY(-28px)' }], { duration: 300, easing: 'cubic-bezier(.6,0,.2,1)', fill: 'backwards' });
+      this.ovT = setTimeout(() => { try { a.finish(); } catch (e) {} }, 900);
+    }
+    if (!off) this.stepT = setInterval(() => { if (!this.state.pinned && !document.hidden) this.setState(x => ({ step: (x.step + 1) % this.STEPS.length })); }, 7000);
+    this.setupReveal();
+    this.syncImgs();
+    this.tick();
+  }
+  syncImgs() {
+    const v = this.viewImgRef.current, sc = this.schedImgRef.current;
+    const vs = `assets/los/servicing/${this.STEPS[this.state.step][2]}.jpg`, ss = `assets/los/servicing/${this.SCHED[this.state.sched][2]}.jpg`;
+    if (v) {
+      v.onload = () => { const box = this.viewRef.current; if (box) box.scrollTop = v.clientHeight * 0.28; };
+      if (v.getAttribute('src') !== vs) v.setAttribute('src', vs); else if (v.complete) v.onload();
+    }
+    if (sc && sc.getAttribute('src') !== ss) sc.setAttribute('src', ss);
+  }
+  componentDidUpdate(_, prev) {
+    this.syncImgs();
+    if (prev.step !== this.state.step) this.fadeIn(this.viewImgRef.current);
+    if (prev.sched !== this.state.sched) this.fadeIn(this.schedImgRef.current);
+  }
+  fadeIn(im) { if (im && im.animate && !this.motionOff()) im.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 380, easing: 'cubic-bezier(.2,.8,.2,1)' }); }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('resize', this.onResize);
+    if (this.io) this.io.disconnect();
+    clearInterval(this.stepT); clearTimeout(this.fb); clearTimeout(this.ovT);
+    if (this.onVis) document.removeEventListener('visibilitychange', this.onVis);
+  }
+  tick() {
+    const y = window.scrollY, vh = window.innerHeight, max = document.documentElement.scrollHeight - vh;
+    if (this.progressRef.current) this.progressRef.current.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
+    const upd = {}, solid = y > 24;
+    if (solid !== this.state.solid) upd.solid = solid;
+    let nav = '';
+    ['context', 'flow', 'schedule', 'documents', 'decisions', 'outcomes'].forEach(id => { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top < vh * 0.4) nav = id; });
+    if (nav !== this.state.nav) upd.nav = nav;
+    if (Object.keys(upd).length) this.setState(upd);
+  }
+  setupReveal() {
+    if (this.motionOff() || typeof IntersectionObserver === 'undefined' || document.hidden) return;
+    const subtle = this.props.motion === 'Subtle';
+    const kf = subtle ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: 'translateY(24px)', filter: 'blur(8px)' }, { opacity: 1, transform: 'translateY(0px)', filter: 'blur(0px)' }];
+    const vh = window.innerHeight, pending = [];
+    let fired = false;
+    const show = el => { if (el.__rv) el.__rv.play(); if (this.io) this.io.unobserve(el); };
+    this.io = new IntersectionObserver(es => { fired = true; es.forEach(e => e.isIntersecting && show(e.target)); }, { rootMargin: '0px 0px -8% 0px', threshold: 0.01 });
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      const up = el.hasAttribute('data-up');
+      const a = el.animate(up ? [{ transform: 'translateY(105%)' }, { transform: 'translateY(0%)' }] : kf, { duration: up ? 1000 : (subtle ? 500 : 900), delay: Number(el.dataset.reveal || 0), easing: up ? 'cubic-bezier(.2,.9,.1,1)' : 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' });
+      el.__rv = a;
+      const r = el.getBoundingClientRect();
+      if (r.top < vh && r.bottom > 0) { show(el); return; }
+      a.pause(); pending.push(a); this.io.observe(el);
+    });
+    this.fb = setTimeout(() => { if (!fired) pending.forEach(a => { try { a.finish(); } catch (e) {} }); }, 1000);
+    this.onVis = () => { if (document.hidden) pending.forEach(a => { try { a.finish(); } catch (e) {} }); };
+    document.addEventListener('visibilitychange', this.onVis);
+  }
+  renderVals() {
+    const s = this.state, A = '#a3266c', INK = '#0f1013', cur = this.STEPS[s.step], sc = this.SCHED[s.sched];
+    return {
+      progressRef: this.progressRef, enterRef: this.enterRef, viewRef: this.viewRef, viewImgRef: this.viewImgRef, schedImgRef: this.schedImgRef,
+      navMax: s.solid ? '860px' : '1160px',
+      navBg: s.solid ? 'rgba(255,255,255,.78)' : 'rgba(255,255,255,0)',
+      navShadow: s.solid ? '0 0 0 1px rgba(15,16,19,.06), 0 12px 32px -12px rgba(15,16,19,.18)' : '0 0 0 1px rgba(15,16,19,0)',
+      navLinksDisplay: s.narrow ? 'none' : 'flex',
+      navItems: [['context', 'Context'], ['flow', 'Part payment'], ['schedule', 'Schedule'], ['documents', 'Documents'], ['decisions', 'Decisions'], ['outcomes', 'Outcomes']].map(([id, label]) => ({
+        href: `#${id}`, label, color: s.nav === id ? INK : '#55575e', bg: s.nav === id ? 'rgba(15,16,19,.06)' : 'transparent' })),
+      flowCols: s.narrow ? 'minmax(0,1fr)' : 'minmax(0,1fr) minmax(0,1.9fr)',
+      rowCols: s.narrow ? 'minmax(0,1fr)' : '48px minmax(0,1fr) minmax(0,1.1fr)',
+      steps: this.STEPS.map(([t, dd], i) => ({
+        n: String(i + 1).padStart(2, '0'), t, dd, on: s.step === i, sel: s.step === i ? 'true' : 'false',
+        bg: s.step === i ? '#fcf2f7' : 'transparent', nc: s.step === i ? A : '#8b8d94', tc: s.step === i ? INK : '#6c6e75',
+        seg: i <= s.step ? A : 'rgba(15,16,19,.1)',
+        onClick: () => this.setState({ step: i, pinned: true })
+      })),
+      curT: cur[0],
+      sched: this.SCHED.map(([label], i) => ({ label, sel: s.sched === i ? 'true' : 'false',
+        bg: s.sched === i ? INK : '#ffffff', color: s.sched === i ? '#ffffff' : '#55575e', sh: s.sched === i ? 'none' : '0 0 0 1px rgba(15,16,19,.1)',
+        onClick: () => this.setState({ sched: i }) })),
+      schedT: `repayment-schedule · ${sc[1]}`
+    };
+  }
+}
+</script>
+</body>
+</html>

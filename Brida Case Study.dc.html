@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><title>Brida — Harish Babu Nadar</title>
+<script src="./theme.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:#f6f5f2;color:#0f1013;font-family:"Geist",system-ui,sans-serif;font-size:15px;line-height:1.55;text-wrap:pretty;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,figure,dl,dd,ol,ul,blockquote{margin:0}
+ol,ul{padding:0;list-style:none}
+::selection{background:rgba(43,130,72,.18)}
+a{color:#22703c}
+a:hover{color:#174f2b}
+:focus-visible{outline:2px solid #2b8248;outline-offset:3px}
+[data-track]::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+
+<div ref="{{ enterRef }}" aria-hidden="true" style="position:fixed; inset:0; z-index:100; background:#0f1013; clip-path:inset(0 0 100% 0); pointer-events:none; display:grid; place-items:center;"><div style="display:flex; flex-direction:column; align-items:center; gap:18px;"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#a3a5ad;">04 / 04</span><span style="font-size:clamp(32px,4vw,56px); line-height:1; font-weight:500; letter-spacing:-0.04em; color:#f6f5f2;">Brida <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.01em; color:#8fd3a6;">field app</span></span><span style="width:160px; height:2px; border-radius:2px; background:rgba(255,255,255,.12); overflow:hidden;"><span style="display:block; height:100%; background:#2b8248;"></span></span></div></div>
+<div ref="{{ progressRef }}" style="position:fixed; left:0; right:0; top:0; height:2px; z-index:60; background:#2b8248; transform:scaleX(0); transform-origin:left;"></div>
+<header style="position:fixed; top:0; left:0; right:0; z-index:50; padding:12px clamp(12px,3vw,24px); pointer-events:none;">
+  <div style="pointer-events:auto; max-width:{{ navMax }}; margin:0 auto; display:flex; align-items:center; gap:16px; padding:8px; border-radius:999px; background:{{ navBg }}; box-shadow:{{ navShadow }}; backdrop-filter:blur(16px) saturate(160%); -webkit-backdrop-filter:blur(16px) saturate(160%); transition:max-width .6s cubic-bezier(.2,.8,.2,1), background .4s ease, box-shadow .4s ease;">
+    <a href="Portfolio%20Homepage.dc.html#brida" aria-label="Back to portfolio" style="display:inline-flex; align-items:center; justify-content:center; flex:none; width:44px; height:44px; border-radius:50%; background:#0f1013; color:#f6f5f2; text-decoration:none; transition:background .2s ease, transform .2s ease;" style-hover="background:#2b8248; color:#ffffff;" style-active="transform:scale(.94);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg></a>
+    <a href="Portfolio%20Homepage.dc.html" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; margin-right:auto; color:#0f1013; text-decoration:none; font-size:15px; font-weight:500; letter-spacing:-0.01em; white-space:nowrap;">Home</a>
+    <nav style="display:{{ navLinksDisplay }}; gap:2px;">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="7">
+        <a href="{{ n.href }}" style="padding:8px 11px; border-radius:999px; color:{{ n.color }}; background:{{ n.bg }}; text-decoration:none; font-size:14px; transition:color .2s ease, background .2s ease;" style-hover="color:#0f1013; background:rgba(15,16,19,.05);">{{ n.label }}</a>
+      </sc-for>
+    </nav>
+    <button type="button" data-pf-theme="" aria-label="Switch to dark mode" title="Switch to dark mode" style="display:grid; place-items:center; flex:none; width:44px; height:44px; padding:0; border:0; border-radius:999px; background:transparent; color:#55575e; cursor:pointer; transition:color .2s ease, background .2s ease;" style-hover="color:#0f1013; background:rgba(15,16,19,.05);"><svg data-pf-icon="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg><svg data-pf-icon="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button>
+  </div>
+</header>
+
+<section id="top" style="max-width:1200px; margin:0 auto; padding:clamp(120px,18vh,184px) clamp(20px,5vw,72px) 0;">
+  <div data-reveal="0" style="display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;">
+    <span style="display:inline-flex; align-items:center; gap:8px; padding:6px 12px 6px 10px; border-radius:999px; background:#ffffff; border:1px solid rgba(15,16,19,.08);"><span style="width:7px; height:7px; border-radius:50%; background:#2b8248;"></span>04 · Brida</span>
+    <span>Bombay Natural History Society · Bird ringing</span>
+  </div>
+  <h1 style="margin-top:28px; max-width:17ch; font-size:clamp(40px,6.2vw,96px); line-height:1; letter-spacing:-0.05em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="80" data-up="" style="display:inline-block;">Bridging UX with</span></span>
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="180" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#2b8248;">avian conservation.</span></span>
+  </h1>
+  <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:32px clamp(32px,6vw,96px); margin-top:clamp(28px,4vw,40px);">
+    <p data-reveal="300" style="flex:1 1 360px; max-width:56ch; font-size:18px; line-height:1.6; color:#55575e;">Brida digitises historical and contemporary bird data for the Bombay Natural History Society (BNHS) — a progressive web app for phone and tablet that makes data collection, management and analysis efficient for conservation and ornithological research.</p>
+    <dl data-reveal="380" style="flex:0 1 460px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px 24px;">
+      <div><dt style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Role</dt><dd style="margin-top:6px; font-size:15px;">Product Designer</dd></div>
+      <div><dt style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Timeline</dt><dd style="margin-top:6px; font-size:15px;">Jan – Jul 2024</dd></div>
+      <div><dt style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Platform</dt><dd style="margin-top:6px; font-size:15px;">PWA · Mobile &amp; tablet</dd></div>
+    </dl>
+  </div>
+  <div ref="{{ hxRef }}" data-reveal="420" style="margin-top:clamp(56px,9vh,96px); display:flex; flex-wrap:wrap; gap:16px clamp(16px,3vw,40px); padding:clamp(14px,2.4vw,28px); border-radius:28px; background:#eef5ef;">
+    <div style="flex:3 1 380px; max-width:100%; display:flex; flex-direction:column; gap:18px; padding:clamp(18px,2.2vw,26px); border-radius:20px; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.05), 0 30px 60px -36px rgba(31,106,58,.4);">
+      <div ref="{{ brCardRef }}" style="display:flex; flex-direction:column; gap:18px;">
+        <div style="display:flex; justify-content:space-between; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span>New record · {{ brRing }}</span><span>{{ brTime }}</span></div>
+        <div>
+          <div style="font-size:clamp(22px,2.4vw,28px); line-height:1.1; font-weight:500; letter-spacing:-0.03em;">{{ brName }}</div>
+          <div style="margin-top:4px; font-family:'Instrument Serif',serif; font-style:italic; font-size:18px; color:#55575e;">{{ brLatin }}</div>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(112px,1fr)); gap:8px;">
+          <sc-for list="{{ brMeasures }}" as="m" hint-placeholder-count="6">
+            <div style="display:flex; flex-direction:column; gap:4px; padding:10px 12px; border-radius:12px; background:{{ m.bg }}; box-shadow:{{ m.sh }}; transition:background .3s ease, box-shadow .3s ease;">
+              <span style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">{{ m.k }}</span>
+              <span style="font-size:17px; font-weight:500; font-variant-numeric:tabular-nums; color:{{ m.c }}; transition:color .3s ease;">{{ m.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+          <sc-for list="{{ brTraits }}" as="b" hint-placeholder-count="4">
+            <span style="display:inline-flex; align-items:center; gap:6px; height:30px; padding:0 12px; border-radius:999px; font-size:13px; background:{{ b.bg }}; color:{{ b.c }}; border:1px solid {{ b.bd }}; transition:background .3s ease, color .3s ease, border-color .3s ease;"><span style="color:#8b8d94;">{{ b.k }}</span>{{ b.v }}</span>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px 10px; padding-top:14px; border-top:1px solid rgba(15,16,19,.07); font-size:13px; color:{{ brStC }};">
+        <span style="width:8px; height:8px; flex:none; border-radius:50%; background:{{ brStDot }}; transition:background .3s ease;"></span>{{ brStatus }}
+        <span style="margin-left:auto; font-family:'Geist Mono',monospace; font-size:12px; color:#8b8d94; font-variant-numeric:tabular-nums;">{{ brDone }} / 10 fields</span>
+      </div>
+    </div>
+    <div style="flex:2 1 260px; max-width:100%; display:flex; flex-direction:column; gap:12px; padding:clamp(4px,1vw,12px) 2px;">
+      <span style="font-family:'Geist Mono',monospace; font-size:12px; color:#1f6a3a;">Session 14 · Uran mudflats</span>
+      <div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 12px;"><span style="font-size:clamp(44px,5vw,64px); line-height:.9; letter-spacing:-0.05em; font-weight:500; font-variant-numeric:tabular-nums;">{{ brCount }}</span><span style="font-family:'Instrument Serif',serif; font-style:italic; font-size:20px; color:#22703c;">birds ringed today</span></div>
+      <div ref="{{ brListRef }}" style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
+        <sc-for list="{{ brList }}" as="x" hint-placeholder-count="4">
+          <div style="display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:14px; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.04);">
+            <span style="width:26px; height:26px; flex:none; border-radius:50%; display:grid; place-items:center; background:#2b8248;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+            <span style="display:flex; flex-direction:column; min-width:0;"><span style="font-size:14px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ x.name }}</span><span style="font-family:'Geist Mono',monospace; font-size:11px; color:#6c6e75;">{{ x.ring }} · {{ x.t }}</span></span>
+            <span style="margin-left:auto; font-family:'Geist Mono',monospace; font-size:11px; color:#1f6a3a;">Synced</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  <div data-reveal="460" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr)); gap:16px; margin-top:clamp(40px,9vh,88px);">
+    <div style="padding:clamp(24px,3vw,36px); border-radius:28px; background:#ffffff; border:1px solid rgba(15,16,19,.07); display:flex; flex-direction:column; gap:16px;">
+      <div style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#22703c;">Responsibilities</div>
+      <div style="font-size:clamp(22px,2.3vw,30px); line-height:1.15; letter-spacing:-0.035em; font-weight:500; max-width:22ch;">From the first interview to dev handover.</div>
+      <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:auto;">
+        <span style="padding:6px 12px; border-radius:999px; background:#e3efe5; color:#1f6a3a; font-size:12px;">UX research</span>
+        <span style="padding:6px 12px; border-radius:999px; background:#e3efe5; color:#1f6a3a; font-size:12px;">UX design</span>
+        <span style="padding:6px 12px; border-radius:999px; background:#e3efe5; color:#1f6a3a; font-size:12px;">UI design</span>
+        <span style="padding:6px 12px; border-radius:999px; background:#e3efe5; color:#1f6a3a; font-size:12px;">Logo design</span>
+        <span style="padding:6px 12px; border-radius:999px; background:#e3efe5; color:#1f6a3a; font-size:12px;">Documentation</span>
+        <span style="padding:6px 12px; border-radius:999px; background:#e3efe5; color:#1f6a3a; font-size:12px;">Usability testing</span>
+        <span style="padding:6px 12px; border-radius:999px; background:#e3efe5; color:#1f6a3a; font-size:12px;">UAT</span>
+        <span style="padding:6px 12px; border-radius:999px; background:#e3efe5; color:#1f6a3a; font-size:12px;">KT</span>
+        <span style="padding:6px 12px; border-radius:999px; background:#e3efe5; color:#1f6a3a; font-size:12px;">Dev handover</span>
+        <span style="padding:6px 12px; border-radius:999px; background:#e3efe5; color:#1f6a3a; font-size:12px;">UX quality testing</span>
+      </div>
+    </div>
+    <div style="position:relative; min-height:280px; border-radius:28px; overflow:hidden; background:#dfe8e0;">
+      <img src="assets/brida/plover.jpg" alt="A plover on a tidal mudflat" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:60% 50%;">
+      <div style="position:absolute; left:16px; bottom:16px; display:flex; align-items:center; gap:10px; padding:8px 16px 8px 8px; border-radius:999px; background:rgba(255,255,255,.92); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);">
+        <span style="width:36px; height:36px; border-radius:50%; background:#ffffff; display:grid; place-items:center;"><img src="assets/brida/logo.webp" alt="Brida logo" style="width:24px; height:auto;"></span>
+        <span style="display:flex; flex-direction:column; line-height:1.2;"><span style="font-size:14px; font-weight:500;">Brida</span><span style="font-size:12px; color:#55575e;">Logo designed for the app</span></span>
+      </div>
+    </div>
+  </div>
+  <div data-reveal="540" style="margin-top:16px; display:flex; justify-content:center; align-items:flex-start; gap:clamp(8px,2.4vw,32px); height:clamp(280px,46vw,600px); padding:clamp(28px,5vw,64px) clamp(12px,4vw,48px) 0; overflow:hidden; border-radius:28px; background:#eef5ef;">
+    <img src="assets/brida/m3.webp" alt="Add new record on mobile" style="width:min(19%,210px); height:auto; margin-top:clamp(28px,6vw,80px); filter:drop-shadow(0 30px 40px rgba(31,106,58,.22));">
+    <img src="assets/brida/t4.webp" alt="Sessions dashboard on tablet" style="width:min(46%,500px); height:auto; filter:drop-shadow(0 40px 50px rgba(31,106,58,.25));">
+    <img src="assets/brida/m7.webp" alt="Session summary on mobile" style="width:min(19%,210px); height:auto; margin-top:clamp(28px,6vw,80px); filter:drop-shadow(0 30px 40px rgba(31,106,58,.22));">
+  </div>
+</section>
+
+<section id="context" style="max-width:1200px; margin:0 auto; padding:clamp(88px,16vh,168px) clamp(20px,5vw,72px) 0; scroll-margin-top:40px;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#22703c;">01</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Context &amp; problems</div>
+  <h2 style="margin-top:22px; max-width:18ch; font-size:clamp(32px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="60" data-up="" style="display:inline-block;">A paper datasheet,</span></span>
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="140" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#2b8248;">out on the saltpan.</span></span>
+  </h2>
+  <p data-reveal="200" style="margin-top:28px; max-width:60ch; font-size:17px; line-height:1.65; color:#55575e;">Ringing teams net, measure, ring and release shorebirds, and every bird has been logged by hand. Three roles share each session — an admin who manages people and records, a ringer who runs the session, and staff members who enter bird data — and each was losing time and accuracy in a different place.</p>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(max(33.33% - 24px, min(100%, (720px - 100%) * 999)),1fr)); gap:12px; margin-top:clamp(40px,6vh,64px);">
+    <figure data-reveal="0" style="display:flex; flex-direction:column; gap:12px;"><div style="aspect-ratio:4/5; border-radius:22px; overflow:hidden; background:#dfe3dc;"><img src="assets/brida/field-nets.jpg" alt="Mist nets strung across a saltpan" loading="lazy" style="display:block; width:100%; height:100%; object-fit:cover; object-position:38% 50%;"></div><figcaption style="display:flex; gap:10px; font-size:14px; color:#55575e;"><span style="font-family:'Geist Mono',monospace; font-size:11px; color:#22703c; padding-top:2px;">01</span>Mist nets across the saltpan</figcaption></figure>
+    <figure data-reveal="90" style="display:flex; flex-direction:column; gap:12px;"><div style="aspect-ratio:4/5; border-radius:22px; overflow:hidden; background:#dfe3dc;"><img src="assets/brida/field-ringing.jpg" alt="A ringer fitting a ring to a shorebird" loading="lazy" style="display:block; width:100%; height:100%; object-fit:cover; object-position:48% 50%;"></div><figcaption style="display:flex; gap:10px; font-size:14px; color:#55575e;"><span style="font-family:'Geist Mono',monospace; font-size:11px; color:#22703c; padding-top:2px;">02</span>Fitting a ring by hand</figcaption></figure>
+    <figure data-reveal="180" style="display:flex; flex-direction:column; gap:12px;"><div style="aspect-ratio:4/5; border-radius:22px; overflow:hidden; background:#dfe3dc;"><img src="assets/brida/datasheet.jpg" alt="A handwritten BNHS ringing datasheet" loading="lazy" style="display:block; width:100%; height:100%; object-fit:cover; object-position:50% 52%;"></div><figcaption style="display:flex; gap:10px; font-size:14px; color:#55575e;"><span style="font-family:'Geist Mono',monospace; font-size:11px; color:#22703c; padding-top:2px;">03</span>The BNHS datasheet it replaces</figcaption></figure>
+  </div>
+
+  <div data-reveal="0" style="margin-top:clamp(56px,9vh,96px); font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Problems &amp; pain points by role</div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:12px; margin-top:18px;">
+    <div data-reveal="0" style="display:flex; flex-direction:column; gap:22px; padding:clamp(22px,2.6vw,30px); border-radius:28px; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+      <div style="display:flex; flex-direction:column; gap:8px;"><span style="align-self:flex-start; padding:5px 10px; border-radius:999px; background:#e3efe5; color:#1f6a3a; font-family:'Geist Mono',monospace; font-size:11px;">Role 01</span><span style="font-size:24px; font-weight:500; letter-spacing:-0.03em;">Admin</span><span style="font-size:14px; line-height:1.5; color:#6c6e75;">Manages people, permissions and records.</span></div>
+      <div style="display:flex; flex-direction:column; gap:10px;"><span style="font-size:13px; font-weight:500;">Problems</span>
+        <ul style="display:flex; flex-direction:column; gap:8px;">
+          <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#55575e;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#2b8248;"></span>Difficulty managing user permissions and access requests.</li>
+          <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#55575e;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#2b8248;"></span>Ensuring security and troubleshooting registration issues.</li>
+          <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#55575e;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#2b8248;"></span>Challenges with remote troubleshooting.</li>
+        </ul>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:10px; padding-top:20px; border-top:1px solid rgba(15,16,19,.08);"><span style="font-size:13px; font-weight:500;">Pain points</span>
+        <ul style="display:flex; flex-direction:column; gap:8px;">
+          <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#55575e;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#c9a64a;"></span>Managing user permissions, access requests and security.</li>
+          <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#55575e;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#c9a64a;"></span>Handling technical issues and remote troubleshooting.</li>
+          <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#55575e;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#c9a64a;"></span>Balancing workloads, training users and providing updates.</li>
+        </ul>
+      </div>
+    </div>
+    <div data-reveal="90" style="display:flex; flex-direction:column; gap:22px; padding:clamp(22px,2.6vw,30px); border-radius:28px; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+      <div style="display:flex; flex-direction:column; gap:8px;"><span style="align-self:flex-start; padding:5px 10px; border-radius:999px; background:#e3efe5; color:#1f6a3a; font-family:'Geist Mono',monospace; font-size:11px;">Role 02</span><span style="font-size:24px; font-weight:500; letter-spacing:-0.03em;">Ringer</span><span style="font-size:14px; line-height:1.5; color:#6c6e75;">Runs the session and owns its data.</span></div>
+      <div style="display:flex; flex-direction:column; gap:10px;"><span style="font-size:13px; font-weight:500;">Problems</span>
+        <ul style="display:flex; flex-direction:column; gap:8px;">
+          <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#55575e;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#2b8248;"></span>Issues with session management and technical glitches.</li>
+          <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#55575e;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#2b8248;"></span>Forgetting to stop sessions, causing data inaccuracies.</li>
+          <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#55575e;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#2b8248;"></span>Balancing data accuracy and speed during fieldwork.</li>
+          <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#55575e;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#2b8248;"></span>Internet connectivity interruptions during data entry.</li>
+        </ul>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:10px; padding-top:20px; border-top:1px solid rgba(15,16,19,.08);"><span style="font-size:13px; font-weight:500;">Pain points</span>
+        <ul style="display:flex; flex-direction:column; gap:8px;">
+          <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#55575e;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#c9a64a;"></span>Dealing with technical issues and connectivity interruptions.</li>
+          <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#55575e;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#c9a64a;"></span>Managing session timing, large data volumes and accuracy.</li>
+          <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#55575e;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#c9a64a;"></span>Coping with stress, app updates and team coordination.</li>
+        </ul>
+      </div>
+    </div>
+    <div data-reveal="180" style="display:flex; flex-direction:column; gap:22px; padding:clamp(22px,2.6vw,30px); border-radius:28px; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+      <div style="display:flex; flex-direction:column; gap:8px;"><span style="align-self:flex-start; padding:5px 10px; border-radius:999px; background:#e3efe5; color:#1f6a3a; font-family:'Geist Mono',monospace; font-size:11px;">Role 03</span><span style="font-size:24px; font-weight:500; letter-spacing:-0.03em;">Staff member</span><span style="font-size:14px; line-height:1.5; color:#6c6e75;">Enters bird data inside a ringer’s session.</span></div>
+      <div style="display:flex; flex-direction:column; gap:10px;"><span style="font-size:13px; font-weight:500;">Problems</span>
+        <ul style="display:flex; flex-direction:column; gap:8px;">
+          <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#55575e;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#2b8248;"></span>Confusion with session IDs and data entry protocols.</li>
+          <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#55575e;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#2b8248;"></span>Limited editing options and inconsistent data quality.</li>
+          <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#55575e;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#2b8248;"></span>Technical difficulties navigating the app.</li>
+        </ul>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:10px; padding-top:20px; border-top:1px solid rgba(15,16,19,.08);"><span style="font-size:13px; font-weight:500;">Pain points</span>
+        <ul style="display:flex; flex-direction:column; gap:8px;">
+          <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#55575e;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#c9a64a;"></span>Difficulty accessing sessions and navigating the app.</li>
+          <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#55575e;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#c9a64a;"></span>Limited contribution and unclear data entry protocols.</li>
+          <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#55575e;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#c9a64a;"></span>Device compatibility, distractions and communication challenges.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div data-reveal="0" style="margin-top:clamp(56px,9vh,96px); font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Problem statements</div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr)); column-gap:clamp(24px,4vw,56px); margin-top:14px;">
+    <div data-reveal="0" style="display:grid; grid-template-columns:36px minmax(0,1fr); gap:4px 12px; padding:20px 0; border-top:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#22703c; padding-top:4px;">01</span><span style="font-size:17px; font-weight:500; letter-spacing:-0.02em;">User access management</span><span style="grid-column:2; font-size:14px; line-height:1.55; color:#6c6e75;">Admins face delays and risks in managing permissions and ensuring data security.</span></div>
+    <div data-reveal="40" style="display:grid; grid-template-columns:36px minmax(0,1fr); gap:4px 12px; padding:20px 0; border-top:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#22703c; padding-top:4px;">02</span><span style="font-size:17px; font-weight:500; letter-spacing:-0.02em;">Technical issues</span><span style="grid-column:2; font-size:14px; line-height:1.55; color:#6c6e75;">Frequent glitches, slow performance and connectivity problems disrupt workflows.</span></div>
+    <div data-reveal="0" style="display:grid; grid-template-columns:36px minmax(0,1fr); gap:4px 12px; padding:20px 0; border-top:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#22703c; padding-top:4px;">03</span><span style="font-size:17px; font-weight:500; letter-spacing:-0.02em;">Data security</span><span style="grid-column:2; font-size:14px; line-height:1.55; color:#6c6e75;">Concerns about data safety reduce user trust and engagement.</span></div>
+    <div data-reveal="40" style="display:grid; grid-template-columns:36px minmax(0,1fr); gap:4px 12px; padding:20px 0; border-top:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#22703c; padding-top:4px;">04</span><span style="font-size:17px; font-weight:500; letter-spacing:-0.02em;">Training and support</span><span style="grid-column:2; font-size:14px; line-height:1.55; color:#6c6e75;">Lack of adequate training leads to low engagement and errors.</span></div>
+    <div data-reveal="0" style="display:grid; grid-template-columns:36px minmax(0,1fr); gap:4px 12px; padding:20px 0; border-top:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#22703c; padding-top:4px;">05</span><span style="font-size:17px; font-weight:500; letter-spacing:-0.02em;">Session management</span><span style="grid-column:2; font-size:14px; line-height:1.55; color:#6c6e75;">Ringers struggle with timing, causing data inaccuracies and inefficiencies.</span></div>
+    <div data-reveal="40" style="display:grid; grid-template-columns:36px minmax(0,1fr); gap:4px 12px; padding:20px 0; border-top:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#22703c; padding-top:4px;">06</span><span style="font-size:17px; font-weight:500; letter-spacing:-0.02em;">Data accuracy</span><span style="grid-column:2; font-size:14px; line-height:1.55; color:#6c6e75;">Rushed entries and unclear requirements affect data quality.</span></div>
+    <div data-reveal="0" style="display:grid; grid-template-columns:36px minmax(0,1fr); gap:4px 12px; padding:20px 0; border-top:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#22703c; padding-top:4px;">07</span><span style="font-size:17px; font-weight:500; letter-spacing:-0.02em;">Compatibility</span><span style="grid-column:2; font-size:14px; line-height:1.55; color:#6c6e75;">Device and OS issues hinder usability in the field.</span></div>
+    <div data-reveal="40" style="display:grid; grid-template-columns:36px minmax(0,1fr); gap:4px 12px; padding:20px 0; border-top:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#22703c; padding-top:4px;">08</span><span style="font-size:17px; font-weight:500; letter-spacing:-0.02em;">Communication gaps</span><span style="grid-column:2; font-size:14px; line-height:1.55; color:#6c6e75;">Poor communication delays issue resolution and creates conflicts.</span></div>
+    <div data-reveal="0" style="display:grid; grid-template-columns:36px minmax(0,1fr); gap:4px 12px; padding:20px 0; border-top:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#22703c; padding-top:4px;">09</span><span style="font-size:17px; font-weight:500; letter-spacing:-0.02em;">Data management</span><span style="grid-column:2; font-size:14px; line-height:1.55; color:#6c6e75;">Large data volumes lead to disorganisation and retrieval challenges.</span></div>
+    <div data-reveal="40" style="display:grid; grid-template-columns:36px minmax(0,1fr); gap:4px 12px; padding:20px 0; border-top:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#22703c; padding-top:4px;">10</span><span style="font-size:17px; font-weight:500; letter-spacing:-0.02em;">Usability</span><span style="grid-column:2; font-size:14px; line-height:1.55; color:#6c6e75;">An unintuitive interface causes navigation difficulties and inefficiencies.</span></div>
+  </div>
+</section>
+
+<section id="research" style="max-width:1200px; margin:0 auto; padding:clamp(88px,16vh,168px) clamp(20px,5vw,72px) 0; scroll-margin-top:40px;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#22703c;">02</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Research &amp; goals</div>
+  <h2 style="margin-top:22px; max-width:18ch; font-size:clamp(32px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="60" data-up="" style="display:inline-block;">Listen at the net,</span></span>
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="140" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#2b8248;">count the season.</span></span>
+  </h2>
+  <div style="display:grid; grid-template-columns:{{ researchCols }}; gap:clamp(24px,4vw,56px); align-items:stretch; margin-top:clamp(40px,6vh,64px);">
+    <div style="display:flex; flex-direction:column; border-top:1px solid rgba(15,16,19,.1);">
+      <div data-reveal="0" style="display:flex; flex-direction:column; gap:14px; padding:28px 0; border-bottom:1px solid rgba(15,16,19,.1);">
+        <div style="display:flex; align-items:baseline; gap:14px;"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#22703c;">01</span><span style="font-size:clamp(20px,2vw,26px); font-weight:500; letter-spacing:-0.03em;">Primary research</span></div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); gap:12px 24px;">
+          <div style="display:flex; flex-direction:column; gap:4px;"><span style="font-size:15px; font-weight:500;">User interviews</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">Admins, ringers and staff members on their experiences, pain points and expectations.</span></div>
+          <div style="display:flex; flex-direction:column; gap:4px;"><span style="font-size:15px; font-weight:500;">Usability study</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">Testing functionality in real-world conditions to find workflow and usability issues.</span></div>
+        </div>
+      </div>
+      <div data-reveal="60" style="display:flex; flex-direction:column; gap:14px; padding:28px 0; border-bottom:1px solid rgba(15,16,19,.1);">
+        <div style="display:flex; align-items:baseline; gap:14px;"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#22703c;">02</span><span style="font-size:clamp(20px,2vw,26px); font-weight:500; letter-spacing:-0.03em;">Qualitative research</span></div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(max(33.33% - 24px, min(100%, (720px - 100%) * 999)),1fr)); gap:12px 24px;">
+          <div style="display:flex; flex-direction:column; gap:4px;"><span style="font-size:15px; font-weight:500;">Observations</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">Team interactions, fieldwork and app usage in natural settings.</span></div>
+          <div style="display:flex; flex-direction:column; gap:4px;"><span style="font-size:15px; font-weight:500;">Conversations</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">Insights from informal discussions about workflows and challenges.</span></div>
+          <div style="display:flex; flex-direction:column; gap:4px;"><span style="font-size:15px; font-weight:500;">Needs and aims</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">The core goals and motivations of each user group.</span></div>
+        </div>
+      </div>
+      <div data-reveal="120" style="display:flex; flex-direction:column; gap:14px; padding:28px 0; border-bottom:1px solid rgba(15,16,19,.1);">
+        <div style="display:flex; align-items:baseline; gap:14px;"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#22703c;">03</span><span style="font-size:clamp(20px,2vw,26px); font-weight:500; letter-spacing:-0.03em;">Quantitative research</span></div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); gap:12px 24px;">
+          <div style="display:flex; flex-direction:column; gap:4px;"><span style="font-size:15px; font-weight:500;">Counting and measuring</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">Birds tagged, sessions conducted and data recorded across a season.</span></div>
+          <div style="display:flex; flex-direction:column; gap:4px;"><span style="font-size:15px; font-weight:500;">Numerical analysis</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">Task completion times, error rates and session durations.</span></div>
+        </div>
+      </div>
+    </div>
+    <figure data-reveal="120" style="position:relative; min-height:360px; border-radius:28px; overflow:hidden; background:#dfe3dc;">
+      <img src="assets/brida/field-release.jpg" alt="Ringers holding two shorebirds before release at the saltpan" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 58%;">
+      <figcaption style="position:absolute; left:16px; bottom:16px; padding:8px 14px; border-radius:999px; background:rgba(255,255,255,.92); font-size:13px;">Ringed, measured, released</figcaption>
+    </figure>
+  </div>
+
+  <div data-reveal="0" style="margin-top:clamp(56px,9vh,96px); font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Goals by role</div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:16px; margin-top:18px;">
+    <div data-reveal="0" style="padding:clamp(24px,3vw,32px); border-radius:28px; background:#0f1013; color:#f6f5f2; display:flex; flex-direction:column; gap:16px;">
+      <span style="align-self:flex-start; padding:5px 10px; border-radius:999px; background:rgba(143,211,166,.14); font-family:'Geist Mono',monospace; font-size:11px; color:#8fd3a6;">Admin</span>
+      <span style="font-size:clamp(21px,2.1vw,27px); line-height:1.14; letter-spacing:-0.03em; font-weight:500;">Secure access, handled fast</span>
+      <ul style="display:flex; flex-direction:column; gap:8px;">
+        <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#b4b6bd;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#8fd3a6;"></span>Manage user permissions efficiently for secure, appropriate access.</li>
+        <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#b4b6bd;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#8fd3a6;"></span>Streamline registration and promptly handle access requests.</li>
+        <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#b4b6bd;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#8fd3a6;"></span>Ensure data security and regulatory compliance.</li>
+        <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#b4b6bd;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#8fd3a6;"></span>Provide user training and ongoing support.</li>
+        <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#b4b6bd;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#8fd3a6;"></span>Communicate effectively and address concerns swiftly.</li>
+        <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#b4b6bd;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#8fd3a6;"></span>Monitor usage and gather feedback for continuous improvement.</li>
+      </ul>
+    </div>
+    <div data-reveal="90" style="padding:clamp(24px,3vw,32px); border-radius:28px; background:#0f1013; color:#f6f5f2; display:flex; flex-direction:column; gap:16px;">
+      <span style="align-self:flex-start; padding:5px 10px; border-radius:999px; background:rgba(143,211,166,.14); font-family:'Geist Mono',monospace; font-size:11px; color:#8fd3a6;">Ringer</span>
+      <span style="font-size:clamp(21px,2.1vw,27px); line-height:1.14; letter-spacing:-0.03em; font-weight:500;">Sessions that run themselves</span>
+      <ul style="display:flex; flex-direction:column; gap:8px;">
+        <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#b4b6bd;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#8fd3a6;"></span>Efficiently create and manage sessions for field data collection.</li>
+        <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#b4b6bd;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#8fd3a6;"></span>Accurately record session details, including timing and location.</li>
+        <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#b4b6bd;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#8fd3a6;"></span>Assign tasks to staff members and keep coordination smooth.</li>
+        <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#b4b6bd;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#8fd3a6;"></span>Maintain data integrity through precise entry and session management.</li>
+        <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#b4b6bd;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#8fd3a6;"></span>Guide staff members and resolve issues during fieldwork.</li>
+        <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#b4b6bd;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#8fd3a6;"></span>Optimise productivity while minimising errors.</li>
+      </ul>
+    </div>
+    <div data-reveal="180" style="padding:clamp(24px,3vw,32px); border-radius:28px; background:#0f1013; color:#f6f5f2; display:flex; flex-direction:column; gap:16px;">
+      <span style="align-self:flex-start; padding:5px 10px; border-radius:999px; background:rgba(143,211,166,.14); font-family:'Geist Mono',monospace; font-size:11px; color:#8fd3a6;">Staff member</span>
+      <span style="font-size:clamp(21px,2.1vw,27px); line-height:1.14; letter-spacing:-0.03em; font-weight:500;">Bird data, right first time</span>
+      <ul style="display:flex; flex-direction:column; gap:8px;">
+        <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#b4b6bd;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#8fd3a6;"></span>Access sessions effortlessly and input bird data accurately.</li>
+        <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#b4b6bd;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#8fd3a6;"></span>Follow data entry protocols for completeness and accuracy.</li>
+        <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#b4b6bd;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#8fd3a6;"></span>Collaborate effectively with the ringer and team.</li>
+        <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#b4b6bd;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#8fd3a6;"></span>Use training and support resources to work proficiently.</li>
+        <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#b4b6bd;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#8fd3a6;"></span>Align with project goals and contribute meaningfully.</li>
+        <li style="display:grid; grid-template-columns:12px minmax(0,1fr); gap:6px; font-size:14px; line-height:1.55; color:#b4b6bd;"><span style="width:5px; height:5px; margin-top:9px; border-radius:50%; background:#8fd3a6;"></span>Give usability feedback for app enhancements.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="personas" style="max-width:1200px; margin:0 auto; padding:clamp(88px,16vh,168px) clamp(20px,5vw,72px) 0; scroll-margin-top:40px;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#22703c;">03</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Personas</div>
+  <h2 style="margin-top:22px; max-width:18ch; font-size:clamp(32px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="60" data-up="" style="display:inline-block;">Four people,</span></span>
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="140" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#2b8248;">one field season.</span></span>
+  </h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr)); gap:16px; margin-top:clamp(40px,6vh,64px);">
+    <article data-reveal="0" style="display:flex; flex-direction:column; border-radius:28px; overflow:hidden; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); align-items:center; gap:clamp(16px,2.4vw,28px); padding:clamp(16px,2vw,20px);">
+        <div style="aspect-ratio:1/1; border-radius:20px; background:#eef5ef; display:grid; place-items:center; overflow:hidden;"><img src="assets/brida/persona-rajesh.webp" alt="Illustration for Rajesh" loading="lazy" style="width:92%; height:auto;"></div>
+        <div style="display:flex; flex-direction:column; gap:10px; padding-right:8px;">
+          <span style="align-self:flex-start; padding:5px 10px; border-radius:999px; background:#e3efe5; color:#1f6a3a; font-family:'Geist Mono',monospace; font-size:11px;">Ringer</span>
+          <span style="font-size:26px; font-weight:500; letter-spacing:-0.03em; line-height:1.1;">Rajesh Patel</span>
+          <span style="font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;">38 · Male · Mumbai</span>
+          <blockquote style="margin-top:6px; font-family:'Instrument Serif',serif; font-style:italic; font-size:21px; line-height:1.25; color:#0f1013;">“Every bird sighting counts, but managing sessions efficiently is a challenge!”</blockquote>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); gap:16px 24px; padding:20px clamp(20px,2.4vw,28px) clamp(22px,2.6vw,28px); border-top:1px solid rgba(15,16,19,.07);">
+        <div style="display:flex; flex-direction:column; gap:6px;"><span style="font-size:13px; font-weight:500;">Frustrations</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">Forgetting to stop session and net times, technical glitches in the app, and feeling overwhelmed by the volume of bird data.</span></div>
+        <div style="display:flex; flex-direction:column; gap:6px;"><span style="font-size:13px; font-weight:500;">Problem statement</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">Rajesh struggles to manage session timing effectively and keep data accurate during fieldwork.</span></div>
+      </div>
+    </article>
+    <article data-reveal="90" style="display:flex; flex-direction:column; border-radius:28px; overflow:hidden; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); align-items:center; gap:clamp(16px,2.4vw,28px); padding:clamp(16px,2vw,20px);">
+        <div style="aspect-ratio:1/1; border-radius:20px; background:#eef5ef; display:grid; place-items:center; overflow:hidden;"><img src="assets/brida/persona-priya.webp" alt="Illustration for Priya" loading="lazy" style="width:92%; height:auto;"></div>
+        <div style="display:flex; flex-direction:column; gap:10px; padding-right:8px;">
+          <span style="align-self:flex-start; padding:5px 10px; border-radius:999px; background:#e3efe5; color:#1f6a3a; font-family:'Geist Mono',monospace; font-size:11px;">Admin</span>
+          <span style="font-size:26px; font-weight:500; letter-spacing:-0.03em; line-height:1.1;">Priya Sharma</span>
+          <span style="font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;">45 · Female · Mumbai</span>
+          <blockquote style="margin-top:6px; font-family:'Instrument Serif',serif; font-style:italic; font-size:21px; line-height:1.25; color:#0f1013;">“Balancing data access and security is like walking a tightrope!”</blockquote>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); gap:16px 24px; padding:20px clamp(20px,2.4vw,28px) clamp(22px,2.6vw,28px); border-top:1px solid rgba(15,16,19,.07);">
+        <div style="display:flex; flex-direction:column; gap:6px;"><span style="font-size:13px; font-weight:500;">Frustrations</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">Handling multiple access requests, staying compliant with data protection regulations, and troubleshooting user issues remotely.</span></div>
+        <div style="display:flex; flex-direction:column; gap:6px;"><span style="font-size:13px; font-weight:500;">Problem statement</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">Priya struggles to manage user permissions efficiently while keeping data secure.</span></div>
+      </div>
+    </article>
+    <article data-reveal="0" style="display:flex; flex-direction:column; border-radius:28px; overflow:hidden; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); align-items:center; gap:clamp(16px,2.4vw,28px); padding:clamp(16px,2vw,20px);">
+        <div style="aspect-ratio:1/1; border-radius:20px; background:#eef5ef; display:grid; place-items:center; overflow:hidden;"><img src="assets/brida/persona-anjali.webp" alt="Illustration for Anjali" loading="lazy" style="width:92%; height:auto;"></div>
+        <div style="display:flex; flex-direction:column; gap:10px; padding-right:8px;">
+          <span style="align-self:flex-start; padding:5px 10px; border-radius:999px; background:#e3efe5; color:#1f6a3a; font-family:'Geist Mono',monospace; font-size:11px;">Staff member</span>
+          <span style="font-size:26px; font-weight:500; letter-spacing:-0.03em; line-height:1.1;">Anjali Desai</span>
+          <span style="font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;">28 · Female · Bangalore</span>
+          <blockquote style="margin-top:6px; font-family:'Instrument Serif',serif; font-style:italic; font-size:21px; line-height:1.25; color:#0f1013;">“Every bird observation adds to our knowledge, but accessing sessions can be a hurdle!”</blockquote>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); gap:16px 24px; padding:20px clamp(20px,2.4vw,28px) clamp(22px,2.6vw,28px); border-top:1px solid rgba(15,16,19,.07);">
+        <div style="display:flex; flex-direction:column; gap:6px;"><span style="font-size:13px; font-weight:500;">Frustrations</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">Finding the correct session ID, feeling limited to data entry, and running into compatibility issues with the app.</span></div>
+        <div style="display:flex; flex-direction:column; gap:6px;"><span style="font-size:13px; font-weight:500;">Problem statement</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">Anjali struggles to access sessions and contribute bird data accurately.</span></div>
+      </div>
+    </article>
+    <article data-reveal="90" style="display:flex; flex-direction:column; border-radius:28px; overflow:hidden; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); align-items:center; gap:clamp(16px,2.4vw,28px); padding:clamp(16px,2vw,20px);">
+        <div style="aspect-ratio:1/1; border-radius:20px; background:#eef5ef; display:grid; place-items:center; overflow:hidden;"><img src="assets/brida/persona-deepak.webp" alt="Illustration for Deepak" loading="lazy" style="width:92%; height:auto;"></div>
+        <div style="display:flex; flex-direction:column; gap:10px; padding-right:8px;">
+          <span style="align-self:flex-start; padding:5px 10px; border-radius:999px; background:#e3efe5; color:#1f6a3a; font-family:'Geist Mono',monospace; font-size:11px;">Ringer</span>
+          <span style="font-size:26px; font-weight:500; letter-spacing:-0.03em; line-height:1.1;">Deepak Singh</span>
+          <span style="font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;">32 · Male · Jaipur</span>
+          <blockquote style="margin-top:6px; font-family:'Instrument Serif',serif; font-style:italic; font-size:21px; line-height:1.25; color:#0f1013;">“Capturing bird data is exhilarating, but managing it can be overwhelming!”</blockquote>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); gap:16px 24px; padding:20px clamp(20px,2.4vw,28px) clamp(22px,2.6vw,28px); border-top:1px solid rgba(15,16,19,.07);">
+        <div style="display:flex; flex-direction:column; gap:6px;"><span style="font-size:13px; font-weight:500;">Frustrations</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">The sheer volume of bird data, keeping it accurate under time pressure, and technical glitches in the app.</span></div>
+        <div style="display:flex; flex-direction:column; gap:6px;"><span style="font-size:13px; font-weight:500;">Problem statement</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">Deepak finds it hard to manage large volumes of bird data efficiently during fieldwork.</span></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="structure" style="max-width:1200px; margin:0 auto; padding:clamp(88px,16vh,168px) clamp(20px,5vw,72px) 0; scroll-margin-top:40px;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#22703c;">04</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Sitemap &amp; architecture</div>
+  <h2 style="margin-top:22px; max-width:18ch; font-size:clamp(32px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="60" data-up="" style="display:inline-block;">Mapped by role,</span></span>
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="140" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#2b8248;">before it was drawn.</span></span>
+  </h2>
+  <p data-reveal="200" style="margin-top:28px; max-width:60ch; font-size:17px; line-height:1.65; color:#55575e;">The sitemap lays out every screen behind the dashboard; the information architecture traces each flow — sign in, sessions, members, requests and settings — down to the individual fields a ringer fills in.</p>
+  <div style="display:grid; grid-template-columns:{{ structCols }}; gap:16px; align-items:stretch; margin-top:clamp(40px,6vh,64px);">
+    <figure data-reveal="0" style="display:flex; flex-direction:column; border-radius:28px; overflow:hidden; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px 20px; border-bottom:1px solid rgba(15,16,19,.07);"><span style="font-size:15px; font-weight:500;">Detailed sitemap</span><button onClick="{{ openSm }}" style="display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 12px; border:0; border-radius:999px; background:#f1f0ec; color:#0f1013; font-family:'Geist Mono',monospace; font-size:11px; cursor:pointer; transition:background .2s ease;" style-hover="background:#e6e5e0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg>Preview</button></div>
+      <button onClick="{{ openSm }}" aria-label="Preview the detailed sitemap" style="position:relative; flex:none; display:flex; align-items:center; justify-content:center; width:100%; height:clamp(280px,34vw,440px); padding:clamp(12px,2vw,24px); box-sizing:border-box; border:0; background:none; cursor:zoom-in;"><img src="assets/brida/sitemap.webp" alt="Detailed sitemap of the Brida app" loading="lazy" style="display:block; max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain;"><span style="position:absolute; right:16px; bottom:16px; display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 12px; border-radius:999px; background:rgba(15,16,19,.82); color:#ffffff; font-family:'Geist Mono',monospace; font-size:11px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path><path d="M11 8v6"></path><path d="M8 11h6"></path></svg>Click to preview</span></button>
+    </figure>
+    <figure data-reveal="120" style="display:flex; flex-direction:column; border-radius:28px; overflow:hidden; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px 20px; border-bottom:1px solid rgba(15,16,19,.07);"><span style="font-size:15px; font-weight:500;">Information architecture</span><button onClick="{{ openIa }}" style="display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 12px; border:0; border-radius:999px; background:#f1f0ec; color:#0f1013; font-family:'Geist Mono',monospace; font-size:11px; cursor:pointer; transition:background .2s ease;" style-hover="background:#e6e5e0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg>Preview</button></div>
+      <button onClick="{{ openIa }}" aria-label="Preview the information architecture" style="position:relative; flex:none; display:flex; align-items:center; justify-content:center; width:100%; height:clamp(280px,34vw,440px); padding:clamp(12px,2vw,24px); box-sizing:border-box; border:0; background:none; cursor:zoom-in;"><img src="assets/brida/ia.webp" alt="Information architecture flow of the Brida app" loading="lazy" style="display:block; max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain;"><span style="position:absolute; right:16px; bottom:16px; display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 12px; border-radius:999px; background:rgba(15,16,19,.82); color:#ffffff; font-family:'Geist Mono',monospace; font-size:11px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path><path d="M11 8v6"></path><path d="M8 11h6"></path></svg>Click to preview</span></button>
+    </figure>
+  </div>
+</section>
+
+<section id="features" style="max-width:1200px; margin:0 auto; padding:clamp(88px,16vh,168px) clamp(20px,5vw,72px) 0; scroll-margin-top:40px;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#22703c;">05</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Key features</div>
+  <h2 style="margin-top:22px; max-width:18ch; font-size:clamp(32px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="60" data-up="" style="display:inline-block;">Laws of UX,</span></span>
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="140" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#2b8248;">applied in the field.</span></span>
+  </h2>
+  <div style="margin-top:clamp(40px,6vh,64px);">
+    <div style="display:grid; grid-template-columns:{{ featCols }}; gap:clamp(24px,4vw,64px); align-items:center; padding:clamp(32px,5vh,56px) 0; border-top:1px solid rgba(15,16,19,.1);">
+      <div data-reveal="0" style="display:flex; flex-direction:column; gap:14px; max-width:48ch;">
+        <span style="font-family:'Geist Mono',monospace; font-size:12px; color:#22703c;">01 · Admin</span>
+        <h3 style="font-size:clamp(24px,2.6vw,34px); line-height:1.1; letter-spacing:-0.035em; font-weight:500;">Full control, without the clutter</h3>
+        <p style="font-size:15px; line-height:1.65; color:#55575e;">Admins have full control of the application, with user management built on familiar patterns and simplified decisions. They can assign or modify roles effortlessly and step in to do a staff member’s or ringer’s tasks when needed — intuitive navigation, operational flexibility and efficient oversight.</p>
+        <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:4px;"><span style="padding:5px 11px; border-radius:999px; background:#f3ecda; color:#6b5418; font-size:12px;">Jakob’s Law</span><span style="padding:5px 11px; border-radius:999px; background:#f3ecda; color:#6b5418; font-size:12px;">Hick’s Law</span></div>
+      </div>
+      <div data-reveal="120" style="display:flex; justify-content:center; align-items:flex-start; gap:clamp(10px,2vw,24px); height:clamp(340px,40vw,500px); padding:clamp(24px,4vw,48px) clamp(16px,3vw,40px) 0; overflow:hidden; border-radius:28px; background:#eef5ef;">
+        <img src="assets/brida/m1.webp" alt="Admin home with requests and members" loading="lazy" style="width:min(42%,230px); height:auto; filter:drop-shadow(0 30px 36px rgba(31,106,58,.22));">
+        <img src="assets/brida/m2.webp" alt="Members list" loading="lazy" style="width:min(42%,230px); height:auto; margin-top:48px; filter:drop-shadow(0 30px 36px rgba(31,106,58,.22));">
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns:{{ featCols }}; gap:clamp(24px,4vw,64px); align-items:center; padding:clamp(32px,5vh,56px) 0; border-top:1px solid rgba(15,16,19,.1);">
+      <div data-reveal="0" style="display:flex; flex-direction:column; gap:14px; max-width:48ch;">
+        <span style="font-family:'Geist Mono',monospace; font-size:12px; color:#22703c;">02 · Data entry</span>
+        <h3 style="font-size:clamp(24px,2.6vw,34px); line-height:1.1; letter-spacing:-0.035em; font-weight:500;">Forms built for the net-side</h3>
+        <p style="font-size:15px; line-height:1.65; color:#55575e;">Streamlined forms simplify choices, place controls where hands already are, and group related fields clearly — ring and bird details, then age, moult, plumage and brood patch as one-tap scores. Accuracy goes up, errors go down, and navigation stays seamless.</p>
+        <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:4px;"><span style="padding:5px 11px; border-radius:999px; background:#f3ecda; color:#6b5418; font-size:12px;">Hick’s Law</span><span style="padding:5px 11px; border-radius:999px; background:#f3ecda; color:#6b5418; font-size:12px;">Fitts’s Law</span><span style="padding:5px 11px; border-radius:999px; background:#f3ecda; color:#6b5418; font-size:12px;">Gestalt principles</span></div>
+      </div>
+      <div data-reveal="120" style="order:{{ stageOrd }}; display:flex; justify-content:center; align-items:flex-start; gap:clamp(10px,2vw,24px); height:clamp(340px,40vw,500px); padding:clamp(24px,4vw,48px) clamp(16px,3vw,40px) 0; overflow:hidden; border-radius:28px; background:#eef5ef;">
+        <img src="assets/brida/m3.webp" alt="Ring and bird details form" loading="lazy" style="width:min(42%,230px); height:auto; filter:drop-shadow(0 30px 36px rgba(31,106,58,.22));">
+        <img src="assets/brida/m4.webp" alt="Age, moulting, plumage and brood patch scores" loading="lazy" style="width:min(42%,230px); height:auto; margin-top:48px; filter:drop-shadow(0 30px 36px rgba(31,106,58,.22));">
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns:{{ featCols }}; gap:clamp(24px,4vw,64px); align-items:center; padding:clamp(32px,5vh,56px) 0; border-top:1px solid rgba(15,16,19,.1);">
+      <div data-reveal="0" style="display:flex; flex-direction:column; gap:14px; max-width:48ch;">
+        <span style="font-family:'Geist Mono',monospace; font-size:12px; color:#22703c;">03 · Historical data</span>
+        <h3 style="font-size:clamp(24px,2.6vw,34px); line-height:1.1; letter-spacing:-0.035em; font-weight:500;">Years of records, in and out</h3>
+        <p style="font-size:15px; line-height:1.65; color:#55575e;">Years of records can be imported and exported as Excel or PDF, centralising data for research. Chunked steps, well-placed actions and a calm visual design keep data management simple and research workflows efficient.</p>
+        <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:4px;"><span style="padding:5px 11px; border-radius:999px; background:#f3ecda; color:#6b5418; font-size:12px;">Miller’s Law</span><span style="padding:5px 11px; border-radius:999px; background:#f3ecda; color:#6b5418; font-size:12px;">Fitts’s Law</span><span style="padding:5px 11px; border-radius:999px; background:#f3ecda; color:#6b5418; font-size:12px;">Aesthetic-usability effect</span></div>
+      </div>
+      <div data-reveal="120" style="display:flex; justify-content:center; align-items:flex-start; gap:clamp(10px,2vw,24px); height:clamp(340px,40vw,500px); padding:clamp(24px,4vw,48px) clamp(16px,3vw,40px) 0; overflow:hidden; border-radius:28px; background:#eef5ef;">
+        <img src="assets/brida/m6.webp" alt="Choose files to upload" loading="lazy" style="width:min(42%,230px); height:auto; filter:drop-shadow(0 30px 36px rgba(31,106,58,.22));">
+        <img src="assets/brida/m5.webp" alt="Files uploading" loading="lazy" style="width:min(42%,230px); height:auto; margin-top:48px; filter:drop-shadow(0 30px 36px rgba(31,106,58,.22));">
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns:{{ featCols }}; gap:clamp(24px,4vw,64px); align-items:center; padding:clamp(32px,5vh,56px) 0; border-top:1px solid rgba(15,16,19,.1);">
+      <div data-reveal="0" style="display:flex; flex-direction:column; gap:14px; max-width:48ch;">
+        <span style="font-family:'Geist Mono',monospace; font-size:12px; color:#22703c;">04 · Session summary</span>
+        <h3 style="font-size:clamp(24px,2.6vw,34px); line-height:1.1; letter-spacing:-0.035em; font-weight:500;">Every session ends with the totals</h3>
+        <p style="font-size:15px; line-height:1.65; color:#55575e;">At the end of each session, users get a comprehensive summary — total birds recorded and session details in a clear table. Organised for readability and returned fast, it makes tracking and data review effortless.</p>
+        <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:4px;"><span style="padding:5px 11px; border-radius:999px; background:#f3ecda; color:#6b5418; font-size:12px;">Gestalt principles</span><span style="padding:5px 11px; border-radius:999px; background:#f3ecda; color:#6b5418; font-size:12px;">Doherty threshold</span></div>
+      </div>
+      <div data-reveal="120" style="order:{{ stageOrd }}; display:flex; justify-content:center; align-items:flex-start; gap:clamp(10px,2vw,24px); height:clamp(340px,40vw,500px); padding:clamp(24px,4vw,48px) clamp(16px,3vw,40px) 0; overflow:hidden; border-radius:28px; background:#eef5ef;">
+        <img src="assets/brida/m7.webp" alt="Session summary on mobile" loading="lazy" style="width:min(36%,210px); height:auto; margin-top:40px; filter:drop-shadow(0 30px 36px rgba(31,106,58,.22));">
+        <img src="assets/brida/t19.webp" alt="Session summary on tablet" loading="lazy" style="width:min(58%,360px); height:auto; filter:drop-shadow(0 30px 36px rgba(31,106,58,.22));">
+      </div>
+    </div>
+    <div style="display:grid; grid-template-columns:{{ featCols }}; gap:clamp(24px,4vw,64px); align-items:center; padding:clamp(32px,5vh,56px) 0; border-top:1px solid rgba(15,16,19,.1);">
+      <div data-reveal="0" style="display:flex; flex-direction:column; gap:14px; max-width:48ch;">
+        <span style="font-family:'Geist Mono',monospace; font-size:12px; color:#22703c;">05 · Mobile &amp; tablet</span>
+        <h3 style="font-size:clamp(24px,2.6vw,34px); line-height:1.1; letter-spacing:-0.035em; font-weight:500;">One form on mobile, two on tablet</h3>
+        <p style="font-size:15px; line-height:1.65; color:#55575e;">The mobile version shows one form at a time for focused input; the tablet shows two side by side to speed up data entry. Layouts adapt, targets stay easy to hit, and both versions remain intuitive and visually consistent.</p>
+        <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:4px;"><span style="padding:5px 11px; border-radius:999px; background:#f3ecda; color:#6b5418; font-size:12px;">Responsive design</span><span style="padding:5px 11px; border-radius:999px; background:#f3ecda; color:#6b5418; font-size:12px;">Fitts’s Law</span><span style="padding:5px 11px; border-radius:999px; background:#f3ecda; color:#6b5418; font-size:12px;">Aesthetic-usability effect</span></div>
+      </div>
+      <div data-reveal="120" style="display:flex; justify-content:center; align-items:flex-start; gap:clamp(10px,2vw,24px); height:clamp(340px,40vw,500px); padding:clamp(24px,4vw,48px) clamp(16px,3vw,40px) 0; overflow:hidden; border-radius:28px; background:#eef5ef;">
+        <img src="assets/brida/t1.webp" alt="Two record forms side by side on tablet" loading="lazy" style="width:min(60%,370px); height:auto; filter:drop-shadow(0 30px 36px rgba(31,106,58,.22));">
+        <img src="assets/brida/m3.webp" alt="One record form on mobile" loading="lazy" style="width:min(32%,190px); height:auto; margin-top:56px; filter:drop-shadow(0 30px 36px rgba(31,106,58,.22));">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="screens" style="max-width:1200px; margin:0 auto; padding:clamp(88px,16vh,168px) clamp(20px,5vw,72px) 0; scroll-margin-top:40px;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#22703c;">06</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Screens</div>
+  <h2 style="margin-top:22px; max-width:18ch; font-size:clamp(32px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="60" data-up="" style="display:inline-block;">One system,</span></span>
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="140" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#2b8248;">two form factors.</span></span>
+  </h2>
+  <div data-reveal="200" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; margin-top:clamp(32px,5vh,48px);">
+    <div role="tablist" aria-label="Device" style="display:inline-flex; gap:2px; padding:4px; border-radius:999px; background:#ffffff; border:1px solid rgba(15,16,19,.08);">
+      <button type="button" role="tab" aria-selected="{{ mSel }}" onClick="{{ showM }}" style="display:inline-flex; align-items:center; gap:8px; height:40px; padding:0 18px; border:0; border-radius:999px; background:{{ mBg }}; color:{{ mC }}; font:inherit; font-size:14px; font-weight:500; cursor:pointer; transition:background .25s ease, color .25s ease;">Mobile<span style="font-family:'Geist Mono',monospace; font-size:11px; font-weight:400; opacity:.75;">09</span></button>
+      <button type="button" role="tab" aria-selected="{{ tSel }}" onClick="{{ showT }}" style="display:inline-flex; align-items:center; gap:8px; height:40px; padding:0 18px; border:0; border-radius:999px; background:{{ tBg }}; color:{{ tC }}; font:inherit; font-size:14px; font-weight:500; cursor:pointer; transition:background .25s ease, color .25s ease;">Tablet<span style="font-family:'Geist Mono',monospace; font-size:11px; font-weight:400; opacity:.75;">18</span></button>
+    </div>
+    <div style="display:flex; gap:8px;">
+      <button type="button" aria-label="Previous screens" onClick="{{ galPrev }}" style="display:grid; place-items:center; width:44px; height:44px; border-radius:50%; border:1px solid rgba(15,16,19,.14); background:#ffffff; color:#0f1013; cursor:pointer; transition:background .2s ease, transform .2s ease;" style-hover="background:#eef5ef;" style-active="transform:scale(.94);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg></button>
+      <button type="button" aria-label="Next screens" onClick="{{ galNext }}" style="display:grid; place-items:center; width:44px; height:44px; border-radius:50%; border:0; background:#0f1013; color:#f6f5f2; cursor:pointer; transition:background .2s ease, transform .2s ease;" style-hover="background:#2b8248;" style-active="transform:scale(.94);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+    </div>
+  </div>
+  <div data-track="" ref="{{ trackRef }}" style="display:flex; gap:clamp(12px,2vw,28px); overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding:0 clamp(20px,3vw,36px); scrollbar-width:none; margin-top:16px; padding:clamp(24px,3vw,40px) clamp(20px,3vw,36px); border-radius:28px; background:#eef5ef;">
+    <sc-for list="{{ gal }}" as="x" hint-placeholder-count="5">
+      <figure style="flex:none; width:{{ itemW }}; display:flex; flex-direction:column; gap:14px; scroll-snap-align:start;">
+        <img src="{{ x.src }}" alt="{{ x.t }}" loading="lazy" style="display:block; width:100%; height:auto; filter:drop-shadow(0 24px 30px rgba(31,106,58,.2));">
+        <figcaption style="display:flex; align-items:center; gap:10px; padding-left:6px; font-size:14px; font-weight:500;"><span style="font-family:'Geist Mono',monospace; font-size:11px; font-weight:400; color:#22703c;">{{ x.n }}</span>{{ x.t }}</figcaption>
+      </figure>
+    </sc-for>
+  </div>
+  <p style="margin-top:14px; font-size:14px; color:#6c6e75;">Plus 10+ more screens in each set.</p>
+</section>
+
+<section id="impact" style="max-width:1280px; margin:0 auto; padding:clamp(88px,16vh,168px) clamp(12px,2vw,24px) 0; scroll-margin-top:40px;">
+  <div style="padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px); border-radius:clamp(28px,4vw,48px); background:#0f1013; color:#f6f5f2; position:relative; overflow:hidden;">
+    <span aria-hidden="true" style="position:absolute; right:-160px; top:-220px; width:560px; height:560px; border-radius:50%; background:radial-gradient(closest-side, rgba(43,130,72,.32), transparent);"></span>
+    <div data-reveal="0" style="position:relative; display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#a3a5ad;"><span style="color:#8fd3a6;">07</span><span style="width:28px; height:1px; background:rgba(255,255,255,.25);"></span>Impact</div>
+    <h2 style="position:relative; margin-top:22px; max-width:19ch; font-size:clamp(32px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+      <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="60" data-up="" style="display:inline-block;">5,000 birds a season,</span></span>
+      <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="140" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#8fd3a6;">off paper.</span></span>
+    </h2>
+    <p data-reveal="200" style="position:relative; margin-top:24px; max-width:62ch; font-size:16px; line-height:1.65; color:#b4b6bd;">Brida supports conservation initiatives in coastal and saltpan ecosystems. Real-time, mobile-friendly entry made the field team faster and the data more reliable — and every tagged bird becomes a data point for international migration studies.</p>
+    <div style="position:relative; display:grid; grid-template-columns:repeat(auto-fit,minmax(max(33.33% - 24px, min(50% - 16px, (720px - 100%) * 999), min(100%, (460px - 100%) * 999)),1fr)); gap:12px; margin-top:clamp(36px,5vh,56px);">
+      <div data-reveal="0" style="display:flex; flex-direction:column; gap:6px; min-height:168px; padding:24px; border-radius:20px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);"><span style="font-size:clamp(30px,3.2vw,44px); line-height:1; letter-spacing:-0.05em; font-weight:500; color:#8fd3a6;">5,000+</span><span style="margin-top:auto; font-size:14px; font-weight:500;">Birds documented each season</span><span style="font-size:12px; line-height:1.5; color:#a3a5ad;">September to May, every year</span></div>
+      <div data-reveal="60" style="display:flex; flex-direction:column; gap:6px; min-height:168px; padding:24px; border-radius:20px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);"><span style="font-size:clamp(30px,3.2vw,44px); line-height:1; letter-spacing:-0.05em; font-weight:500; color:#8fd3a6;">100–200</span><span style="margin-top:auto; font-size:14px; font-weight:500;">Birds per session</span><span style="font-size:12px; line-height:1.5; color:#a3a5ad;">300+ in optimal conditions</span></div>
+      <div data-reveal="120" style="display:flex; flex-direction:column; gap:6px; min-height:168px; padding:24px; border-radius:20px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);"><span style="font-size:clamp(30px,3.2vw,44px); line-height:1; letter-spacing:-0.05em; font-weight:500; color:#8fd3a6;">50+</span><span style="margin-top:auto; font-size:14px; font-weight:500;">Shorebird species</span><span style="font-size:12px; line-height:1.5; color:#a3a5ad;">incl. rare and migratory birds</span></div>
+      <div data-reveal="0" style="display:flex; flex-direction:column; gap:6px; min-height:168px; padding:24px; border-radius:20px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);"><span style="font-size:clamp(30px,3.2vw,44px); line-height:1; letter-spacing:-0.05em; font-weight:500; color:#8fd3a6;">6–8</span><span style="margin-top:auto; font-size:14px; font-weight:500;">Birds processed per hour</span><span style="font-size:12px; line-height:1.5; color:#a3a5ad;">at peak, without over-handling</span></div>
+      <div data-reveal="60" style="display:flex; flex-direction:column; gap:6px; min-height:168px; padding:24px; border-radius:20px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);"><span style="font-size:clamp(30px,3.2vw,44px); line-height:1; letter-spacing:-0.05em; font-weight:500; color:#8fd3a6;">−20%</span><span style="margin-top:auto; font-size:14px; font-weight:500;">Processing errors</span><span style="font-size:12px; line-height:1.5; color:#a3a5ad;">with real-time mobile entry</span></div>
+      <div data-reveal="120" style="display:flex; flex-direction:column; gap:6px; min-height:168px; padding:24px; border-radius:20px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);"><span style="font-size:clamp(30px,3.2vw,44px); line-height:1; letter-spacing:-0.05em; font-weight:500; color:#8fd3a6;">2,000+</span><span style="margin-top:auto; font-size:14px; font-weight:500;">Migratory journeys tracked</span><span style="font-size:12px; line-height:1.5; color:#a3a5ad;">through flagging, across continents</span></div>
+    </div>
+    <div style="position:relative; display:grid; grid-template-columns:{{ impCols }}; gap:12px; margin-top:12px;">
+      <figure data-reveal="0" style="position:relative; min-height:240px; border-radius:20px; overflow:hidden; background:#9cc3ea;">
+        <img src="assets/brida/field-flock.jpg" alt="A flock of migratory birds in flight" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:40% 40%;">
+      </figure>
+      <div style="display:grid; grid-template-columns:{{ ptCols }}; grid-auto-rows:1fr; gap:12px;">
+        <div data-reveal="60" style="display:flex; flex-direction:column; justify-content:space-between; gap:16px; padding:24px; border-radius:20px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);"><span style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#a3a5ad;">Per bird</span><div style="display:flex; align-items:baseline; gap:14px;"><span style="font-size:clamp(30px,3.2vw,44px); line-height:1; letter-spacing:-0.05em; font-weight:500; color:#8fd3a6;">6</span><span style="font-size:14px; line-height:1.5; color:#d6d7db;">biometric measurements — wing, bill, tarsus and more</span></div></div>
+        <div data-reveal="120" style="display:flex; flex-direction:column; justify-content:space-between; gap:16px; padding:24px; border-radius:20px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);"><span style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#a3a5ad;">Per bird</span><div style="display:flex; align-items:baseline; gap:14px;"><span style="font-size:clamp(30px,3.2vw,44px); line-height:1; letter-spacing:-0.05em; font-weight:500; color:#8fd3a6;">4</span><span style="font-size:14px; line-height:1.5; color:#d6d7db;">behavioural indicators — age, moult, plumage and brood patch</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="position:relative; overflow:hidden; padding:clamp(120px,20vh,200px) 0 clamp(80px,12vh,120px);">
+  <div aria-hidden="true" style="position:absolute; left:30%; top:10%; width:min(720px,90vw); height:min(520px,70vw); border-radius:45% 55% 60% 40%; background:radial-gradient(closest-side, rgba(43,130,72,.24), rgba(143,211,166,.12) 60%, transparent); filter:blur(50px); pointer-events:none;"></div>
+  <div style="position:relative; max-width:1200px; margin:0 auto; padding:0 clamp(20px,5vw,72px);">
+    <h2 data-reveal="0" style="font-size:clamp(44px,7.2vw,112px); line-height:.98; letter-spacing:-0.055em; font-weight:500; max-width:13ch;">Let’s design products people can <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.025em; color:#2b8248;">trust.</span></h2>
+    <div data-reveal="120" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:24px 48px; margin-top:48px;">
+      <p style="max-width:40ch; font-size:17px; line-height:1.6; color:#55575e;">Open to product design leadership, zero-to-one systems and complex fintech journeys.</p>
+      <div style="display:flex; flex-wrap:wrap; gap:10px;">
+        <button onClick="{{ copyEmail }}" onMouseMove="{{ magMove }}" onMouseLeave="{{ magLeave }}" style="display:inline-flex; align-items:center; gap:10px; height:56px; padding:0 26px; border:0; border-radius:999px; background:#0f1013; color:#f6f5f2; font:inherit; font-size:16px; font-weight:500; cursor:pointer; transition:transform .35s cubic-bezier(.2,.8,.2,1), background .25s ease;" style-hover="background:#2b8248;">Get in touch<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="max-width:1200px; margin:0 auto; padding:0 clamp(20px,5vw,72px) clamp(48px,7vh,72px);">
+  <div data-reveal="0" style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:32px; padding-top:clamp(40px,6vh,64px); border-top:1px solid rgba(15,16,19,.08);">
+    <div>
+      <div style="font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;">Next project · 01 / 04</div>
+      <div style="margin-top:14px; font-size:clamp(36px,5vw,64px); line-height:1; letter-spacing:-0.045em; font-weight:500;">Student Loan App</div>
+    </div>
+    <a href="Education%20Lending%20Case%20Study.dc.html" style="display:inline-flex; align-items:center; gap:12px; height:56px; padding:0 10px 0 26px; border-radius:999px; background:#0f1013; color:#f6f5f2; text-decoration:none; font-size:15px; font-weight:500; transition:background .25s ease, box-shadow .25s ease, transform .3s cubic-bezier(.2,.8,.2,1);" style-hover="background:#2b8248; color:#ffffff; box-shadow:0 14px 40px -10px rgba(43,130,72,.6); transform:translateY(-2px);">View project<span style="display:grid; place-items:center; width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span></a>
+  </div>
+  <footer style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; margin-top:clamp(64px,9vh,96px); padding-top:24px; border-top:1px solid rgba(15,16,19,.1); font-size:13px; color:#6c6e75;">
+    <span style="color:#0f1013; font-weight:500;">Harish Babu Nadar</span>
+    <span style="font-family:'Geist Mono',monospace; font-size:12px;">© 2026 · All rights reserved</span>
+    <div style="display:flex; flex-wrap:wrap; gap:20px;"><a href="https://www.linkedin.com/in/harishbabuganesannadar" target="_blank" rel="noopener noreferrer" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; color:#55575e; text-decoration:none; transition:color .2s ease;" style-hover="color:#0f1013;">LinkedIn</a><a href="mailto:Harishbabuganesan@gmail.com" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; color:#55575e; text-decoration:none; transition:color .2s ease;" style-hover="color:#0f1013;">Email</a></div>
+  </footer>
+</section>
+<sc-if value="{{ lbOpen }}" hint-placeholder-val="{{ false }}">
+  <div ref="{{ lbRef }}" role="dialog" aria-modal="true" aria-label="{{ lbTitle }}" onClick="{{ closeLb }}" style="position:fixed; inset:0; z-index:200; display:flex; padding:clamp(8px,2.5vw,32px); background:rgba(10,11,13,.66); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);">
+    <div data-lb-panel="" onClick="{{ stopProp }}" style="flex:1; min-width:0; display:flex; flex-direction:column; border-radius:24px; overflow:hidden; background:#ffffff; box-shadow:0 40px 100px -30px rgba(0,0,0,.6);">
+      <div style="display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; padding:10px 10px 10px 12px; border-bottom:1px solid rgba(15,16,19,.07);">
+        <div role="tablist" aria-label="Diagram" style="display:flex; gap:4px; padding:4px; border-radius:999px; background:#f1f0ec;">
+          <button role="tab" aria-selected="{{ smSel }}" onClick="{{ tabSm }}" style="height:36px; padding:0 16px; border:0; border-radius:999px; background:{{ tabSmBg }}; color:{{ tabSmC }}; box-shadow:{{ tabSmSh }}; font:inherit; font-size:14px; font-weight:500; white-space:nowrap; cursor:pointer; transition:background .2s ease, color .2s ease, box-shadow .2s ease;">Sitemap</button>
+          <button role="tab" aria-selected="{{ iaSel }}" onClick="{{ tabIa }}" style="height:36px; padding:0 16px; border:0; border-radius:999px; background:{{ tabIaBg }}; color:{{ tabIaC }}; box-shadow:{{ tabIaSh }}; font:inherit; font-size:14px; font-weight:500; white-space:nowrap; cursor:pointer; transition:background .2s ease, color .2s ease, box-shadow .2s ease;">Information architecture</button>
+        </div>
+        <div style="display:flex; align-items:center; gap:4px; margin-left:auto;">
+          <button onClick="{{ zoomOut }}" aria-label="Zoom out" title="Zoom out" style="display:grid; place-items:center; width:40px; height:40px; padding:0; border:0; border-radius:50%; background:transparent; color:#0f1013; cursor:pointer; transition:background .2s ease;" style-hover="background:#f1f0ec;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path></svg></button>
+          <span aria-live="polite" style="min-width:48px; text-align:center; font-family:'Geist Mono',monospace; font-size:12px; color:#55575e;">{{ lbPct }}</span>
+          <button onClick="{{ zoomIn }}" aria-label="Zoom in" title="Zoom in" style="display:grid; place-items:center; width:40px; height:40px; padding:0; border:0; border-radius:50%; background:transparent; color:#0f1013; cursor:pointer; transition:background .2s ease;" style-hover="background:#f1f0ec;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></button>
+          <button onClick="{{ zoomFit }}" title="Fit to screen" style="height:40px; padding:0 14px; border:0; border-radius:999px; background:transparent; color:#0f1013; font:inherit; font-size:13px; font-weight:500; cursor:pointer; transition:background .2s ease;" style-hover="background:#f1f0ec;">Fit</button>
+          <a href="{{ lbSrc }}" target="_blank" rel="noopener" aria-label="Open full size in a new tab" title="Open full size" style="display:grid; place-items:center; width:40px; height:40px; border-radius:50%; color:#0f1013; text-decoration:none; transition:background .2s ease;" style-hover="background:#f1f0ec; color:#0f1013;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></a>
+          <span style="width:1px; height:24px; margin:0 6px; background:rgba(15,16,19,.1);"></span>
+          <button id="lb-close" onClick="{{ closeLb }}" aria-label="Close preview" title="Close (Esc)" style="display:grid; place-items:center; width:44px; height:44px; padding:0; border:0; border-radius:50%; background:#0f1013; color:#f6f5f2; cursor:pointer; transition:background .2s ease;" style-hover="background:#22703c;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+        </div>
+      </div>
+      <div ref="{{ lbStage }}" onPointerDown="{{ lbDown }}" onPointerMove="{{ lbMove }}" onPointerUp="{{ lbUp }}" onPointerCancel="{{ lbUp }}" onClick="{{ lbClick }}" style="position:relative; flex:1; min-height:0; overflow:auto; overscroll-behavior:contain; cursor:{{ lbCursor }}; background-color:#f6f5f2; background-image:radial-gradient(rgba(15,16,19,.09) 1px, transparent 1px); background-size:20px 20px;">
+        <div style="display:grid; place-items:center; min-width:100%; min-height:100%; width:max-content; padding:24px; box-sizing:border-box;">
+          <img src="{{ lbSrc }}" alt="{{ lbAlt }}" draggable="false" style="display:block; width:{{ lbImgW }}; max-width:none; height:auto; border-radius:12px; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.06), 0 24px 48px -24px rgba(15,16,19,.25); user-select:none; transition:width .25s cubic-bezier(.2,.8,.2,1);">
+        </div>
+      </div>
+      <div style="display:{{ lbHintDisp }}; flex-wrap:wrap; justify-content:center; gap:8px 22px; padding:10px 16px; border-top:1px solid rgba(15,16,19,.07); font-family:'Geist Mono',monospace; font-size:11px; color:#6c6e75;"><span>Click to zoom</span><span>Drag to pan</span><span>⌘ / Ctrl + scroll to zoom</span><span>Esc to close</span></div>
+    </div>
+  </div>
+</sc-if>
+<div role="status" aria-live="polite" style="position:fixed; left:50%; bottom:28px; z-index:60; display:flex; align-items:center; gap:10px; padding:12px 18px 12px 14px; border-radius:999px; background:#0f1013; color:#f6f5f2; font-size:13px; box-shadow:0 20px 40px -16px rgba(15,16,19,.5); pointer-events:none; opacity:{{ toastO }}; transform:{{ toastT }}; transition:opacity .3s ease, transform .45s cubic-bezier(.2,.9,.2,1.2);">
+  <span style="width:20px; height:20px; border-radius:50%; background:#2b8248; display:grid; place-items:center;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+  Email copied — Harishbabuganesan@gmail.com
+</div>
+<dc-import name="BackToTop" hint-size="0px,0px"></dc-import>
+<dc-import name="MobilePreview" viewport="{{ viewport }}" hint-size="0px,0px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;motion&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Full&quot;,&quot;Subtle&quot;,&quot;Off&quot;],&quot;default&quot;:&quot;Full&quot;,&quot;tsType&quot;:&quot;'Full' | 'Subtle' | 'Off'&quot;},&quot;gallery&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Mobile&quot;,&quot;Tablet&quot;],&quot;default&quot;:&quot;Mobile&quot;,&quot;tsType&quot;:&quot;'Mobile' | 'Tablet'&quot;,&quot;section&quot;:&quot;Screens&quot;},&quot;viewport&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Desktop&quot;,&quot;Mobile&quot;],&quot;default&quot;:&quot;Desktop&quot;,&quot;tsType&quot;:&quot;'Desktop' | 'Mobile'&quot;}}">
+class Component extends DCLogic {
+  progressRef = React.createRef();
+  enterRef = React.createRef();
+  trackRef = React.createRef();
+  copyEmail = () => {
+    window.location.href = 'mailto:Harishbabuganesan@gmail.com';
+    try { navigator.clipboard && navigator.clipboard.writeText('Harishbabuganesan@gmail.com').catch(() => {}); } catch (e) {}
+    this.setState({ toast: true }); clearTimeout(this.toastTimer); this.toastTimer = setTimeout(() => this.setState({ toast: false }), 2400);
+  };
+  magMove = e => {
+    if (this.props.motion === 'Off') return;
+    const el = e.currentTarget, r = el.getBoundingClientRect();
+    el.style.transform = 'translate(' + ((e.clientX - r.left - r.width / 2) * .18) + 'px,' + ((e.clientY - r.top - r.height / 2) * .28) + 'px)';
+  };
+  magLeave = e => { e.currentTarget.style.transform = ''; };
+  BR_SP = [
+    ['Lesser sand plover', 'Charadrius mongolus', ['128 mm', '17.4 mm', '31.2 mm', '48 mm', '62.5 g', '2'], ['Adult', 'Active', 'Breeding', 'None']],
+    ['Kentish plover', 'Charadrius alexandrinus', ['108 mm', '15.8 mm', '27.6 mm', '44 mm', '41.0 g', '1'], ['Juvenile', 'None', 'Non-breeding', 'None']],
+    ['Curlew sandpiper', 'Calidris ferruginea', ['131 mm', '38.9 mm', '30.4 mm', '47 mm', '58.2 g', '3'], ['Adult', 'Suspended', 'Breeding', 'None']],
+    ['Common redshank', 'Tringa totanus', ['162 mm', '42.1 mm', '49.8 mm', '68 mm', '118 g', '2'], ['Adult', 'Active', 'Non-breeding', 'Present']],
+    ['Terek sandpiper', 'Xenus cinereus', ['134 mm', '48.6 mm', '28.9 mm', '56 mm', '74.3 g', '1'], ['Immature', 'Active', 'Non-breeding', 'None']],
+    ['Little stint', 'Calidris minuta', ['97 mm', '17.9 mm', '21.3 mm', '39 mm', '24.6 g', '2'], ['Adult', 'None', 'Breeding', 'None']]
+  ];
+  BR_M = ['Wing', 'Bill', 'Tarsus', 'Tail', 'Weight', 'Fat score'];
+  BR_B = ['Age', 'Moult', 'Plumage', 'Brood patch'];
+  hxRef = React.createRef(); brCardRef = React.createRef(); brListRef = React.createRef();
+  hxMount() {
+    this.hxVis = true;
+    const el = this.hxRef.current;
+    if (el && typeof IntersectionObserver !== 'undefined') { this.hxIo = new IntersectionObserver(es => { this.hxVis = es[0].isIntersecting; }); this.hxIo.observe(el); }
+    if (this.motionOff()) return;
+    this.hxStartT = setTimeout(() => { this.hxT = setInterval(() => { if (!document.hidden && this.hxVis) this.hxTick(); }, 320); }, 1600);
+  }
+  hxUnmount() { clearInterval(this.hxT); clearTimeout(this.hxStartT); clearTimeout(this.hxNextT); if (this.hxIo) this.hxIo.disconnect(); }
+  brClock(c) { return String(c[0]).padStart(2, '0') + ':' + String(c[1]).padStart(2, '0'); }
+  hxTick() {
+    const h = this.state.hx, step = h.step + 1;
+    if (step > 18) return;
+    if (step === 18) {
+      const el = this.brCardRef.current;
+      if (el && el.animate) this.exitA = el.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(-10px)' }], { duration: 240, easing: 'ease-in', fill: 'forwards' });
+      this.setState({ hx: { ...h, step } });
+      clearTimeout(this.hxNextT);
+      this.hxNextT = setTimeout(() => {
+        this.setState(x => { const m2 = x.hx.clock[1] + 3 + Math.floor(Math.random() * 3); return { hx: { ...x.hx, step: 0, sp: (x.hx.sp + 1) % this.BR_SP.length, ring: x.hx.ring + 1, clock: [x.hx.clock[0] + Math.floor(m2 / 60), m2 % 60] } }; }, () => {
+          if (this.exitA) { this.exitA.cancel(); this.exitA = null; }
+          const c = this.brCardRef.current; if (c && c.animate) c.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 360, easing: 'cubic-bezier(.2,.8,.2,1)' });
+        });
+      }, 250);
+      return;
+    }
+    const upd = { ...h, step };
+    const push = step === 15;
+    if (push) { const sp = this.BR_SP[h.sp]; upd.list = [{ name: sp[0], ring: 'BN-' + h.ring, t: this.brClock(h.clock) }, ...h.list].slice(0, 4); upd.count = h.count + 1; }
+    this.setState({ hx: upd }, () => {
+      if (!push) return;
+      const l = this.brListRef.current, f = l && l.firstElementChild;
+      if (f && f.animate) f.animate([{ opacity: 0, transform: 'translateY(-10px)' }, { opacity: 1, transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    });
+  }
+  hxVals(s) {
+    const h = s.hx, sp = this.BR_SP[h.sp], f = Math.min(h.step, 10);
+    const st = h.step < 13 ? ['Offline · saved on device', '#e3b23c', '#55575e'] : h.step < 15 ? ['Back online · syncing to BNHS…', '#4a8fe7', '#55575e'] : ['Synced to the BNHS archive', '#2b8248', '#1f6a3a'];
+    return {
+      hxRef: this.hxRef, brCardRef: this.brCardRef, brListRef: this.brListRef,
+      brRing: 'BN-' + h.ring, brTime: this.brClock(h.clock), brName: sp[0], brLatin: sp[1],
+      brMeasures: this.BR_M.map((k, i) => { const on = i < f, cur = i === f - 1 && h.step <= 10; return { k, v: on ? sp[2][i] : '—', c: on ? '#0f1013' : '#c0c2c7', bg: cur ? '#e3efe5' : on ? '#f4f7f4' : '#f6f5f2', sh: cur ? '0 0 0 1px rgba(43,130,72,.45)' : '0 0 0 1px rgba(15,16,19,0)' }; }),
+      brTraits: this.BR_B.map((k, j) => { const on = j + 6 < f; return { k, v: on ? sp[3][j] : '—', bg: on ? '#e3efe5' : 'rgba(255,255,255,0)', c: on ? '#1f6a3a' : '#b4b6bd', bd: on ? 'rgba(43,130,72,.25)' : 'rgba(15,16,19,.1)' }; }),
+      brDone: f, brStatus: st[0], brStDot: st[1], brStC: st[2],
+      brCount: h.count, brList: h.list
+    };
+  }
+  state = { hx: { sp: 0, step: 16, ring: 4471, count: 23, clock: [7, 42], list: [{ name: 'Lesser sand plover', ring: 'BN-4471', t: '07:42' }, { name: 'Common redshank', ring: 'BN-4470', t: '07:38' }, { name: 'Little stint', ring: 'BN-4469', t: '07:33' }, { name: 'Kentish plover', ring: 'BN-4468', t: '07:29' }] }, solid: false, nav: '', narrow: typeof window !== 'undefined' && window.innerWidth < 960, dev: 'm' };
+  M = [['m8', 'Sign in'], ['m9', 'Requests'], ['m10', 'Settings'], ['m11', 'Activity log'], ['m12', 'Create session'], ['m13', 'Session dashboard'], ['m14', 'Bird measurements'], ['m15', 'Image & notes'], ['m16', 'View record']];
+  T = [['t2', 'Sign in'], ['t3', 'Create account'], ['t4', 'Sessions'], ['t5', 'Requests'], ['t6', 'Members'], ['t7', 'Member profile'], ['t8', 'Settings'], ['t9', 'User activity'], ['t10', 'Add records'], ['t11', 'Profile settings'], ['t12', 'Profile photo'], ['t13', 'Create session'], ['t14', 'Location & bird type'], ['t15', 'Session dashboard'], ['t16', 'Measurements'], ['t17', 'View record'], ['t18', 'Images & notes'], ['t19', 'Session summary']];
+  IDS = ['context', 'research', 'personas', 'structure', 'features', 'screens', 'impact'];
+  motionOff() {
+    return (this.props.motion ?? 'Full') === 'Off' || (typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+  componentDidMount() {
+    this._lastDev = this.state.dev;
+    if ((this.props.gallery ?? 'Mobile') === 'Tablet') this.setState({ dev: 't' });
+    this.onScroll = () => { if (this.raf) return; this.raf = requestAnimationFrame(() => { this.raf = 0; this.tick(); }); };
+    this.onResize = () => { const narrow = window.innerWidth < 960; if (narrow !== this.state.narrow) this.setState({ narrow }); this.onScroll(); };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', this.onResize);
+    const off = this.motionOff(), ov = this.enterRef.current;
+    if (ov && !off && !document.hidden) {
+      let viaT = false; try { viaT = sessionStorage.getItem('pf-transition') === '1'; sessionStorage.removeItem('pf-transition'); } catch (er) {}
+      if (viaT && ov.firstElementChild) ov.firstElementChild.style.visibility = 'hidden';
+      const a = ov.animate([{ clipPath: 'inset(0 0 0% 0)' }, { clipPath: 'inset(0 0 100% 0)' }], { duration: 600, delay: 80, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'backwards' });
+      if (ov.firstElementChild) ov.firstElementChild.animate([{ opacity: 1, transform: 'translateY(0px)' }, { opacity: 0, transform: 'translateY(-28px)' }], { duration: 300, easing: 'cubic-bezier(.6,0,.2,1)', fill: 'backwards' });
+      this.ovT = setTimeout(() => { try { a.finish(); } catch (e) {} }, 900);
+    }
+    this.hxMount();
+    this.setupReveal();
+    this.tick();
+  }
+  componentDidUpdate() {
+    if (this._lastDev === this.state.dev) return;
+    this._lastDev = this.state.dev;
+    if (this.trackRef.current) this.trackRef.current.scrollTo({ left: 0 });
+  }
+  lbRef = React.createRef(); lbStage = React.createRef();
+  LB = {
+    sm: { src: 'assets/brida/sitemap.webp', w: 2400, h: 1774, title: 'Detailed sitemap', alt: 'Detailed sitemap of the Brida app' },
+    ia: { src: 'assets/brida/ia.webp', w: 2000, h: 2553, title: 'Information architecture', alt: 'Information architecture flow of the Brida app' }
+  };
+  openLb = k => {
+    if (!this.state.lb) { this.lbPrev = document.activeElement; document.documentElement.style.overflow = 'hidden'; window.addEventListener('keydown', this.lbKey); window.addEventListener('resize', this.lbMeasure); }
+    const first = !this.state.lb;
+    this.setState({ lb: k, lbZ: 1, lbFit: 0 }, () => requestAnimationFrame(() => {
+      this.lbMeasure();
+      if (!first) return;
+      const c = document.getElementById('lb-close'); if (c) c.focus({ preventScroll: true });
+      const el = this.lbRef.current; if (el && el.animate && !this.motionOff()) {
+        el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, easing: 'ease-out' });
+        const p = el.querySelector('[data-lb-panel]'); if (p) p.animate([{ transform: 'translateY(16px) scale(.98)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 380, easing: 'cubic-bezier(.2,.8,.2,1)' });
+      }
+    }));
+  };
+  closeLb = () => {
+    document.documentElement.style.overflow = '';
+    window.removeEventListener('keydown', this.lbKey); window.removeEventListener('resize', this.lbMeasure);
+    this.lbUnwheel(); this.drag = null;
+    this.setState({ lb: null });
+    if (this.lbPrev && this.lbPrev.focus) this.lbPrev.focus({ preventScroll: true });
+  };
+  lbKey = e => {
+    if (e.key === 'Escape') { e.preventDefault(); this.closeLb(); }
+    else if (e.key === '+' || e.key === '=') this.lbZoom(1.25);
+    else if (e.key === '-') this.lbZoom(0.8);
+    else if (e.key === '0') this.lbZoom(0);
+  };
+  lbMeasure = () => {
+    const st = this.lbStage.current, d = this.LB[this.state.lb]; if (!st || !d) return;
+    const fit = Math.max(120, Math.min(st.clientWidth - 48, (st.clientHeight - 48) * d.w / d.h));
+    if (Math.abs(fit - (this.state.lbFit || 0)) > .5) this.setState({ lbFit: fit });
+    if (this.wheelEl !== st) {
+      this.lbUnwheel(); this.wheelEl = st;
+      this.onLbWheel = ev => { if (!(ev.ctrlKey || ev.metaKey)) return; ev.preventDefault(); this.lbZoom(ev.deltaY < 0 ? 1.12 : 1 / 1.12, ev); };
+      st.addEventListener('wheel', this.onLbWheel, { passive: false });
+    }
+  };
+  lbUnwheel() { if (this.wheelEl && this.onLbWheel) this.wheelEl.removeEventListener('wheel', this.onLbWheel); this.wheelEl = null; }
+  lbZoom = (f, ev) => {
+    const st = this.lbStage.current, d = this.LB[this.state.lb]; if (!st || !d) return;
+    const fit = this.state.lbFit || 1, maxZ = Math.max(3, d.w * 1.5 / fit), z0 = this.state.lbZ;
+    const z = f === 0 ? 1 : Math.min(maxZ, Math.max(1, z0 * f)); if (Math.abs(z - z0) < .001) return;
+    const r = st.getBoundingClientRect(), px = ev && ev.clientX != null ? ev.clientX - r.left : st.clientWidth / 2, py = ev && ev.clientY != null ? ev.clientY - r.top : st.clientHeight / 2;
+    const fx = (st.scrollLeft + px) / st.scrollWidth, fy = (st.scrollTop + py) / st.scrollHeight;
+    const prevTr = st.querySelector('img'); if (prevTr) prevTr.style.transition = 'none';
+    this.setState({ lbZ: z }, () => { st.scrollLeft = fx * st.scrollWidth - px; st.scrollTop = fy * st.scrollHeight - py; if (prevTr) requestAnimationFrame(() => { prevTr.style.transition = ''; }); });
+  };
+  lbVals(s) {
+    const d = this.LB[s.lb], T = '#0f1013', sel = k => s.lb === k;
+    const tab = k => ({ bg: sel(k) ? '#ffffff' : 'transparent', c: sel(k) ? T : '#55575e', sh: sel(k) ? '0 1px 2px rgba(15,16,19,.08), 0 0 0 1px rgba(15,16,19,.06)' : 'none' });
+    const a = tab('sm'), b = tab('ia');
+    return {
+      lbOpen: !!d, lbTitle: d ? d.title : '', lbSrc: d ? d.src : '', lbAlt: d ? d.alt : '',
+      lbImgW: Math.round((s.lbFit || 0) * (s.lbZ || 1)) + 'px', lbPct: d && s.lbFit ? Math.round(s.lbFit * s.lbZ / d.w * 100) + '%' : '',
+      lbCursor: (s.lbZ || 1) > 1 ? (s.lbDrag ? 'grabbing' : 'grab') : 'zoom-in', lbHintDisp: s.narrow ? 'none' : 'flex',
+      smSel: sel('sm'), iaSel: sel('ia'), tabSmBg: a.bg, tabSmC: a.c, tabSmSh: a.sh, tabIaBg: b.bg, tabIaC: b.c, tabIaSh: b.sh,
+      openSm: () => this.openLb('sm'), openIa: () => this.openLb('ia'), tabSm: () => this.openLb('sm'), tabIa: () => this.openLb('ia'),
+      closeLb: this.closeLb, stopProp: e => e.stopPropagation(), lbRef: this.lbRef, lbStage: this.lbStage,
+      zoomIn: () => this.lbZoom(1.25), zoomOut: () => this.lbZoom(0.8), zoomFit: () => this.lbZoom(0),
+      lbClick: e => { if ((this.state.lbZ || 1) === 1) this.lbZoom(2, e); },
+      lbDown: e => { if (e.pointerType !== 'mouse' || e.button !== 0 || (this.state.lbZ || 1) <= 1) return; const st = this.lbStage.current; this.drag = { x: e.clientX, y: e.clientY, l: st.scrollLeft, t: st.scrollTop }; if (st.setPointerCapture) st.setPointerCapture(e.pointerId); this.setState({ lbDrag: true }); },
+      lbMove: e => { const g = this.drag; if (!g) return; const st = this.lbStage.current; st.scrollLeft = g.l - (e.clientX - g.x); st.scrollTop = g.t - (e.clientY - g.y); },
+      lbUp: () => { if (!this.drag) return; this.drag = null; this.setState({ lbDrag: false }); }
+    };
+  }
+  componentWillUnmount() {
+    this.hxUnmount();
+    this.lbUnwheel(); window.removeEventListener('keydown', this.lbKey); window.removeEventListener('resize', this.lbMeasure);
+    if (this.state.lb) document.documentElement.style.overflow = '';
+    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('resize', this.onResize);
+    if (this.io) this.io.disconnect();
+    clearTimeout(this.fb); clearTimeout(this.ovT);
+    if (this.onVis) document.removeEventListener('visibilitychange', this.onVis);
+  }
+  tick() {
+    const y = window.scrollY, vh = window.innerHeight, max = document.documentElement.scrollHeight - vh;
+    if (this.progressRef.current) this.progressRef.current.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
+    const upd = {}, solid = y > 24;
+    if (solid !== this.state.solid) upd.solid = solid;
+    let nav = '';
+    this.IDS.forEach(id => { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top < vh * 0.4) nav = id; });
+    if (nav !== this.state.nav) upd.nav = nav;
+    if (Object.keys(upd).length) this.setState(upd);
+  }
+  setupReveal() {
+    if (this.motionOff() || typeof IntersectionObserver === 'undefined' || document.hidden) return;
+    const subtle = this.props.motion === 'Subtle';
+    const kf = subtle ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: 'translateY(24px)', filter: 'blur(8px)' }, { opacity: 1, transform: 'translateY(0px)', filter: 'blur(0px)' }];
+    const vh = window.innerHeight, pending = [];
+    let fired = false;
+    const show = el => { if (el.__rv) el.__rv.play(); if (this.io) this.io.unobserve(el); };
+    this.io = new IntersectionObserver(es => { fired = true; es.forEach(e => e.isIntersecting && show(e.target)); }, { rootMargin: '0px 0px -8% 0px', threshold: 0.01 });
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      const up = el.hasAttribute('data-up');
+      const a = el.animate(up ? [{ transform: 'translateY(105%)' }, { transform: 'translateY(0%)' }] : kf, { duration: up ? 1000 : (subtle ? 500 : 900), delay: Number(el.dataset.reveal || 0), easing: up ? 'cubic-bezier(.2,.9,.1,1)' : 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' });
+      el.__rv = a;
+      const r = el.getBoundingClientRect();
+      if (r.top < vh && r.bottom > 0) { show(el); return; }
+      a.pause(); pending.push(a); this.io.observe(el);
+    });
+    this.fb = setTimeout(() => { if (!fired) pending.forEach(a => { try { a.finish(); } catch (e) {} }); }, 1000);
+    this.onVis = () => { if (document.hidden) pending.forEach(a => { try { a.finish(); } catch (e) {} }); };
+    document.addEventListener('visibilitychange', this.onVis);
+  }
+  scrollGal(d) {
+    const el = this.trackRef.current;
+    if (el) el.scrollBy({ left: d * el.clientWidth * 0.8, behavior: this.motionOff() ? 'auto' : 'smooth' });
+  }
+  renderVals() {
+    const s = this.state, INK = '#0f1013', m = s.dev === 'm';
+    const list = m ? this.M : this.T;
+    return {
+      progressRef: this.progressRef, enterRef: this.enterRef, trackRef: this.trackRef,
+      ...this.hxVals(this.state),
+      copyEmail: this.copyEmail, magMove: this.magMove, magLeave: this.magLeave,
+      toastO: this.state.toast ? '1' : '0', toastT: this.state.toast ? 'translate(-50%,0)' : 'translate(-50%,16px)',
+      navMax: s.solid ? '920px' : '1160px',
+      navBg: s.solid ? 'rgba(255,255,255,.78)' : 'rgba(255,255,255,0)',
+      navShadow: s.solid ? '0 0 0 1px rgba(15,16,19,.06), 0 12px 32px -12px rgba(15,16,19,.18)' : '0 0 0 1px rgba(15,16,19,0)',
+      navLinksDisplay: s.narrow ? 'none' : 'flex',
+      navItems: [['context', 'Context'], ['research', 'Research'], ['personas', 'Personas'], ['structure', 'Structure'], ['features', 'Features'], ['screens', 'Screens'], ['impact', 'Impact']].map(([id, label]) => ({
+        href: `#${id}`, label, color: s.nav === id ? INK : '#55575e', bg: s.nav === id ? 'rgba(15,16,19,.06)' : 'transparent' })),
+      researchCols: s.narrow ? 'minmax(0,1fr)' : 'minmax(0,1.5fr) minmax(0,1fr)',
+      structCols: s.narrow ? 'minmax(0,1fr)' : 'minmax(0,1.5fr) minmax(0,1fr)',
+      ...this.lbVals(s),
+      featCols: s.narrow ? 'minmax(0,1fr)' : 'minmax(0,1fr) minmax(0,1.2fr)',
+      ptCols: s.narrow ? 'repeat(auto-fit,minmax(min(100%,240px),1fr))' : 'minmax(0,1fr)',
+      impCols: s.narrow ? 'minmax(0,1fr)' : 'minmax(0,1.6fr) minmax(0,1fr)',
+      stageOrd: s.narrow ? '0' : '-1',
+      gal: list.map(([f, t], i) => ({ src: `assets/brida/${f}.webp`, t, n: String(i + 1).padStart(2, '0') })),
+      itemW: m ? 'clamp(170px,20vw,230px)' : 'clamp(240px,30vw,330px)',
+      mSel: m ? 'true' : 'false', tSel: m ? 'false' : 'true',
+      mBg: m ? INK : 'transparent', mC: m ? '#f6f5f2' : '#55575e',
+      tBg: m ? 'transparent' : INK, tC: m ? '#55575e' : '#f6f5f2',
+      showM: () => this.setState({ dev: 'm' }), showT: () => this.setState({ dev: 't' }),
+      galPrev: () => this.scrollGal(-1), galNext: () => this.scrollGal(1)
+    };
+  }
+}
+</script>
+</body>
+</html>

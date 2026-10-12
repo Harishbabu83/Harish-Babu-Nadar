@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><title>Student Loan App — Harish Babu Nadar</title>
+<script src="./theme.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:#f6f5f2;color:#0f1013;font-family:"Geist",system-ui,sans-serif;font-size:15px;line-height:1.55;text-wrap:pretty;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,figure,dl,dd{margin:0}
+::selection{background:rgba(64,70,255,.18)}
+a{color:#4046ff}
+a:hover{color:#2a2fd6}
+:focus-visible{outline:2px solid #4046ff;outline-offset:3px}
+</style>
+</helmet>
+
+<div ref="{{ introRef }}" aria-hidden="true" style="position:fixed; inset:0; z-index:300; background:#0f1013; display:grid; place-items:center; clip-path:inset(0 0 0 0);">
+  <div ref="{{ introTxtRef }}" style="display:flex; flex-direction:column; align-items:center; gap:18px; padding:0 24px; text-align:center; opacity:0;">
+    <span ref="{{ introNumRef }}" style="font-family:'Geist Mono',monospace; font-size:12px; color:#a3a5ad; font-variant-numeric:tabular-nums;">0%</span>
+    <span style="font-size:clamp(32px,4vw,56px); line-height:1; font-weight:500; letter-spacing:-0.04em; color:#f6f5f2;">Student Loan <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.01em; color:#a9adff;">App</span></span>
+    <span style="width:160px; height:2px; border-radius:2px; background:rgba(255,255,255,.12); overflow:hidden;"><span ref="{{ introBarRef }}" style="display:block; height:100%; background:#4046ff; transform-origin:left; transform:scaleX(0);"></span></span>
+  </div>
+</div>
+<div ref="{{ leaveRef }}" aria-hidden="true" style="position:fixed; inset:0; z-index:200; background:#0f1013; clip-path:circle(0px at 50% 50%); pointer-events:none; display:grid; place-items:center;"><div ref="{{ leaveTxtRef }}" style="display:flex; flex-direction:column; align-items:center; gap:18px; opacity:0;"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#a3a5ad;">{{ lvNum }} / 06</span><span style="font-size:clamp(32px,4vw,56px); line-height:1; font-weight:500; letter-spacing:-0.04em; color:#f6f5f2;">{{ lvA }} <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.01em; color:#a9adff;">{{ lvB }}</span></span><span style="width:160px; height:2px; border-radius:2px; background:rgba(255,255,255,.12); overflow:hidden;"><span ref="{{ leaveBarRef }}" style="display:block; height:100%; background:#4046ff; transform-origin:left; transform:scaleX(0);"></span></span></div></div>
+<div ref="{{ progressRef }}" style="position:fixed; left:0; right:0; top:0; height:2px; z-index:60; background:#4046ff; transform:scaleX(0); transform-origin:left;"></div>
+<header style="position:fixed; top:0; left:0; right:0; z-index:50; padding:12px clamp(12px,3vw,24px); pointer-events:none;">
+  <div style="pointer-events:auto; max-width:{{ navMax }}; margin:0 auto; display:flex; align-items:center; gap:16px; padding:8px; border-radius:999px; background:{{ navBg }}; box-shadow:{{ navShadow }}; backdrop-filter:blur(16px) saturate(160%); -webkit-backdrop-filter:blur(16px) saturate(160%); transition:max-width .6s cubic-bezier(.2,.8,.2,1), background .4s ease, box-shadow .4s ease;">
+    <a href="Portfolio%20Homepage.dc.html#loan" aria-label="Back to portfolio" style="display:inline-flex; align-items:center; justify-content:center; flex:none; width:44px; height:44px; border-radius:50%; background:#0f1013; color:#f6f5f2; text-decoration:none; transition:background .2s ease, transform .2s ease;" style-hover="background:#4046ff; color:#ffffff;" style-active="transform:scale(.94);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg></a>
+    <a href="Portfolio%20Homepage.dc.html" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; display:flex; align-items:center; gap:10px; margin-right:auto; color:#0f1013; text-decoration:none; font-size:15px; font-weight:500; letter-spacing:-0.01em; white-space:nowrap;">Home</a>
+    <nav style="display:{{ navLinksDisplay }}; gap:4px;">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="4">
+        <a href="{{ n.href }}" style="padding:8px 12px; border-radius:999px; color:{{ n.color }}; background:{{ n.bg }}; text-decoration:none; font-size:14px; transition:color .2s ease, background .2s ease;" style-hover="color:#0f1013; background:rgba(15,16,19,.05);">{{ n.label }}</a>
+      </sc-for>
+    </nav>
+    <button type="button" data-pf-theme="" aria-label="Switch to dark mode" title="Switch to dark mode" style="display:grid; place-items:center; flex:none; width:44px; height:44px; padding:0; border:0; border-radius:999px; background:transparent; color:#55575e; cursor:pointer; transition:color .2s ease, background .2s ease;" style-hover="color:#0f1013; background:rgba(15,16,19,.05);"><svg data-pf-icon="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg><svg data-pf-icon="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button>
+  </div>
+</header>
+
+<section id="top" onMouseMove="{{ heroMove }}" onMouseLeave="{{ heroLeave }}" style="position:relative; overflow:hidden; padding:clamp(140px,20vh,200px) 0 clamp(64px,10vh,112px);">
+  <canvas ref="{{ canvasRef }}" aria-hidden="true" style="position:absolute; inset:0; width:100%; height:100%; -webkit-mask-image:radial-gradient(ellipse 80% 70% at 70% 35%, #000 20%, transparent 75%); mask-image:radial-gradient(ellipse 80% 70% at 70% 35%, #000 20%, transparent 75%);"></canvas>
+  <div style="position:relative; max-width:1200px; margin:0 auto; padding:0 clamp(20px,5vw,72px);">
+    <div data-reveal="0" style="display:inline-flex; align-items:center; gap:10px; padding:6px 14px 6px 10px; border-radius:999px; background:#ffffff; border:1px solid rgba(15,16,19,.08); font-family:'Geist Mono',monospace; font-size:12px; color:#55575e;">
+      <span style="position:relative; width:8px; height:8px;"><span ref="{{ chipDotRef }}" style="position:absolute; inset:0; border-radius:50%; background:#4046ff;"></span><span style="position:absolute; inset:0; border-radius:50%; background:#4046ff;"></span></span>
+      01 · Student Loan App · 2026
+    </div>
+    <h1 style="margin-top:28px; max-width:14ch; font-size:clamp(44px,6.4vw,96px); line-height:.98; letter-spacing:-0.05em; font-weight:500;">
+      <span style="display:block;"><span style="display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em;"><span data-reveal="80" data-up="" style="display:inline-block;">Six</span></span> <span style="display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em;"><span data-reveal="140" data-up="" style="display:inline-block;">connected</span></span></span>
+      <span style="display:block;"><span style="display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em;"><span data-reveal="200" data-up="" style="display:inline-block;">features</span></span> <span style="display:inline-block; overflow:hidden; vertical-align:top; padding-bottom:.08em;"><span data-reveal="320" data-up="" style="display:inline-block;">in</span></span></span>
+      <span style="display:block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.025em; color:#4046ff;"><span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="380" data-up="" style="display:inline-block;">the Student</span></span> <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="440" data-up="" style="display:inline-block;">Loan App.</span></span></span>
+    </h1>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr)); align-items:end; gap:40px clamp(32px,6vw,96px); margin-top:40px;">
+      <div data-reveal="520" style="min-width:0; max-width:540px;">
+        <p style="font-size:18px; line-height:1.6; color:#55575e;">Product design across Android and iOS — from eligibility, through verified data and documents, to long-term loan servicing.</p>
+        <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:28px;">
+          <a href="#cases" onMouseMove="{{ magMove }}" onMouseLeave="{{ magLeave }}" style="display:inline-flex; align-items:center; gap:10px; height:50px; padding:0 22px; border-radius:999px; white-space:nowrap; background:#0f1013; color:#f6f5f2; text-decoration:none; font-size:15px; font-weight:500; transition:transform .35s cubic-bezier(.2,.8,.2,1), background .25s ease;" style-hover="background:#4046ff; color:#ffffff;">Explore the features<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="m19 12-7 7-7-7"></path></svg></a>
+          <a href="#process" onMouseMove="{{ magMove }}" onMouseLeave="{{ magLeave }}" style="display:inline-flex; align-items:center; height:50px; padding:0 22px; border-radius:999px; white-space:nowrap; border:1px solid rgba(15,16,19,.14); color:#0f1013; text-decoration:none; font-size:15px; font-weight:500; transition:transform .35s cubic-bezier(.2,.8,.2,1), background .25s ease, border-color .25s ease;" style-hover="background:#ffffff; border-color:rgba(15,16,19,.24); color:#0f1013;">How we worked</a>
+        </div>
+      </div>
+      <dl data-reveal="600" style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); margin:0; border-radius:20px; background:#ffffff; border:1px solid rgba(15,16,19,.08); overflow:hidden;">
+        <div style="padding:18px 22px;"><dt style="font-family:'Geist Mono',monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:#6c6e75;">Role</dt><dd style="margin:6px 0 0; font-size:15px; font-weight:500;">Product Designer</dd></div>
+        <div style="padding:18px 22px; border-left:1px solid rgba(15,16,19,.07);"><dt style="font-family:'Geist Mono',monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:#6c6e75;">Platforms</dt><dd style="margin:6px 0 0; font-size:15px; font-weight:500;">Android · iOS</dd></div>
+        <div style="padding:18px 22px; border-top:1px solid rgba(15,16,19,.07);"><dt style="font-family:'Geist Mono',monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:#6c6e75;">Timeline</dt><dd style="margin:6px 0 0; font-size:15px; font-weight:500;">20 weeks</dd></div>
+        <div style="padding:18px 22px; border-left:1px solid rgba(15,16,19,.07); border-top:1px solid rgba(15,16,19,.07);"><dt style="font-family:'Geist Mono',monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:#6c6e75;">Scope</dt><dd style="margin:6px 0 0; font-size:15px; font-weight:500;">Six connected flows</dd></div>
+      </dl>
+    </div>
+
+    <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+      <div data-reveal="700" style="position:relative; height:340px; margin-top:clamp(56px,9vh,96px);">
+        <svg viewBox="0 0 1000 340" preserveAspectRatio="none" aria-hidden="true" style="position:absolute; inset:0; width:100%; height:100%; overflow:visible;">
+          <defs><linearGradient id="jg" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#0f1013" stop-opacity=".25"></stop><stop offset=".5" stop-color="#4046ff"></stop><stop offset="1" stop-color="#4046ff" stop-opacity=".5"></stop></linearGradient></defs>
+          <path d="M60,250 C148,250 148,110 236,110 S324,230 412,230 S500,100 588,100 S676,220 764,220 S852,110 940,110" fill="none" stroke="rgba(15,16,19,.10)" stroke-width="1" stroke-dasharray="2 6"></path>
+          <path ref="{{ pathRef }}" d="M60,250 C148,250 148,110 236,110 S324,230 412,230 S500,100 588,100 S676,220 764,220 S852,110 940,110" fill="none" stroke="url(#jg)" stroke-width="2" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0"></path>
+        </svg>
+        <div ref="{{ pulseRef }}" aria-hidden="true" style="position:absolute; left:6%; top:73.5%; width:10px; height:10px; margin:-5px 0 0 -5px; border-radius:50%; background:#4046ff; box-shadow:0 0 0 6px rgba(64,70,255,.15), 0 0 24px 6px rgba(64,70,255,.35); opacity:0; pointer-events:none;"></div>
+        <sc-for list="{{ nodes }}" as="nd" hint-placeholder-count="6">
+          <button onClick="{{ nd.onClick }}" onMouseEnter="{{ nd.onEnter }}" onMouseLeave="{{ nd.onLeave }}" aria-label="{{ nd.aria }}" style="position:absolute; left:{{ nd.x }}; top:{{ nd.y }}; width:0; height:0; padding:0; border:0; background:none; cursor:pointer; font:inherit; color:inherit;">
+            <span data-reveal="{{ nd.delay }}" style="position:absolute; left:0; top:0; width:14px; height:14px; margin:-7px 0 0 -7px; border-radius:50%; background:{{ nd.dotBg }}; border:2px solid #4046ff; transform:scale({{ nd.dotS }}); box-shadow:{{ nd.dotGlow }}; transition:transform .35s cubic-bezier(.3,1.6,.5,1), background .25s ease, box-shadow .3s ease;"></span>
+            <span style="position:absolute; left:0; top:0; width:200px; transform:{{ nd.lt }}; text-align:{{ nd.align }}; transition:transform .35s cubic-bezier(.2,.8,.2,1);">
+              <span data-reveal="{{ nd.ldelay }}" style="display:flex; flex-direction:column; gap:3px;">
+                <span style="font-family:'Geist Mono',monospace; font-size:11px; color:#4046ff;">{{ nd.num }}</span>
+                <span style="font-size:16px; font-weight:500; letter-spacing:-0.01em; color:#0f1013;">{{ nd.tag }}</span>
+                <span style="font-size:13px; line-height:1.4; color:{{ nd.descColor }}; transition:color .25s ease;">{{ nd.hero }}</span>
+              </span>
+            </span>
+          </button>
+        </sc-for>
+      </div>
+    </sc-if>
+    <sc-if value="{{ narrow }}">
+      <div style="display:flex; flex-direction:column; margin-top:56px; border-left:1px solid rgba(15,16,19,.12);">
+        <sc-for list="{{ nodes }}" as="nd" hint-placeholder-count="6">
+          <button onClick="{{ nd.onClick }}" style="position:relative; display:flex; flex-direction:column; gap:3px; padding:14px 0 14px 22px; border:0; background:none; text-align:left; font:inherit; color:inherit; cursor:pointer;">
+            <span style="position:absolute; left:-5px; top:20px; width:9px; height:9px; border-radius:50%; background:#ffffff; border:2px solid #4046ff;"></span>
+            <span style="font-family:'Geist Mono',monospace; font-size:11px; color:#4046ff;">{{ nd.num }}</span>
+            <span style="font-size:16px; font-weight:500;">{{ nd.tag }}</span>
+            <span style="font-size:13px; color:#6c6e75;">{{ nd.hero }}</span>
+          </button>
+        </sc-for>
+      </div>
+    </sc-if>
+  </div>
+</section>
+
+<section id="overview" style="max-width:1200px; margin:0 auto; padding:clamp(96px,16vh,160px) clamp(20px,5vw,72px) 0; scroll-margin-top:88px;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:10px; font-family:'Geist Mono',monospace; font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:#6c6e75;"><span style="width:6px; height:6px; border-radius:50%; background:#4046ff;"></span>Overview</div>
+  <p ref="{{ statementRef }}" style="margin-top:28px; max-width:24ch; font-size:clamp(30px,4.2vw,58px); line-height:1.12; letter-spacing:-0.035em; font-weight:500;"><span data-w="">We</span> <span data-w="">redesigned</span> <span data-w="">education</span> <span data-w="">lending</span> <span data-w="">as</span> <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.015em; color:#4046ff;"><span data-w="">one</span> <span data-w="">connected</span> <span data-w="">journey</span></span> <span data-w="">—</span> <span data-w="">from</span> <span data-w="">the</span> <span data-w="">first</span> <span data-w="">eligibility</span> <span data-w="">check</span> <span data-w="">to</span> <span data-w="">the</span> <span data-w="">last</span> <span data-w="">EMI.</span></p>
+  <p data-reveal="0" style="margin-top:32px; max-width:56ch; font-size:17px; line-height:1.6; color:#55575e;">The studies cover the app redesign, DigiLocker verification, Account Aggregator consent, OCR validation, post-disbursement servicing and multi-loan applications. Each solved a distinct moment; together they created continuity from first intent to long-term servicing.</p>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(max(33.33% - 24px, min(100%, (720px - 100%) * 999)),1fr)); gap:16px; margin-top:56px;">
+    <div data-reveal="0" onMouseMove="{{ spot }}" style="padding:28px; border-radius:20px; background:radial-gradient(320px circle at var(--mx,-400px) var(--my,-400px), rgba(64,70,255,.10), transparent 65%), #ffffff; border:1px solid rgba(15,16,19,.07); transition:transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s ease, border-color .45s ease;" style-hover="transform:translateY(-4px); box-shadow:0 30px 60px -30px rgba(15,16,19,.22); border-color:rgba(64,70,255,.22);">
+      <div style="font-family:'Geist Mono',monospace; font-size:12px; color:#4046ff;">01</div>
+      <div style="margin-top:40px; font-size:20px; font-weight:500; letter-spacing:-0.015em;">Reduce cognitive load</div>
+      <p style="margin-top:8px; font-size:14px; line-height:1.6; color:#55575e;">One decision per screen, defaults that match the profile, and progress that is always visible.</p>
+    </div>
+    <div data-reveal="90" onMouseMove="{{ spot }}" style="padding:28px; border-radius:20px; background:radial-gradient(320px circle at var(--mx,-400px) var(--my,-400px), rgba(64,70,255,.10), transparent 65%), #ffffff; border:1px solid rgba(15,16,19,.07); transition:transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s ease, border-color .45s ease;" style-hover="transform:translateY(-4px); box-shadow:0 30px 60px -30px rgba(15,16,19,.22); border-color:rgba(64,70,255,.22);">
+      <div style="font-family:'Geist Mono',monospace; font-size:12px; color:#4046ff;">02</div>
+      <div style="margin-top:40px; font-size:20px; font-weight:500; letter-spacing:-0.015em;">Make trust visible</div>
+      <p style="margin-top:8px; font-size:14px; line-height:1.6; color:#55575e;">Show what is shared, why, and for how long — and name the limits as clearly as the ask.</p>
+    </div>
+    <div data-reveal="180" onMouseMove="{{ spot }}" style="padding:28px; border-radius:20px; background:radial-gradient(320px circle at var(--mx,-400px) var(--my,-400px), rgba(64,70,255,.10), transparent 65%), #ffffff; border:1px solid rgba(15,16,19,.07); transition:transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s ease, border-color .45s ease;" style-hover="transform:translateY(-4px); box-shadow:0 30px 60px -30px rgba(15,16,19,.22); border-color:rgba(64,70,255,.22);">
+      <div style="font-family:'Geist Mono',monospace; font-size:12px; color:#4046ff;">03</div>
+      <div style="margin-top:40px; font-size:20px; font-weight:500; letter-spacing:-0.015em;">Design for the full lifecycle</div>
+      <p style="margin-top:8px; font-size:14px; line-height:1.6; color:#55575e;">Patterns that carry from application to repayment, so every stage feels like the same product.</p>
+    </div>
+  </div>
+</section>
+<section aria-label="Core team" onMouseEnter="{{ mqSlow }}" onMouseLeave="{{ mqFast }}" style="box-sizing:border-box; width:calc(100% - 2 * clamp(20px,5vw,72px)); max-width:calc(1200px - 2 * clamp(20px,5vw,72px)); margin:clamp(96px,16vh,160px) auto 0; padding:28px 0; border-top:1px solid rgba(15,16,19,.1); border-bottom:1px solid rgba(15,16,19,.1);">
+  <div style="overflow:hidden; -webkit-mask-image:linear-gradient(to right, transparent, #000 12%, #000 88%, transparent); mask-image:linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);">
+  <div ref="{{ marqueeRef }}" style="display:flex; width:max-content; gap:0;">
+    <div style="display:flex; align-items:center; gap:40px; padding-right:40px; font-size:clamp(32px,4.4vw,60px); letter-spacing:-0.04em; font-weight:500; white-space:nowrap;">
+      <span>Product</span><span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; color:#4046ff;">&amp;</span><span>Risk</span><span style="width:10px; height:10px; border-radius:50%; background:#0f1013;"></span><span>Research</span><span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; color:#4046ff;">&amp;</span><span>Content</span><span style="width:10px; height:10px; border-radius:50%; background:#0f1013;"></span><span>Compliance</span><span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; color:#4046ff;">&amp;</span><span>Operations</span><span style="width:10px; height:10px; border-radius:50%; background:#0f1013;"></span><span>Engineering</span><span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; color:#4046ff;">&amp;</span><span>Data</span><span style="width:10px; height:10px; border-radius:50%; background:#0f1013;"></span>
+    </div>
+    <div aria-hidden="true" style="display:flex; align-items:center; gap:40px; padding-right:40px; font-size:clamp(32px,4.4vw,60px); letter-spacing:-0.04em; font-weight:500; white-space:nowrap;">
+      <span>Product</span><span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; color:#4046ff;">&amp;</span><span>Risk</span><span style="width:10px; height:10px; border-radius:50%; background:#0f1013;"></span><span>Research</span><span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; color:#4046ff;">&amp;</span><span>Content</span><span style="width:10px; height:10px; border-radius:50%; background:#0f1013;"></span><span>Compliance</span><span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; color:#4046ff;">&amp;</span><span>Operations</span><span style="width:10px; height:10px; border-radius:50%; background:#0f1013;"></span><span>Engineering</span><span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; color:#4046ff;">&amp;</span><span>Data</span><span style="width:10px; height:10px; border-radius:50%; background:#0f1013;"></span>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="process" style="max-width:1200px; margin:0 auto; padding:clamp(96px,16vh,160px) clamp(20px,5vw,72px) 0; scroll-margin-top:80px;">
+  <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:20px 48px;">
+    <div>
+      <div data-reveal="0" style="display:flex; align-items:center; gap:10px; font-family:'Geist Mono',monospace; font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:#6c6e75;"><span style="width:6px; height:6px; border-radius:50%; background:#4046ff;"></span>Process</div>
+      <h2 data-reveal="60" style="margin-top:20px; font-size:clamp(34px,4.4vw,64px); line-height:1.02; letter-spacing:-0.045em; font-weight:500; max-width:14ch;">Twenty weeks, one shared <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em;">decision system.</span></h2>
+    </div>
+    <p data-reveal="120" style="max-width:40ch; font-size:15px; line-height:1.6; color:#6c6e75;">Weekly reviews aligned research, risk, compliance, content and engineering on a single decision log — so every trade-off was made once, and in the open.</p>
+  </div>
+  <div data-reveal="160" style="display:flex; justify-content:space-between; margin-top:72px; font-family:'Geist Mono',monospace; font-size:11px; color:#8b8d94;"><span>WEEK 01</span><span>WEEK 20</span></div>
+  <div style="display:grid; grid-template-columns:{{ phaseCols }}; gap:28px 6px; margin-top:14px;">
+    <sc-for list="{{ phases }}" as="p" hint-placeholder-count="5">
+      <div onMouseEnter="{{ p.onEnter }}" onMouseLeave="{{ p.onLeave }}" style="min-width:0; opacity:{{ p.op }}; transition:opacity .3s ease; cursor:default;">
+        <div style="height:10px; display:flex; align-items:center;"><div data-reveal="{{ p.delay }}" data-rx="" style="width:100%; height:{{ p.barH }}; border-radius:999px; background:linear-gradient(90deg, #4046ff, #8f94ff); transform-origin:left; transition:height .3s cubic-bezier(.2,.8,.2,1);"></div></div>
+        <div style="margin-top:18px; padding-right:12px;">
+          <div style="font-family:'Geist Mono',monospace; font-size:11px; color:#4046ff;">{{ p.wk }}</div>
+          <div style="margin-top:6px; font-size:18px; font-weight:500; letter-spacing:-0.02em;">{{ p.name }}</div>
+          <p style="margin-top:6px; font-size:13px; line-height:1.5; color:#6c6e75;">{{ p.d }}</p>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+<section id="cases" style="max-width:1200px; margin:0 auto; padding:clamp(120px,20vh,200px) clamp(20px,5vw,72px) 0; scroll-margin-top:80px;">
+  <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:20px 48px;">
+    <div>
+      <div data-reveal="0" style="display:flex; align-items:center; gap:10px; font-family:'Geist Mono',monospace; font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:#6c6e75;"><span style="width:6px; height:6px; border-radius:50%; background:#4046ff;"></span>Features</div>
+      <h2 data-reveal="60" style="margin-top:20px; font-size:clamp(34px,4.4vw,64px); line-height:1.02; letter-spacing:-0.045em; font-weight:500; max-width:15ch;">One system, designed across the <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em;">lifecycle.</span></h2>
+    </div>
+    <p data-reveal="120" style="max-width:36ch; font-size:15px; line-height:1.6; color:#6c6e75;">Scroll through the six moments. The phone follows along — and every screen is live, so try the controls.</p>
+  </div>
+  <div style="display:flex; flex-wrap:wrap; align-items:flex-start; gap:40px clamp(32px,6vw,96px); margin-top:clamp(40px,8vh,80px);">
+    <div ref="{{ caseTextRef }}" style="flex:1 1 360px; min-width:0; max-width:560px;">
+      <sc-for list="{{ visibleCases }}" as="c" hint-placeholder-count="1">
+        <article data-case="{{ c.idx }}" style="min-height:{{ c.minH }}; padding:{{ c.pad }}; display:flex; flex-direction:column; justify-content:center;">
+          <div style="display:flex; flex-direction:column; padding:clamp(24px,3.4vw,44px); border-radius:28px; background:{{ c.bg }}; border:1px solid {{ c.bd }}; box-shadow:0 1px 2px rgba(15,16,19,.04), 0 30px 60px -40px rgba(15,16,19,.25);">
+          <div style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#4046ff;">{{ c.num }}</span><span style="width:24px; height:1px; background:rgba(15,16,19,.2);"></span>{{ c.kicker }}</div>
+          <h3 style="margin-top:20px; font-size:clamp(28px,3.2vw,42px); line-height:1.08; letter-spacing:-0.035em; font-weight:500; max-width:19ch;">{{ c.title }}</h3>
+          <p style="margin-top:16px; max-width:44ch; font-size:16px; line-height:1.6; color:#55575e;">{{ c.body }}</p>
+          <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:20px; margin-top:32px; padding-top:24px; border-top:1px solid rgba(15,16,19,.08);">
+            <div style="display:flex; align-items:baseline; gap:14px;">
+              <span data-count="{{ c.metric.to }}" data-dec="{{ c.metric.dec }}" data-pre="{{ c.metric.pre }}" data-suf="{{ c.metric.suf }}" style="font-size:56px; line-height:1; letter-spacing:-0.05em; font-weight:500; font-variant-numeric:tabular-nums;">{{ c.metric.v }}</span>
+              <span style="max-width:16ch; font-size:13px; line-height:1.4; color:#6c6e75;">{{ c.metric.label }}</span>
+            </div>
+            <a href="{{ c.href }}" onClick="{{ c.go }}" onMouseMove="{{ magMove }}" onMouseLeave="{{ magLeave }}" style="display:inline-flex; align-items:center; gap:12px; height:48px; padding:0 8px 0 22px; border-radius:999px; background:#0f1013; color:#ffffff; text-decoration:none; font-size:15px; font-weight:500; box-shadow:0 10px 24px -12px rgba(15,16,19,.45); transition:transform .35s cubic-bezier(.2,.8,.2,1), background .25s ease, box-shadow .25s ease;" style-hover="background:#4046ff; color:#ffffff; box-shadow:0 14px 30px -12px rgba(64,70,255,.6);" style-active="transform:scale(.97);">Explore feature<span style="width:34px; height:34px; border-radius:50%; background:#ffffff; color:#0f1013; display:grid; place-items:center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></span></a>
+          </div>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+    <div style="flex:0 0 auto; width:{{ phoneColW }}; max-width:100%; position:{{ phonePos }}; top:{{ phoneTop }}; order:{{ phoneOrder }};">
+      <div role="tablist" aria-label="Features" style="display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:6px; margin-bottom:{{ railMb }};">
+        <sc-for list="{{ rail }}" as="r" hint-placeholder-count="6">
+          <button role="tab" aria-selected="{{ r.sel }}" onClick="{{ r.onClick }}" style="background:none; border:0; padding:4px 0; margin:0; font:inherit; text-align:left; cursor:pointer; display:flex; flex-direction:column; gap:8px; min-width:0; color:{{ r.color }}; transition:color .25s ease;" style-hover="color:#0f1013;">
+            <span style="position:relative; display:block; height:3px; border-radius:3px; overflow:hidden; background:rgba(15,16,19,.08);"><span data-fill="" style="position:absolute; inset:0; border-radius:3px; background:#4046ff; transform:scaleX(0); transform-origin:left; transition:transform .25s ease;"></span></span>
+            <span style="font-family:'Geist Mono',monospace; font-size:11px;">{{ r.num }}</span>
+                      </button>
+        </sc-for>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px; font-size:13px; font-weight:500;"><span style="font-family:'Geist Mono',monospace; font-size:11px; font-weight:400; color:#4046ff;">{{ cur.num }}</span>{{ cur.tag }}</div>
+      <div data-reveal="80" onMouseMove="{{ onPhoneMove }}" onMouseLeave="{{ onPhoneLeave }}" style="position:relative; width:420px; max-width:100%; height:620px; margin:0 auto;">
+        <div aria-hidden="true" style="position:absolute; left:20px; top:60px; width:260px; height:480px; border-radius:50%; background:radial-gradient(closest-side, rgba(64,70,255,.22), transparent); filter:blur(30px);"></div>
+        <div ref="{{ phoneRef }}" style="position:absolute; left:0; top:0; width:296px; height:608px; padding:8px; border-radius:48px; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.08), 0 50px 100px -40px rgba(15,16,19,.35), 0 20px 40px -24px rgba(15,16,19,.18); transition:transform .6s cubic-bezier(.2,.8,.2,1); will-change:transform;">
+          <div style="position:relative; width:100%; height:100%; overflow:hidden; border-radius:40px; background:#fbfbfa; box-shadow:inset 0 0 0 1px rgba(15,16,19,.05);">
+            <div style="position:absolute; left:0; right:0; top:0; height:44px; padding:0 24px; display:flex; align-items:center; justify-content:space-between; font-size:12px; font-weight:600; font-variant-numeric:tabular-nums; z-index:2;">
+              <span>9:41</span>
+              <span style="position:absolute; left:50%; top:11px; width:84px; height:24px; margin-left:-42px; border-radius:14px; background:#0f1013;"></span>
+              <span style="width:20px; height:10px; border-radius:3px; border:1.5px solid #0f1013; padding:1px;"><span style="display:block; width:70%; height:100%; border-radius:1px; background:#0f1013;"></span></span>
+            </div>
+
+            <div aria-hidden="{{ scA.hid }}" style="position:absolute; inset:0; padding:56px 18px 18px; display:flex; flex-direction:column; gap:12px; opacity:{{ scA.o }}; transform:{{ scA.t }}; filter:{{ scA.f }}; pointer-events:{{ scA.pe }}; transition:opacity .5s ease, transform .7s cubic-bezier(.2,.8,.2,1), filter .5s ease;">
+              <div style="display:flex; justify-content:space-between; font-size:11px; color:#6c6e75;"><span>Eligibility</span><span style="font-family:'Geist Mono',monospace;">3 / 7</span></div>
+              <div style="display:grid; grid-template-columns:repeat(7,1fr); gap:4px;">
+                <span style="height:3px; border-radius:3px; background:#4046ff;"></span><span style="height:3px; border-radius:3px; background:#4046ff;"></span><span style="height:3px; border-radius:3px; background:#4046ff;"></span><span style="height:3px; border-radius:3px; background:#e6e6ea;"></span><span style="height:3px; border-radius:3px; background:#e6e6ea;"></span><span style="height:3px; border-radius:3px; background:#e6e6ea;"></span><span style="height:3px; border-radius:3px; background:#e6e6ea;"></span>
+              </div>
+              <div style="margin-top:8px; font-size:21px; line-height:1.15; letter-spacing:-0.03em; font-weight:500;">How much do you need?</div>
+              <div style="padding:16px; border-radius:18px; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.06), 0 8px 20px -12px rgba(15,16,19,.15); display:flex; flex-direction:column; gap:12px;">
+                <div style="display:flex; align-items:center; justify-content:space-between;">
+                  <button onClick="{{ amtDown }}" aria-label="Decrease amount" style="width:32px; height:32px; display:grid; place-items:center; border-radius:50%; border:0; background:#f1f1f4; color:#0f1013; cursor:pointer; transition:background .2s ease, transform .15s ease;" style-hover="background:#e6e7ff; color:#4046ff;" style-active="transform:scale(.88);"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"><path d="M5 12h14"></path></svg></button>
+                  <span style="font-size:26px; letter-spacing:-0.04em; font-weight:500; font-variant-numeric:tabular-nums;">₹{{ amountFmt }}</span>
+                  <button onClick="{{ amtUp }}" aria-label="Increase amount" style="width:32px; height:32px; display:grid; place-items:center; border-radius:50%; border:0; background:#f1f1f4; color:#0f1013; cursor:pointer; transition:background .2s ease, transform .15s ease;" style-hover="background:#e6e7ff; color:#4046ff;" style-active="transform:scale(.88);"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></button>
+                </div>
+                <div style="position:relative; height:4px; border-radius:4px; background:#ececf0;"><div style="position:absolute; left:0; top:0; bottom:0; width:{{ amtPct }}; border-radius:4px; background:#4046ff; transition:width .45s cubic-bezier(.2,.8,.2,1);"><span style="position:absolute; right:-7px; top:-5px; width:14px; height:14px; border-radius:50%; background:#ffffff; box-shadow:0 0 0 2px #4046ff, 0 2px 6px rgba(64,70,255,.4);"></span></div></div>
+                <div style="display:flex; justify-content:space-between; font-family:'Geist Mono',monospace; font-size:9.5px; color:#8b8d94;"><span>₹50,000</span><span>₹2,00,000</span></div>
+              </div>
+              <div style="font-size:11px; color:#6c6e75;">Repay over</div>
+              <div role="radiogroup" aria-label="Tenure" style="display:grid; grid-template-columns:repeat(3,1fr); gap:4px; padding:4px; border-radius:14px; background:#f1f1f4;">
+                <sc-for list="{{ tenures }}" as="t" hint-placeholder-count="3">
+                  <button role="radio" aria-checked="{{ t.sel }}" onClick="{{ t.onClick }}" style="height:32px; border:0; border-radius:10px; background:{{ t.bg }}; color:{{ t.color }}; box-shadow:{{ t.sh }}; font:inherit; font-size:12px; font-weight:500; cursor:pointer; transition:background .25s ease, color .25s ease, box-shadow .25s ease;">{{ t.label }}</button>
+                </sc-for>
+              </div>
+              <div style="display:flex; align-items:baseline; justify-content:space-between; padding:14px 16px; border-radius:16px; background:#eef0ff;"><span style="font-size:11px; color:#3439c9;">Estimated EMI</span><span style="font-size:18px; letter-spacing:-0.03em; font-weight:500; font-variant-numeric:tabular-nums;">₹{{ emiFmt }}<span style="font-size:11px; color:#6c6e75; letter-spacing:0;"> /mo</span></span></div>
+              <div style="margin-top:auto; display:flex; flex-direction:column; gap:8px;">
+                <span style="text-align:center; font-size:10px; color:#8b8d94;">Checking eligibility won’t affect your credit score</span>
+                <button style="width:100%; height:46px; border:0; border-radius:999px; background:#0f1013; color:#ffffff; font:inherit; font-size:14px; font-weight:500; cursor:pointer; transition:background .2s ease, transform .15s ease;" style-hover="background:#4046ff;" style-active="transform:scale(.98);">Continue</button>
+              </div>
+            </div>
+
+            <div aria-hidden="{{ scB.hid }}" style="position:absolute; inset:0; padding:56px 18px 18px; display:flex; flex-direction:column; gap:12px; opacity:{{ scB.o }}; transform:{{ scB.t }}; filter:{{ scB.f }}; pointer-events:{{ scB.pe }}; transition:opacity .5s ease, transform .7s cubic-bezier(.2,.8,.2,1), filter .5s ease;">
+              <div style="font-size:11px; color:#6c6e75;">Consent · 5 / 7</div>
+              <div style="font-size:21px; line-height:1.15; letter-spacing:-0.03em; font-weight:500;">Share bank data to check eligibility</div>
+              <div style="font-size:11px; line-height:1.5; color:#6c6e75;">Through an RBI-regulated Account Aggregator. We never see your login.</div>
+              <div style="display:flex; align-items:center; gap:10px; padding:12px; border-radius:16px; background:#ffffff; box-shadow:0 0 0 1.5px #4046ff, 0 8px 20px -12px rgba(64,70,255,.35);">
+                <span style="width:32px; height:32px; flex:none; border-radius:10px; display:grid; place-items:center; background:#eef0ff; color:#4046ff;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg></span>
+                <div style="flex:1; min-width:0;"><div style="font-size:13px; font-weight:500;">Savings account</div><div style="font-family:'Geist Mono',monospace; font-size:10px; color:#8b8d94;">••4821 · Primary</div></div>
+                <span style="width:18px; height:18px; border-radius:50%; background:#4046ff; display:grid; place-items:center;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                <div style="padding:12px; border-radius:14px; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.06);">
+                  <div style="font-family:'Geist Mono',monospace; font-size:9.5px; text-transform:uppercase; color:#4046ff;">We’ll see</div>
+                  <div style="margin-top:6px; font-size:11px; line-height:1.6;">6 months of transactions<br>Average balance</div>
+                </div>
+                <div style="padding:12px; border-radius:14px; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.06);">
+                  <div style="font-family:'Geist Mono',monospace; font-size:9.5px; text-transform:uppercase; color:#8b8d94;">We won’t</div>
+                  <div style="margin-top:6px; font-size:11px; line-height:1.6;">Your passwords<br>Move any money</div>
+                </div>
+              </div>
+              <div style="display:flex; flex-direction:column; padding:4px 14px; border-radius:14px; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.06);">
+                <div style="display:flex; justify-content:space-between; padding:9px 0; font-size:11px; border-bottom:1px solid rgba(15,16,19,.06);"><span style="color:#6c6e75;">Purpose</span><span style="font-weight:500;">Loan eligibility</span></div>
+                <div style="display:flex; justify-content:space-between; padding:9px 0; font-size:11px;"><span style="color:#6c6e75;">Duration</span><span style="font-weight:500;">One-time · 24h</span></div>
+              </div>
+              <div style="margin-top:auto; display:flex; flex-direction:column; gap:8px;">
+                <span style="text-align:center; font-size:10px; color:#8b8d94;">Revoke anytime in Settings</span>
+                <button style="width:100%; height:46px; border:0; border-radius:999px; background:#4046ff; color:#ffffff; font:inherit; font-size:14px; font-weight:500; cursor:pointer; transition:background .2s ease, transform .15s ease;" style-hover="background:#2a2fd6;" style-active="transform:scale(.98);">Approve consent</button>
+              </div>
+            </div>
+
+            <div aria-hidden="{{ scC.hid }}" style="position:absolute; inset:0; padding:56px 18px 18px; display:flex; flex-direction:column; gap:12px; opacity:{{ scC.o }}; transform:{{ scC.t }}; filter:{{ scC.f }}; pointer-events:{{ scC.pe }}; transition:opacity .5s ease, transform .7s cubic-bezier(.2,.8,.2,1), filter .5s ease;">
+              <div style="font-size:11px; color:#6c6e75;">Documents</div>
+              <div style="font-size:21px; line-height:1.15; letter-spacing:-0.03em; font-weight:500;">We’re fetching your documents</div>
+              <div style="font-size:11px; line-height:1.5; color:#6c6e75;">Pulled straight from the source — nothing to scan or upload.</div>
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div style="position:relative; flex:1; height:4px; border-radius:4px; background:#ececf0;"><div style="position:absolute; left:0; top:0; bottom:0; width:{{ verPct }}; border-radius:4px; background:#4046ff; transition:width .5s cubic-bezier(.2,.8,.2,1);"></div></div>
+                <span style="font-family:'Geist Mono',monospace; font-size:10px; color:#6c6e75;">{{ verCount }}/4</span>
+              </div>
+              <div style="display:flex; flex-direction:column; padding:4px 14px; border-radius:18px; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.06), 0 8px 20px -12px rgba(15,16,19,.15);">
+                <sc-for list="{{ docs }}" as="d" hint-placeholder-count="4">
+                  <div style="display:flex; align-items:center; gap:10px; padding:11px 0; border-bottom:1px solid rgba(15,16,19,.05);">
+                    <span style="width:20px; height:20px; flex:none; border-radius:50%; display:grid; place-items:center; border:1.5px solid {{ d.dotBorder }}; background:{{ d.dotBg }}; transition:background .3s ease, border-color .3s ease;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:{{ d.checkOp }}; transform:{{ d.checkS }}; transition:opacity .25s ease, transform .4s cubic-bezier(.3,1.7,.5,1);"><path d="M20 6 9 17l-5-5"></path></svg></span>
+                    <div style="flex:1; min-width:0;"><div style="font-size:12px; font-weight:500;">{{ d.name }}</div><div style="font-size:10px; color:#8b8d94;">{{ d.src }}</div></div>
+                    <span style="font-size:10px; font-weight:500; color:{{ d.sColor }}; transition:color .3s ease;">{{ d.status }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="margin-top:auto; display:flex; flex-direction:column; gap:8px;">
+                <span style="text-align:center; font-size:10px; color:#8b8d94;">Something missing? Upload is still an option.</span>
+                <button style="width:100%; height:46px; border:0; border-radius:999px; background:#0f1013; color:#ffffff; font:inherit; font-size:14px; font-weight:500; cursor:pointer; transition:background .2s ease, transform .15s ease;" style-hover="background:#4046ff;" style-active="transform:scale(.98);">Continue</button>
+              </div>
+            </div>
+
+            <div aria-hidden="{{ scD.hid }}" style="position:absolute; inset:0; padding:56px 18px 18px; display:flex; flex-direction:column; gap:12px; opacity:{{ scD.o }}; transform:{{ scD.t }}; filter:{{ scD.f }}; pointer-events:{{ scD.pe }}; transition:opacity .5s ease, transform .7s cubic-bezier(.2,.8,.2,1), filter .5s ease;">
+              <div style="font-size:11px; color:#6c6e75;">Review</div>
+              <div style="font-size:21px; line-height:1.15; letter-spacing:-0.03em; font-weight:500;">Check what we read</div>
+              <div style="position:relative; height:112px; overflow:hidden; border-radius:16px; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.06); padding:14px; display:flex; flex-direction:column; gap:8px;">
+                <span style="width:46%; height:6px; border-radius:3px; background:#d9d9de;"></span>
+                <span style="width:78%; height:4px; border-radius:2px; background:#ececf0;"></span>
+                <span style="width:64%; height:4px; border-radius:2px; background:#ececf0;"></span>
+                <span style="width:72%; height:4px; border-radius:2px; background:#ececf0;"></span>
+                <span style="width:38%; height:4px; border-radius:2px; background:#c9cbff;"></span>
+                <span style="width:58%; height:4px; border-radius:2px; background:#ececf0;"></span>
+                <div ref="{{ scanRef }}" style="position:absolute; left:0; right:0; top:6px; height:22px; margin-top:-11px; background:linear-gradient(to bottom, transparent, rgba(64,70,255,.16) 50%, transparent); pointer-events:none;"><span style="position:absolute; left:0; right:0; top:50%; height:1.5px; background:#4046ff; box-shadow:0 0 10px #4046ff;"></span></div>
+                <span style="position:absolute; right:12px; bottom:10px; font-family:'Geist Mono',monospace; font-size:9px; text-transform:uppercase; color:#8b8d94;">Fee receipt</span>
+              </div>
+              <div style="display:flex; flex-direction:column; padding:2px 14px; border-radius:16px; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.06);">
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid rgba(15,16,19,.05);"><div><div style="font-size:10px; color:#8b8d94;">Student name</div><div style="font-size:12px; font-weight:500;">Aarav Sharma</div></div><span style="font-family:'Geist Mono',monospace; font-size:10px; color:#4046ff;">99.2%</span></div>
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0;"><div><div style="font-size:10px; color:#8b8d94;">Academic year</div><div style="font-size:12px; font-weight:500;">2026–27</div></div><span style="font-family:'Geist Mono',monospace; font-size:10px; color:#4046ff;">98.1%</span></div>
+              </div>
+              <div style="padding:12px 14px; border-radius:16px; background:#ffffff; box-shadow:0 0 0 1.5px {{ ocrBorder }}; display:flex; flex-direction:column; gap:8px; transition:box-shadow .3s ease;">
+                <div style="display:flex; justify-content:space-between; align-items:center;"><div><div style="font-size:10px; color:#8b8d94;">Tuition fee</div><div style="font-size:14px; font-weight:500; font-variant-numeric:tabular-nums;">₹2,40,000</div></div><span style="font-family:'Geist Mono',monospace; font-size:10px; color:#4046ff;">{{ ocrConf }}</span></div>
+                <div style="position:relative; height:3px; border-radius:3px; background:#ececf0;"><div style="position:absolute; left:0; top:0; bottom:0; width:{{ ocrBar }}; border-radius:3px; background:#4046ff; transition:width .6s cubic-bezier(.2,.8,.2,1);"></div></div>
+                <sc-if value="{{ ocrPending }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;"><span style="font-size:10px; line-height:1.35; color:#55575e;">Low confidence — is this right?</span><button onClick="{{ ocrToggle }}" style="height:28px; padding:0 12px; border:0; border-radius:999px; background:#4046ff; color:#ffffff; font:inherit; font-size:11px; font-weight:500; cursor:pointer; transition:transform .15s ease, background .2s ease;" style-hover="background:#2a2fd6;" style-active="transform:scale(.94);">Confirm</button></div>
+                </sc-if>
+                <sc-if value="{{ ocrOk }}">
+                  <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;"><span style="display:flex; align-items:center; gap:6px; font-size:10px; font-weight:500; color:#4046ff;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>Confirmed by you</span><button onClick="{{ ocrToggle }}" style="height:28px; padding:0 10px; border:0; border-radius:999px; background:#f1f1f4; color:#0f1013; font:inherit; font-size:11px; cursor:pointer;" style-hover="background:#e6e6ea;">Undo</button></div>
+                </sc-if>
+              </div>
+              <button style="margin-top:auto; width:100%; height:46px; border:0; border-radius:999px; background:#0f1013; color:#ffffff; font:inherit; font-size:14px; font-weight:500; cursor:pointer; transition:background .2s ease, transform .15s ease;" style-hover="background:#4046ff;" style-active="transform:scale(.98);">Looks right</button>
+            </div>
+
+            <div aria-hidden="{{ scE.hid }}" style="position:absolute; inset:0; padding:56px 18px 18px; display:flex; flex-direction:column; gap:12px; opacity:{{ scE.o }}; transform:{{ scE.t }}; filter:{{ scE.f }}; pointer-events:{{ scE.pe }}; transition:opacity .5s ease, transform .7s cubic-bezier(.2,.8,.2,1), filter .5s ease;">
+              <div style="display:flex; flex-direction:column; gap:2px;"><span style="font-size:11px; color:#6c6e75;">Hi, Harish Babu · 1 active loan</span><span style="font-size:21px; line-height:1.15; letter-spacing:-0.03em; font-weight:500;">Your education loan</span></div>
+              <div role="radiogroup" aria-label="Repayment state" style="display:flex; gap:6px; overflow-x:auto; scrollbar-width:none; margin:0 -18px; padding:2px 18px;">
+                <sc-for list="{{ pdChips }}" as="c" hint-placeholder-count="5">
+                  <button role="radio" aria-checked="{{ c.sel }}" onClick="{{ c.onClick }}" style="flex:none; height:30px; padding:0 12px; border:0; border-radius:999px; background:{{ c.bg }}; color:{{ c.color }}; box-shadow:{{ c.sh }}; font:inherit; font-size:11.5px; font-weight:500; white-space:nowrap; cursor:pointer; transition:background .25s ease, color .25s ease;">{{ c.label }}</button>
+                </sc-for>
+              </div>
+              <div style="padding:10px 12px; border-radius:14px; background:{{ pdS.mbg }}; color:{{ pdS.mc }}; font-size:11px; line-height:1.45; transition:background .3s ease, color .3s ease;">{{ pdS.msg }}</div>
+              <div style="display:flex; flex-direction:column; gap:10px; padding:14px; border-radius:20px; background:{{ pdS.cardBg }}; box-shadow:{{ pdS.cardSh }}; transition:background .3s ease, box-shadow .3s ease;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+                  <span style="display:flex; flex-direction:column; gap:2px;"><span style="font-size:20px; letter-spacing:-0.04em; font-weight:500; font-variant-numeric:tabular-nums;">₹25,000</span><span style="font-size:10px; color:#8b8d94;">05 May 2025</span></span>
+                  <span style="padding:4px 9px; border-radius:999px; background:{{ pdS.mbg }}; color:{{ pdS.mc }}; font-size:10px; font-weight:500; white-space:nowrap; transition:background .3s ease, color .3s ease;">{{ pdS.pill }}</span>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:2px; font-size:11px; line-height:1.4;"><span>A M Reddy Memorial College of Engineering</span><span style="color:#8b8d94;">Bachelor in Information Technology</span></div>
+                <div style="display:flex; flex-direction:column; gap:5px;">
+                  <div style="position:relative; height:4px; border-radius:4px; background:#ececf0;"><div style="position:absolute; left:0; top:0; bottom:0; width:{{ pdS.pct }}; border-radius:4px; background:#13805a; transition:width .6s cubic-bezier(.2,.8,.2,1);"></div></div>
+                  <div style="display:flex; justify-content:space-between; font-family:'Geist Mono',monospace; font-size:9.5px; color:#8b8d94;"><span>{{ pdS.paid }} of 120 installments paid</span><span>{{ pdS.pctTxt }}</span></div>
+                </div>
+                <div style="display:flex; align-items:center; gap:12px; padding-right:64px;">
+                  <button style="flex:1; height:34px; padding:0 14px; border:0; border-radius:999px; background:#0f1013; color:#ffffff; font:inherit; font-size:11.5px; font-weight:500; white-space:nowrap; cursor:pointer; transition:background .2s ease, transform .15s ease;" style-hover="background:#4046ff;" style-active="transform:scale(.97);">{{ pdS.cta }}</button>
+                  <button style="flex:none; height:34px; padding:0; border:0; background:transparent; color:#4046ff; font:inherit; font-size:11.5px; font-weight:500; white-space:nowrap; cursor:pointer;" style-hover="text-decoration:underline;">View details</button>
+                </div>
+              </div>
+              <div style="margin-top:auto; display:flex; flex-direction:column; gap:6px;">
+                <span style="font-size:11px; color:#6c6e75;">In View details</span>
+                <div style="display:flex; flex-wrap:wrap; gap:4px;"><sc-for list="{{ pdTabs }}" as="t" hint-placeholder-count="5"><span style="padding:4px 9px; border-radius:999px; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.07); font-size:10px; color:#55575e;">{{ t.t }}</span></sc-for></div>
+              </div>
+            </div>
+            <div aria-hidden="{{ scF.hid }}" style="position:absolute; inset:0; padding:56px 18px 18px; display:flex; flex-direction:column; gap:12px; opacity:{{ scF.o }}; transform:{{ scF.t }}; filter:{{ scF.f }}; pointer-events:{{ scF.pe }}; transition:opacity .5s ease, transform .7s cubic-bezier(.2,.8,.2,1), filter .5s ease;">
+              <div style="font-size:11px; color:#6c6e75;">Hi, Harish · 1 active loan</div>
+              <div style="font-size:21px; line-height:1.15; letter-spacing:-0.03em; font-weight:500;">Apply for a new loan</div>
+              <div style="display:flex; flex-direction:column; gap:6px;">
+                <div style="display:flex; gap:4px;"><sc-for list="{{ mlSteps }}" as="st" hint-placeholder-count="6"><span style="flex:1; height:4px; border-radius:4px; background:{{ st.bg }}; transition:background .3s ease;"></span></sc-for></div>
+                <span style="font-size:10.5px; color:#6c6e75;">{{ mlNote }}</span>
+              </div>
+              <div role="radiogroup" aria-label="Loan type" style="display:flex; flex-direction:column; gap:8px;">
+                <sc-for list="{{ mlOpts }}" as="o" hint-placeholder-count="2">
+                  <div style="border-radius:18px; background:#ffffff; box-shadow:{{ o.sh }}; transition:box-shadow .25s ease;">
+                    <button role="radio" aria-checked="{{ o.sel }}" onClick="{{ o.onClick }}" style="display:flex; align-items:flex-start; gap:10px; width:100%; padding:12px 14px; border:0; background:transparent; font:inherit; color:inherit; text-align:left; cursor:pointer;">
+                      <span style="width:18px; height:18px; flex:none; margin-top:1px; border-radius:50%; box-shadow:{{ o.rad }}; transition:box-shadow .25s ease;"></span>
+                      <span style="flex:1; min-width:0; display:flex; flex-direction:column; gap:3px;"><span style="font-size:14px; font-weight:500;">{{ o.t }}</span><span style="font-size:11px; line-height:1.4; color:#6c6e75;">{{ o.d }}</span></span>
+                    </button>
+                    <sc-if value="{{ o.showCourses }}" hint-placeholder-val="{{ false }}">
+                      <div role="radiogroup" aria-label="Your courses" style="display:flex; flex-direction:column; gap:2px; margin:0 14px; padding:4px 0 10px 28px; border-top:1px solid rgba(15,16,19,.07);">
+                        <sc-for list="{{ mlCourses }}" as="c" hint-placeholder-count="2">
+                          <button role="radio" aria-checked="{{ c.sel }}" onClick="{{ c.onClick }}" style="display:flex; align-items:center; gap:10px; padding:7px 0 0; border:0; background:transparent; font:inherit; color:inherit; text-align:left; cursor:pointer;">
+                            <span style="width:14px; height:14px; flex:none; border-radius:50%; box-shadow:{{ c.rad }}; transition:box-shadow .25s ease;"></span>
+                            <span style="display:flex; flex-direction:column; gap:1px;"><span style="font-size:12.5px; font-weight:500;">{{ c.t }}</span><span style="font-size:10px; color:#8b8d94;">{{ c.d }}</span></span>
+                          </button>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="margin-top:auto; display:flex; flex-direction:column; gap:8px;">
+                <button style="width:100%; height:46px; border:0; border-radius:999px; background:#0f1013; color:#ffffff; font:inherit; font-size:14px; font-weight:500; cursor:pointer; transition:background .2s ease, transform .15s ease;" style-hover="background:#4046ff;" style-active="transform:scale(.98);">Continue</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div ref="{{ floatRef }}" style="position:absolute; right:0; bottom:90px; width:184px; padding:16px 18px; border-radius:20px; background:rgba(255,255,255,.82); backdrop-filter:blur(16px) saturate(160%); -webkit-backdrop-filter:blur(16px) saturate(160%); box-shadow:0 0 0 1px rgba(15,16,19,.06), 0 24px 48px -20px rgba(15,16,19,.25);">
+          <div style="font-family:'Geist Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:#4046ff;">{{ cur.float.title }}</div>
+          <div data-count="{{ cur.float.to }}" data-dec="{{ cur.float.dec }}" data-pre="{{ cur.float.pre }}" data-suf="{{ cur.float.suf }}" style="margin-top:10px; font-size:34px; line-height:1; letter-spacing:-0.05em; font-weight:500; font-variant-numeric:tabular-nums;">{{ cur.float.v }}</div>
+          <div style="margin-top:8px; font-size:12px; line-height:1.4; color:#6c6e75;">{{ cur.float.label }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="results" style="margin:clamp(96px,16vh,160px) clamp(8px,1.5vw,20px) 0; border-radius:clamp(24px,3vw,40px); position:relative; overflow:hidden; background:#0f1013; color:#f6f5f2; scroll-margin-top:80px;">
+  <div aria-hidden="true" style="position:absolute; right:-10%; top:-40%; width:70%; height:120%; border-radius:50%; background:radial-gradient(closest-side, rgba(64,70,255,.45), transparent); filter:blur(40px);"></div>
+  <div style="position:relative; max-width:1200px; margin:0 auto; padding:clamp(80px,14vh,140px) clamp(20px,5vw,72px);">
+    <div data-reveal="0" style="display:flex; align-items:center; gap:10px; font-family:'Geist Mono',monospace; font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:#a3a5ad;"><span style="width:6px; height:6px; border-radius:50%; background:#8f94ff;"></span>Results</div>
+    <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:24px 48px; margin-top:20px;">
+      <h2 data-reveal="60" style="font-size:clamp(36px,5vw,76px); line-height:1; letter-spacing:-0.05em; font-weight:500; max-width:12ch;">Clarity became a <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#a9adff;">growth lever.</span></h2>
+      <p data-reveal="120" style="max-width:44ch; font-size:16px; line-height:1.6; color:#b9bac0;">Conversion improved without hiding complexity. Customers moved faster because eligibility, consent, verification and repayment became easier to understand.</p>
+    </div>
+    <div style="display:grid; grid-template-columns:{{ resCols }}; gap:1px; margin-top:clamp(56px,9vh,88px); border-radius:24px; overflow:hidden; background:rgba(255,255,255,.08);">
+      <sc-for list="{{ results }}" as="x" hint-placeholder-count="4">
+        <div data-reveal="{{ x.delay }}" onMouseMove="{{ spot }}" style="padding:32px 28px 36px; background:radial-gradient(260px circle at var(--mx,-400px) var(--my,-400px), rgba(143,148,255,.16), transparent 70%), #16171b; transition:background-color .3s ease;">
+          <div data-count="{{ x.to }}" data-dec="{{ x.dec }}" data-pre="{{ x.pre }}" data-suf="{{ x.suf }}" style="font-size:clamp(48px,5vw,72px); line-height:1; letter-spacing:-0.055em; font-weight:500; font-variant-numeric:tabular-nums;">{{ x.v }}</div>
+          <div style="margin-top:18px; font-size:14px; color:#b9bac0;">{{ x.l }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <p data-reveal="200" style="margin-top:32px; font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(22px,2.2vw,30px); line-height:1.3; color:#d4d5da; max-width:36ch;">Six interventions. One connected education-lending journey — from eligibility to long-term servicing.</p>
+  </div>
+</section>
+
+<section style="position:relative; overflow:hidden; padding:clamp(120px,20vh,200px) 0 clamp(80px,12vh,120px);">
+  <div ref="{{ blobRef }}" aria-hidden="true" style="position:absolute; left:30%; top:10%; width:min(720px,90vw); height:min(520px,70vw); border-radius:45% 55% 60% 40%; background:radial-gradient(closest-side, rgba(64,70,255,.28), rgba(143,148,255,.12) 60%, transparent); filter:blur(50px);"></div>
+  <div style="position:relative; max-width:1200px; margin:0 auto; padding:0 clamp(20px,5vw,72px);">
+    <h2 data-reveal="0" style="font-size:clamp(44px,7.2vw,112px); line-height:.98; letter-spacing:-0.055em; font-weight:500; max-width:13ch;">Let’s design products people can <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.025em; color:#4046ff;">trust.</span></h2>
+    <div data-reveal="120" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:24px 48px; margin-top:48px;">
+      <p style="max-width:40ch; font-size:17px; line-height:1.6; color:#55575e;">Open to product design leadership, zero-to-one systems and complex fintech journeys.</p>
+      <div style="display:flex; flex-wrap:wrap; gap:10px;">
+        <button onClick="{{ copyEmail }}" onMouseMove="{{ magMove }}" onMouseLeave="{{ magLeave }}" style="display:inline-flex; align-items:center; gap:10px; height:56px; padding:0 26px; border:0; border-radius:999px; background:#0f1013; color:#f6f5f2; font:inherit; font-size:16px; font-weight:500; cursor:pointer; transition:transform .35s cubic-bezier(.2,.8,.2,1), background .25s ease;" style-hover="background:#4046ff;">Get in touch<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="max-width:1200px; margin:0 auto; padding:0 clamp(20px,5vw,72px) clamp(48px,7vh,72px);">
+  <div data-reveal="0" style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:32px; padding-top:clamp(40px,6vh,64px); border-top:1px solid rgba(15,16,19,.08);">
+    <div>
+      <div style="font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;">Next project · 02 / 04</div>
+      <div style="margin-top:14px; font-size:clamp(36px,5vw,64px); line-height:1; letter-spacing:-0.045em; font-weight:500;">Loan Origination System</div>
+    </div>
+    <a href="LOS%20Case%20Study.dc.html" style="display:inline-flex; align-items:center; gap:12px; height:56px; padding:0 10px 0 26px; border-radius:999px; background:#0f1013; color:#f6f5f2; text-decoration:none; font-size:15px; font-weight:500; transition:background .25s ease, box-shadow .25s ease;" style-hover="background:#4046ff; color:#ffffff; box-shadow:0 14px 40px -10px rgba(64,70,255,.6);">View project<span style="display:grid; place-items:center; width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span></a>
+  </div>
+</section>
+
+<footer style="max-width:1200px; margin:0 auto; padding:0 clamp(20px,5vw,72px);">
+  <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 32px; padding:24px 0 32px; border-top:1px solid rgba(15,16,19,.08); font-size:13px; color:#6c6e75;">
+    <span style="display:flex; align-items:center; gap:10px; color:#0f1013; font-weight:500;">Harish Babu Nadar</span>
+    <span style="font-family:'Geist Mono',monospace; font-size:12px;">© 2026 · All rights reserved</span>
+    <div style="display:flex; gap:20px;">
+      <a href="https://www.linkedin.com/in/harishbabuganesannadar" target="_blank" rel="noopener noreferrer" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; color:#55575e; text-decoration:none; transition:color .2s ease;" style-hover="color:#4046ff;">LinkedIn</a>
+      <a href="mailto:Harishbabuganesan@gmail.com" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; color:#55575e; text-decoration:none; transition:color .2s ease;" style-hover="color:#4046ff;">Email</a>
+    </div>
+  </div>
+</footer>
+
+<div role="status" aria-live="polite" style="position:fixed; left:50%; bottom:28px; z-index:60; display:flex; align-items:center; gap:10px; padding:12px 18px 12px 14px; border-radius:999px; background:#0f1013; color:#f6f5f2; font-size:13px; box-shadow:0 20px 40px -16px rgba(15,16,19,.5); pointer-events:none; opacity:{{ toastO }}; transform:{{ toastT }}; transition:opacity .3s ease, transform .45s cubic-bezier(.2,.9,.2,1.2);">
+  <span style="width:20px; height:20px; border-radius:50%; background:#4046ff; display:grid; place-items:center;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+  Email copied — Harishbabuganesan@gmail.com
+</div>
+<dc-import name="BackToTop" hint-size="0px,0px"></dc-import>
+<dc-import name="MobilePreview" viewport="{{ viewport }}" hint-size="0px,0px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;motion&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Full&quot;,&quot;Subtle&quot;,&quot;Off&quot;],&quot;default&quot;:&quot;Full&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Motion&quot;},&quot;caseNav&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Scroll story&quot;,&quot;Tabs&quot;],&quot;default&quot;:&quot;Scroll story&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Features&quot;},&quot;viewport&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Desktop&quot;,&quot;Mobile&quot;],&quot;default&quot;:&quot;Desktop&quot;,&quot;tsType&quot;:&quot;'Desktop' | 'Mobile'&quot;}}">
+class Component extends DCLogic {
+  progressRef = React.createRef();
+  leaveRef = React.createRef();
+  introRef = React.createRef();
+  introTxtRef = React.createRef();
+  introBarRef = React.createRef();
+  introNumRef = React.createRef();
+  leaveTxtRef = React.createRef();
+  leaveBarRef = React.createRef();
+  floatRef = React.createRef();
+  caseTextRef = React.createRef();
+  scanRef = React.createRef();
+  phoneRef = React.createRef();
+  canvasRef = React.createRef();
+  pathRef = React.createRef();
+  pulseRef = React.createRef();
+  statementRef = React.createRef();
+  marqueeRef = React.createRef();
+  blobRef = React.createRef();
+  chipDotRef = React.createRef();
+  state = { active: 0, tenure: 24, amount: 180000, verifyStep: 4, ocrOk: false, toast: false, solid: false, nav: '', phase: -1, node: -1, mlSel: 0,
+    narrow: typeof window !== 'undefined' && window.innerWidth < 960 };
+
+  CASES = [
+    { num: '01', tag: 'App redesign', kicker: 'App redesign', hero: 'Seven guided steps, saved as you go',
+      title: 'A seven-step eligibility application that keeps customers moving.',
+      body: 'A 23-field form became a guided seven-step flow that adapts to the course, co-applicant and income profile — asking only what is needed, when it is needed.',
+      insight: 'Students abandoned when they couldn’t see the end. A visible step count and saved progress did more than any copy change.',
+      checks: ['Progressive disclosure by profile', 'Autosave and resume on any device', 'Inline eligibility feedback'],
+      metric: { v: '+121%', to: 121, dec: 0, pre: '+', suf: '%', label: 'step-to-step completion vs. the legacy form' },
+      float: { title: 'Adaptive forms', v: '4.7/5', to: 4.7, dec: 1, pre: '', suf: '/5', label: 'Ease-of-use rating in testing' } },
+    { num: '02', tag: 'DigiLocker', kicker: 'DigiLocker', hero: 'Fetched from source, not uploaded',
+      title: 'Verification without the document hunt.',
+      body: 'Documents are fetched from DigiLocker and institution records first. Uploads become the fallback, with clear guidance when something doesn’t match.',
+      insight: 'The best upload screen is the one customers never have to see.',
+      checks: ['Fetch before upload', 'Live status for every document', 'Specific, fixable error states'],
+      metric: { v: '−63%', to: 63, dec: 0, pre: '−', suf: '%', label: 'document re-upload requests' },
+      float: { title: 'Verified documents', v: '54 sec', to: 54, dec: 0, pre: '', suf: ' sec', label: 'Median time to verify' } },
+    { num: '03', tag: 'Account Aggregator', kicker: 'Account Aggregator', hero: 'Data sharing that names its limits',
+      title: 'Consent that feels specific, reversible, and useful.',
+      body: 'A guided Account Aggregator flow makes the data exchange legible before asking for it: what is shared, for how long, and why — in plain language.',
+      insight: 'Trust rose when we showed what we wouldn’t see. Naming the limits made the ask feel smaller.',
+      checks: ['Scoped, time-bound data requests', 'Revoke anytime from Settings', 'Plain-language purpose'],
+      metric: { v: '−58%', to: 58, dec: 0, pre: '−', suf: '%', label: 'drop-off at the consent step' },
+      float: { title: 'Connected safely', v: '94%', to: 94, dec: 0, pre: '', suf: '%', label: 'Consent approval rate' } },
+    { num: '04', tag: 'OCR', kicker: 'OCR', hero: 'Machines read, people confirm',
+      title: 'Automation with a human review moment.',
+      body: 'OCR pre-fills extracted fields and shows its confidence. Low-confidence values get a quick customer check instead of failing silently downstream.',
+      insight: 'Showing confidence turned an error into a two-second confirmation, not a rejected application.',
+      checks: ['Confidence shown per field', 'One-tap confirm or correct', 'Ops queue only for real exceptions'],
+      metric: { v: '−68%', to: 68, dec: 0, pre: '−', suf: '%', label: 'manual review queue' },
+      float: { title: 'Confidence-aware OCR', v: '96.8%', to: 96.8, dec: 1, pre: '', suf: '%', label: 'Field-level accuracy' } },
+    { num: '05', tag: 'Post Disbursement', kicker: 'Post Disbursement', hero: 'Clarity after the money moves',
+      title: 'The loan relationship starts after disbursement.',
+      body: 'One home card that changes with the repayment state — upcoming, processing, overdue, blocked, completed — and a details view with the plan, tranches, EMI schedule, transactions and documents.',
+      insight: 'Most support calls were the same three questions. We put the answers on the first screen.',
+      checks: ['Every repayment state on one card', 'What’s owed, broken down', 'Statements and NOC on demand'],
+      metric: { v: '−66%', to: 66, dec: 0, pre: '−', suf: '%', label: 'missed first EMIs' },
+      float: { title: 'Next due, always clear', v: '−29%', to: 29, dec: 0, pre: '−', suf: '%', label: 'Servicing support contacts' } },
+    { num: '06', tag: 'Multi-loan', kicker: 'Multi-loan', hero: 'A second loan, same app',
+      title: 'Apply again without starting from zero.',
+      body: 'Returning borrowers apply for a second education loan right from home. Same course or new course sets the path — four eligibility steps or six — and what was verified on the first loan arrives pre-checked.',
+      insight: 'Funding next semester early isn’t a new application. One question — same course or new? — decided how much we needed to ask.',
+      checks: ['Apply new loan from home', 'Same course: 4 steps, not 6', 'Co-borrowers carried over'],
+      metric: { v: '4 steps', to: 4, dec: 0, pre: '', suf: ' steps', label: 'eligibility on the same-course path' },
+      float: { title: 'Carried over', v: '3', to: 3, dec: 0, pre: '', suf: '', label: 'Co-borrowers reusable from earlier loans' } }
+  ].map((c, i) => ({ ...c, idx: i }));
+
+  NODES = [[60, 250], [236, 110], [412, 230], [588, 100], [764, 220], [940, 110]];
+
+  PHASES = [
+    { name: 'Frame', wk: 'Wk 1–2', w: 2, d: 'Mapped the journey, its failure points and the metrics that mattered.' },
+    { name: 'Discover', wk: 'Wk 3–6', w: 4, d: 'Student and parent interviews, ops shadowing, funnel analysis.' },
+    { name: 'Define', wk: 'Wk 7–9', w: 3, d: 'Principles, a shared service blueprint and one decision log.' },
+    { name: 'Design', wk: 'Wk 10–16', w: 7, d: 'Six flows on one component system, tested every week.' },
+    { name: 'Ship & learn', wk: 'Wk 17–20', w: 4, d: 'Staged rollout with weekly experiment readouts.' }
+  ];
+
+  RESULTS = [
+    { v: '+31%', to: 31, dec: 0, pre: '+', suf: '%', l: 'Application conversion' },
+    { v: '−57%', to: 57, dec: 0, pre: '−', suf: '%', l: 'Manual review effort' },
+    { v: '−29%', to: 29, dec: 0, pre: '−', suf: '%', l: 'Servicing support contacts' },
+    { v: '31h', to: 31, dec: 0, pre: '', suf: 'h', l: 'Ops time saved every week' }
+  ];
+
+  pdVals(s) {
+    const i = s.pdSel || 0, T = { g: ['#e8f6ef', '#13805a'], b: ['#eaf1ff', '#2457c5'], r: ['#fdeced', '#c0262f'] };
+    const S = [['Upcoming', 'g', 'Your installment is due on 5th May. Please maintain sufficient balance to avoid any penalties.', 'Due in 14 days', 'Contact us', 0],
+      ['Processing', 'b', 'Your installment is currently being processed. Please wait until the processing is complete.', 'Processing', 'Contact us', 0],
+      ['Overdue', 'r', 'Your payment is overdue by 8 days. Please clear your dues at the earliest to avoid further penalties.', '8 days overdue', 'Contact us', 0],
+      ['Blocked', 'r', 'Your loan is temporarily blocked due to 90 days of overdue payments. Contact us to proceed further.', 'Blocked', 'Contact us', 0],
+      ['Completed', 'g', 'You’ve cleared all your installments. Your repayment journey is complete — thank you for staying committed!', 'Loan completed', 'Download NOC', 120]];
+    const c = S[i], t = T[c[1]];
+    return {
+      pdChips: S.map((x, j) => ({ label: x[0], sel: j === i ? 'true' : 'false', bg: j === i ? '#0f1013' : '#ffffff', color: j === i ? '#ffffff' : '#55575e', sh: j === i ? 'none' : '0 0 0 1px rgba(15,16,19,.08)', onClick: () => this.setState({ pdSel: j }) })),
+      pdS: { msg: c[2], pill: c[3], cta: c[4], mbg: t[0], mc: t[1], paid: c[5], pct: `${c[5] / 1.2}%`, pctTxt: `${Math.round(c[5] / 1.2)}%`,
+        cardBg: i === 3 ? '#fff6f6' : '#ffffff', cardSh: `0 0 0 1px ${c[1] === 'r' ? 'rgba(192,38,47,.28)' : 'rgba(15,16,19,.07)'}` },
+      pdTabs: ['Plan', 'Disbursement', 'EMI schedule', 'Transactions', 'Documents'].map(t => ({ t }))
+    };
+  }
+  mlVals(s) {
+    const same = (s.mlSel || 0) === 0, ci = s.mlCourse || 0;
+    const rad = on => on ? 'inset 0 0 0 5px #4046ff' : 'inset 0 0 0 1.5px #b9bac0';
+    return {
+      mlOpts: [['Same course', 'Fund your next semester early'], ['New course', 'A different course, certification or degree']].map(([t, d], i) => {
+        const on = (i === 0) === same;
+        return { t, d, sel: on ? 'true' : 'false', rad: rad(on), showCourses: on && i === 0,
+          sh: on ? '0 0 0 1.5px #4046ff, 0 10px 24px -14px rgba(64,70,255,.45)' : '0 0 0 1px rgba(15,16,19,.07)',
+          onClick: () => this.setState({ mlSel: i }) };
+      }),
+      mlCourses: [['IIT Bombay', 'Bachelors of management'], ['NIFT', 'Masters of management']].map(([t, d], i) => ({ t, d, sel: ci === i ? 'true' : 'false', rad: rad(ci === i), onClick: () => this.setState({ mlCourse: i }) })),
+      mlSteps: Array.from({ length: 6 }, (_, i) => ({ bg: same && i > 3 ? '#e4e4e8' : '#4046ff' })),
+      mlNote: same ? '4 eligibility steps · course details carried over' : '6 eligibility steps · institute, education & tests'
+    };
+  }
+  mode() { return this.state.narrow || this.props.caseNav === 'Tabs' ? 'tabs' : 'scroll'; }
+  motionOff() {
+    return (this.props.motion ?? 'Full') === 'Off' ||
+      (typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+
+  goPage = (e, idx) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
+    const href = e.currentTarget.getAttribute('href'), ov = this.leaveRef.current;
+    if (!ov || !ov.animate || this.motionOff()) return;
+    e.preventDefault();
+    this.setState({ lv: idx || 0 });
+    const W = innerWidth, H = innerHeight, x = e.clientX || W / 2, y = e.clientY || H / 2, R = Math.hypot(Math.max(x, W - x), Math.max(y, H - y));
+    const go = () => { clearTimeout(this.leaveT); try { sessionStorage.setItem('pf-transition', '1'); } catch (er) {} location.href = href; };
+    ov.style.pointerEvents = 'auto';
+    ov.animate([{ clipPath: `circle(0px at ${x}px ${y}px)` }, { clipPath: `circle(${R}px at ${x}px ${y}px)` }], { duration: 520, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'forwards' });
+    if (this.leaveTxtRef.current) this.leaveTxtRef.current.animate([{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'translateY(0px)' }], { duration: 280, delay: 220, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both' });
+    const bar = this.leaveBarRef.current;
+    if (bar) bar.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], { duration: 380, delay: 260, easing: 'cubic-bezier(.6,0,.2,1)', fill: 'both' }).onfinish = go;
+    this.leaveT = setTimeout(go, 900);
+  };
+  runIntro(cb) {
+    const done = () => { if (this.introDone) return; this.introDone = true; cb(); };
+    const ov = this.introRef.current, nav = performance.getEntriesByType ? performance.getEntriesByType('navigation')[0] : null;
+    const end = () => { clearTimeout(this.introT); if (ov) ov.style.display = 'none'; document.documentElement.style.overflow = ''; };
+    if (!ov || !ov.animate || this.motionOff() || (nav && nav.type === 'back_forward')) { end(); done(); return; }
+    let viaT = false; try { viaT = sessionStorage.getItem('pf-transition') === '1'; sessionStorage.removeItem('pf-transition'); } catch (er) {}
+    if (viaT) { if (this.introTxtRef.current) this.introTxtRef.current.style.display = 'none'; done(); ov.animate([{ clipPath: 'inset(0 0 0% 0)' }, { clipPath: 'inset(0 0 100% 0)' }], { duration: 600, delay: 80, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'forwards' }).onfinish = end; this.introT = setTimeout(end, 1200); return; }
+    document.documentElement.style.overflow = 'hidden';
+    const D = 850, t0 = performance.now(), num = this.introNumRef.current, txt = this.introTxtRef.current;
+    const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    if (txt) txt.animate([{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'translateY(0px)' }], { duration: 380, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' });
+    const step = () => {
+      const p = ease(Math.min(1, (performance.now() - t0) / D));
+      if (this.introBarRef.current) this.introBarRef.current.style.transform = `scaleX(${p})`;
+      if (num) num.textContent = Math.round(p * 100) + '%';
+      if (p < 1) { this.introRaf = requestAnimationFrame(step); return; }
+      document.documentElement.style.overflow = '';
+      done();
+      if (txt) txt.animate([{ transform: 'translateY(0px)', opacity: 1 }, { transform: 'translateY(-28px)', opacity: 0 }], { duration: 300, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'forwards' });
+      ov.animate([{ clipPath: 'inset(0 0 0% 0)' }, { clipPath: 'inset(0 0 100% 0)' }], { duration: 600, delay: 0, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'forwards' }).onfinish = end;
+    };
+    this.introRaf = requestAnimationFrame(step);
+    this.introT = setTimeout(() => { cancelAnimationFrame(this.introRaf); end(); done(); }, 2000);
+  }
+  resetLeave() {
+    clearTimeout(this.leaveT);
+    const ov = this.leaveRef.current;
+    if (!ov) return;
+    [ov, ...ov.querySelectorAll('*')].forEach(el => el.getAnimations().forEach(a => a.cancel()));
+    ov.style.pointerEvents = 'none';
+  }
+  componentDidMount() {
+    this.onShow = e => { if (e.persisted) this.resetLeave(); };
+    window.addEventListener('pageshow', this.onShow);
+    this.t0 = performance.now();
+    this.mouse = { x: -9999, y: -9999 };
+    this.onScroll = () => { if (this.raf) return; this.raf = requestAnimationFrame(() => { this.raf = 0; this.tick(); }); };
+    this.onResize = () => {
+      const narrow = window.innerWidth < 960;
+      if (narrow !== this.state.narrow) this.setState({ narrow });
+      this.sizeField(); this.onScroll();
+    };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', this.onResize);
+    this._prev = { active: this.state.active, nav: this.props.caseNav, narrow: this.state.narrow };
+    this.runIntro(() => this.setupReveal());
+    this.setupLoops();
+    if (typeof ResizeObserver !== 'undefined' && this.canvasRef.current) {
+      this.ro = new ResizeObserver(() => this.sizeField());
+      this.ro.observe(this.canvasRef.current);
+    }
+    this.syncFills();
+    this.tick();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('pageshow', this.onShow);
+    clearTimeout(this.leaveT);
+    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('resize', this.onResize);
+    if (this.io) this.io.disconnect();
+    if (this.ro) this.ro.disconnect();
+    cancelAnimationFrame(this.loopRaf); this.loopOn = false;
+    clearInterval(this.vt); clearTimeout(this.tt); clearTimeout(this.fb);
+    if (this.onVis) document.removeEventListener('visibilitychange', this.onVis);
+  }
+  componentDidUpdate() {
+    const s = this.state;
+    const prev = this._prev || { active: s.active, nav: this.props.caseNav, narrow: s.narrow };
+    this._prev = { active: s.active, nav: this.props.caseNav, narrow: s.narrow };
+    if (prev.active !== s.active) {
+      const f = this.floatRef.current;
+      this.pop(f); if (f) this.countUp(f.querySelector('[data-count]'));
+      if (this.mode() === 'tabs' && this.caseTextRef.current) {
+        this.pop(this.caseTextRef.current);
+        this.caseTextRef.current.querySelectorAll('[data-count]').forEach(el => this.countUp(el));
+      }
+      if (s.active === 1) this.runVerify();
+    }
+    if (prev.active !== s.active || prev.nav !== this.props.caseNav || prev.narrow !== s.narrow) this.syncFills();
+    if (prev.narrow !== s.narrow) { this.pathLen = 0; this.sizeField(); }
+  }
+
+  tick() {
+    const y = window.scrollY, vh = window.innerHeight;
+    const max = document.documentElement.scrollHeight - vh;
+    if (this.progressRef.current) this.progressRef.current.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
+    const hero = document.getElementById('top');
+    this.heroVisible = hero ? hero.getBoundingClientRect().bottom > 0 : false;
+    if (this.heroVisible) this.startLoop();
+    const st = this.statementRef.current;
+    if (st && !this.motionOff()) {
+      const r = st.getBoundingClientRect();
+      const p = Math.max(0, Math.min(1, (vh * 0.85 - r.top) / (r.height + vh * 0.35)));
+      const ws = st.querySelectorAll('[data-w]'), n = ws.length;
+      ws.forEach((w, i) => { const o = 0.14 + 0.86 * Math.max(0, Math.min(1, p * (n + 3) - i)); w.style.opacity = o.toFixed(3); });
+    }
+    const upd = {};
+    const solid = y > 24;
+    if (solid !== this.state.solid) upd.solid = solid;
+    let nav = '';
+    ['overview', 'process', 'cases', 'results'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top < vh * 0.4) nav = id;
+    });
+    if (nav !== this.state.nav) upd.nav = nav;
+    if (this.mode() === 'scroll') {
+      const blocks = document.querySelectorAll('[data-case]');
+      const fills = document.querySelectorAll('[data-fill]');
+      let act = 0;
+      blocks.forEach((b, i) => {
+        const r = b.getBoundingClientRect();
+        const f = Math.max(0, Math.min(1, (vh * 0.5 - r.top) / r.height));
+        if (r.top < vh * 0.5) act = i;
+        if (fills[i]) fills[i].style.transform = `scaleX(${f})`;
+      });
+      if (act !== this.state.active) upd.active = act;
+    }
+    if (Object.keys(upd).length) this.setState(upd);
+  }
+  syncFills() {
+    if (this.mode() === 'scroll') return this.tick();
+    document.querySelectorAll('[data-fill]').forEach((el, i) => { el.style.transform = `scaleX(${i <= this.state.active ? 1 : 0})`; });
+  }
+
+  sizeField() {
+    const cv = this.canvasRef.current;
+    if (!cv) return;
+    const r = cv.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+    this.fw = r.width; this.fh = r.height;
+    cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
+    this.ctx = cv.getContext('2d'); this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this.drawField(performance.now());
+  }
+  drawField(t) {
+    const ctx = this.ctx; if (!ctx) return;
+    const w = this.fw, h = this.fh, gap = 28, R = 170, still = this.motionOff();
+    const mx = this.mouse.x, my = this.mouse.y;
+    ctx.clearRect(0, 0, w, h);
+    for (let y = gap / 2; y < h; y += gap) {
+      for (let x = gap / 2; x < w; x += gap) {
+        const dx = x - mx, dy = y - my, d = Math.sqrt(dx * dx + dy * dy);
+        const k = Math.max(0, 1 - d / R), e = k * k;
+        const wave = still ? 0 : Math.sin(x * 0.011 + t * 0.0011) * Math.cos(y * 0.013 - t * 0.0008);
+        const rad = 1 + wave * 0.35 + e * 2.2;
+        ctx.fillStyle = e > 0.02 ? `rgba(64,70,255,${(0.2 + e * 0.7).toFixed(3)})` : `rgba(15,16,19,${(0.13 + wave * 0.05).toFixed(3)})`;
+        ctx.beginPath();
+        ctx.arc(x - dx * e * 0.18, y - dy * e * 0.18, Math.max(0.5, rad), 0, 6.2832);
+        ctx.fill();
+      }
+    }
+  }
+  movePulse(t) {
+    const path = this.pathRef.current, pulse = this.pulseRef.current;
+    if (!path || !pulse) return;
+    const el = t - this.t0 - 2400;
+    if (el < 0) return;
+    if (!this.pathLen) this.pathLen = path.getTotalLength();
+    const f = (el / 7000) % 1;
+    const pt = path.getPointAtLength(this.pathLen * f);
+    pulse.style.left = (pt.x / 10) + '%';
+    pulse.style.top = (pt.y / 3.4) + '%';
+    pulse.style.opacity = String(Math.min(1, el / 400) * Math.min(1, (1 - f) * 8, f * 12));
+  }
+  startLoop() {
+    if (this.loopOn || this.motionOff()) return;
+    this.loopOn = true;
+    const loop = t => {
+      if (!this.heroVisible || document.hidden) { this.loopOn = false; return; }
+      this.drawField(t); this.movePulse(t);
+      this.loopRaf = requestAnimationFrame(loop);
+    };
+    this.loopRaf = requestAnimationFrame(loop);
+  }
+  setupLoops() {
+    this.sizeField();
+    if (this.motionOff()) return;
+    const p = this.pathRef.current;
+    if (p && !document.hidden) p.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: 1900, delay: 700, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'backwards' });
+    const dot = this.chipDotRef.current;
+    if (dot) dot.animate([{ transform: 'scale(1)', opacity: 0.6 }, { transform: 'scale(2.8)', opacity: 0 }], { duration: 1800, iterations: Infinity, easing: 'ease-out' });
+    const mq = this.marqueeRef.current;
+    if (mq) this.mqAnim = mq.animate([{ transform: 'translateX(0%)' }, { transform: 'translateX(-50%)' }], { duration: 38000, iterations: Infinity });
+    const b = this.blobRef.current;
+    if (b) b.animate([{ transform: 'translate(-10%, -6%) rotate(0deg) scale(1)' }, { transform: 'translate(12%, 8%) rotate(160deg) scale(1.15)' }],
+      { duration: 14000, iterations: Infinity, direction: 'alternate', easing: 'ease-in-out' });
+    const sc = this.scanRef.current;
+    if (sc) sc.animate([{ transform: 'translateY(0px)' }, { transform: 'translateY(96px)' }], { duration: 1800, iterations: Infinity, direction: 'alternate', easing: 'ease-in-out' });
+  }
+
+  setupReveal() {
+    if (this.motionOff() || typeof IntersectionObserver === 'undefined' || document.hidden) return;
+    const subtle = this.props.motion === 'Subtle';
+    const kf = subtle ? [{ opacity: 0 }, { opacity: 1 }]
+      : [{ opacity: 0, transform: 'translateY(24px)', filter: 'blur(8px)' }, { opacity: 1, transform: 'translateY(0px)', filter: 'blur(0px)' }];
+    const vh = window.innerHeight, pending = [];
+    let fired = false;
+    const show = el => {
+      if (el.__rv) el.__rv.play();
+      if (this.io) this.io.unobserve(el);
+      const d = Number(el.dataset.reveal || 0);
+      setTimeout(() => { if (el.matches('[data-count]')) this.countUp(el); el.querySelectorAll('[data-count]').forEach(x => this.countUp(x)); }, d);
+    };
+    this.io = new IntersectionObserver(es => { fired = true; es.forEach(e => e.isIntersecting && show(e.target)); },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.01 });
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      const up = el.hasAttribute('data-up'), bar = el.hasAttribute('data-rx');
+      const frames = up ? [{ transform: 'translateY(105%)' }, { transform: 'translateY(0%)' }]
+        : bar ? [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }] : kf;
+      const a = el.animate(frames, {
+        duration: up ? 1000 : bar ? 1100 : (subtle ? 500 : 900), delay: Number(el.dataset.reveal || 0),
+        easing: up ? 'cubic-bezier(.2,.9,.1,1)' : 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' });
+      el.__rv = a;
+      const r = el.getBoundingClientRect();
+      if (r.top < vh && r.bottom > 0) { show(el); return; }
+      a.pause(); pending.push(a); this.io.observe(el);
+    });
+    this.fb = setTimeout(() => { if (!fired) pending.forEach(a => { try { a.finish(); } catch (e) {} }); }, 1000);
+    this.onVis = () => { if (document.hidden) pending.forEach(a => { try { a.finish(); } catch (e) {} }); };
+    document.addEventListener('visibilitychange', this.onVis);
+  }
+  pop(el) {
+    if (!el || this.motionOff()) return;
+    el.animate([{ opacity: 0, transform: 'translateY(12px)', filter: 'blur(4px)' }, { opacity: 1, transform: 'translateY(0px)', filter: 'blur(0px)' }],
+      { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)' });
+  }
+  countUp(el) {
+    if (!el || this.motionOff()) return;
+    const node = el.firstChild;
+    if (!node || node.nodeType !== 3) return;
+    const to = parseFloat(el.dataset.count), dec = Number(el.dataset.dec || 0);
+    const pre = el.dataset.pre || '', suf = el.dataset.suf || '';
+    if (isNaN(to)) return;
+    const final = node.nodeValue, t0 = performance.now(), dur = 1400, tok = {};
+    el.__tok = tok;
+    const step = t => {
+      if (el.__tok !== tok) return;
+      const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 4);
+      node.nodeValue = p < 1 ? pre + (to * e).toFixed(dec) + suf : final;
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+  runVerify() {
+    clearInterval(this.vt);
+    this.setState({ verifyStep: 0 });
+    this.vt = setInterval(() => this.setState(s => {
+      if (s.verifyStep >= 4) { clearInterval(this.vt); return null; }
+      return { verifyStep: s.verifyStep + 1 };
+    }), 650);
+  }
+  goCase(i, jump) {
+    if (this.mode() === 'scroll') {
+      const el = document.querySelector(`[data-case="${i}"]`);
+      if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 88, behavior: 'smooth' });
+      return;
+    }
+    this.setState({ active: i });
+    if (jump) { const ex = document.getElementById('cases'); if (ex) window.scrollTo({ top: ex.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' }); }
+  }
+  heroMove = e => {
+    const cv = this.canvasRef.current; if (!cv) return;
+    const r = cv.getBoundingClientRect();
+    this.mouse = { x: e.clientX - r.left, y: e.clientY - r.top };
+    if (this.motionOff()) this.drawField(0);
+  };
+  heroLeave = () => { this.mouse = { x: -9999, y: -9999 }; if (this.motionOff()) this.drawField(0); };
+  magMove = e => {
+    if (this.motionOff()) return;
+    const el = e.currentTarget, r = el.getBoundingClientRect();
+    const x = e.clientX - r.left - r.width / 2, y = e.clientY - r.top - r.height / 2;
+    el.style.transform = `translate(${(x * 0.22).toFixed(1)}px, ${(y * 0.32).toFixed(1)}px)`;
+  };
+  magLeave = e => { e.currentTarget.style.transform = ''; };
+  spot = e => {
+    const el = e.currentTarget, r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+    el.style.setProperty('--my', `${e.clientY - r.top}px`);
+  };
+  onPhoneMove = e => {
+    const el = this.phoneRef.current;
+    if (!el || this.motionOff()) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+    el.style.transform = `perspective(1400px) rotateY(${(x * 8).toFixed(2)}deg) rotateX(${(-y * 6).toFixed(2)}deg)`;
+  };
+  onPhoneLeave = () => { if (this.phoneRef.current) this.phoneRef.current.style.transform = ''; };
+  mqSlow = () => { if (this.mqAnim) this.mqAnim.updatePlaybackRate(0.25); };
+  mqFast = () => { if (this.mqAnim) this.mqAnim.updatePlaybackRate(1); };
+  copyEmail = () => {
+    window.location.href = 'mailto:Harishbabuganesan@gmail.com'; try { navigator.clipboard && navigator.clipboard.writeText('Harishbabuganesan@gmail.com').catch(() => {}); } catch (e) {}
+    this.setState({ toast: true });
+    clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toast: false }), 2400);
+  };
+
+  renderVals() {
+    const s = this.state, C = this.CASES, mode = this.mode(), cur = C[s.active];
+    const A = '#4046ff', INK = '#0f1013';
+    const fmt = n => n.toLocaleString('en-IN');
+    const scr = i => {
+      const on = s.active === i;
+      return { o: on ? 1 : 0, pe: on ? 'auto' : 'none', hid: on ? 'false' : 'true',
+        t: on ? 'translateY(0px) scale(1)' : `translateY(${i < s.active ? -20 : 20}px) scale(0.97)`,
+        f: on ? 'blur(0px)' : 'blur(6px)' };
+    };
+    const r = 0.105 / 12, n = s.tenure, P = s.amount;
+    const emi = Math.round(P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1));
+    const vs = s.verifyStep;
+    const docs = [
+      { name: 'Admission letter', src: 'Institution records' },
+      { name: 'Fee structure', src: 'Institution records' },
+      { name: 'PAN card', src: 'DigiLocker' },
+      { name: 'Class XII marksheet', src: 'DigiLocker' }
+    ].map((d, i) => {
+      const done = i < vs, busy = i === vs;
+      return { ...d, status: done ? 'Verified' : busy ? 'Fetching…' : 'Queued',
+        sColor: done ? A : busy ? INK : '#8b8d94',
+        dotBg: done ? A : '#ffffff', dotBorder: done ? A : busy ? A : '#d9d9de',
+        checkOp: done ? 1 : 0, checkS: done ? 'scale(1)' : 'scale(0.3)' };
+    });
+    const pct = v => `${v}%`;
+    return {
+      lvNum: this.CASES[this.state.lv || 0].num, lvA: ['App', '', 'Account', '', 'Post', ''][this.state.lv || 0], lvB: ['redesign', 'DigiLocker', 'Aggregator', 'OCR', 'disbursement', 'Multi-loan'][this.state.lv || 0],
+      progressRef: this.progressRef, introRef: this.introRef, introTxtRef: this.introTxtRef, introBarRef: this.introBarRef, introNumRef: this.introNumRef, leaveRef: this.leaveRef, leaveTxtRef: this.leaveTxtRef, leaveBarRef: this.leaveBarRef, floatRef: this.floatRef, caseTextRef: this.caseTextRef, scanRef: this.scanRef, phoneRef: this.phoneRef,
+      canvasRef: this.canvasRef, pathRef: this.pathRef, pulseRef: this.pulseRef, statementRef: this.statementRef,
+      marqueeRef: this.marqueeRef, blobRef: this.blobRef, chipDotRef: this.chipDotRef,
+      navMax: s.solid && !s.narrow ? '860px' : '1200px',
+      navBg: s.solid ? 'rgba(255,255,255,.72)' : 'rgba(255,255,255,0)',
+      navShadow: s.solid ? '0 0 0 1px rgba(15,16,19,.06), 0 12px 32px -12px rgba(15,16,19,.18)' : '0 0 0 1px rgba(15,16,19,0)',
+      navLinksDisplay: s.narrow ? 'none' : 'flex',
+      navItems: [['overview', 'Overview'], ['process', 'Process'], ['cases', 'Features'], ['results', 'Results']].map(([id, label]) => ({
+        href: `#${id}`, label, color: s.nav === id ? INK : '#55575e', bg: s.nav === id ? 'rgba(15,16,19,.06)' : 'transparent' })),
+      heroMove: this.heroMove, heroLeave: this.heroLeave, magMove: this.magMove, magLeave: this.magLeave, spot: this.spot,
+      wide: !s.narrow, narrow: s.narrow,
+      nodes: C.map((c, i) => {
+        const [x, y] = this.NODES[i], hi = s.node === i, up = y < 170;
+        const last = i === C.length - 1, ax = i === 0 ? '-14px' : last ? 'calc(-100% + 14px)' : '-50%';
+        const ay = up ? `calc(-100% - ${hi ? 26 : 20}px)` : `${hi ? 26 : 20}px`;
+        return { num: c.num, tag: c.tag, hero: c.hero, aria: `${c.num} ${c.tag}`,
+          x: `${x / 10}%`, y: `${(y / 3.4).toFixed(2)}%`,
+          lt: `translate(${ax}, ${ay})`, align: i === 0 ? 'left' : last ? 'right' : 'center',
+          dotBg: hi ? A : '#ffffff', dotS: hi ? 1.5 : 1, dotGlow: hi ? '0 0 0 8px rgba(64,70,255,.14)' : '0 0 0 0 rgba(64,70,255,0)',
+          descColor: hi ? '#0f1013' : '#6c6e75',
+          delay: String(900 + i * 280), ldelay: String(1000 + i * 280),
+          onClick: () => this.goCase(i, true), onEnter: () => this.setState({ node: i }), onLeave: () => this.setState({ node: -1 }) };
+      }),
+      cur,
+      visibleCases: (mode === 'tabs' && !s.narrow ? [cur] : C).map(c => ({ ...c, href: ['App%20Redesign%20Case%20Study.dc.html', 'DigiLocker%20Case%20Study.dc.html', 'Account%20Aggregator%20Case%20Study.dc.html', 'OCR%20Case%20Study.dc.html', 'Post%20Disbursement%20Case%20Study.dc.html', 'Multi-loan%20Case%20Study.dc.html'][c.idx], go: e => this.goPage(e, c.idx), ...[['#e3e6ff','#c7ccff'],['#dcebff','#bcd7ff'],['#d9f3e7','#b5e4cf'],['#fff0d4','#f7dca6'],['#ffe4dc','#f8c8b8'],['#efe3ff','#d9c4fb']].map(([t, b]) => ({ bg: `radial-gradient(120% 90% at 100% 0%, ${t} 0%, rgba(255,255,255,0) 60%), linear-gradient(180deg, #ffffff 0%, ${t}66 100%)`, bd: b }))[c.idx], minH: mode === 'tabs' ? 'auto' : '86vh', pad: s.narrow ? '10px 0' : mode === 'tabs' ? '8px 0 0' : '24px 0' })),
+      rail: C.map((c, i) => ({ num: c.num, tag: c.tag, sel: s.active === i ? 'true' : 'false',
+        color: s.active === i ? INK : '#8b8d94', onClick: () => this.goCase(i, false) })),
+      phoneColW: s.narrow ? '100%' : '440px', railMb: '10px',
+      phonePos: s.narrow ? 'static' : 'sticky',
+      phoneTop: s.narrow ? 'auto' : 'max(96px, calc(50vh - 340px))',
+      phoneOrder: -1,
+      onPhoneMove: this.onPhoneMove, onPhoneLeave: this.onPhoneLeave,
+      scA: scr(0), scB: scr(2), scC: scr(1), scD: scr(3), scE: scr(4), scF: scr(5),
+      ...this.mlVals(s), ...this.pdVals(s),
+      amountFmt: fmt(P), amtPct: pct(((P - 50000) / 150000) * 100), emiFmt: fmt(emi),
+      amtDown: () => this.setState(st => ({ amount: Math.max(50000, st.amount - 10000) })),
+      amtUp: () => this.setState(st => ({ amount: Math.min(200000, st.amount + 10000) })),
+      tenures: [12, 24, 36].map(t => {
+        const on = t === s.tenure;
+        return { label: `${t} mo`, sel: on ? 'true' : 'false', onClick: () => this.setState({ tenure: t }),
+          bg: on ? '#ffffff' : 'transparent', color: on ? INK : '#6c6e75',
+          sh: on ? '0 1px 2px rgba(15,16,19,.08), 0 0 0 1px rgba(15,16,19,.06)' : 'none' };
+      }),
+      docs, verCount: String(Math.min(vs, 4)), verPct: pct(Math.min(vs, 4) * 25),
+      ocrOk: s.ocrOk, ocrPending: !s.ocrOk,
+      ocrBorder: s.ocrOk ? 'rgba(15,16,19,.08)' : A,
+      ocrConf: s.ocrOk ? 'Confirmed' : '71.4%',
+      ocrBar: s.ocrOk ? '100%' : '71%',
+      ocrToggle: () => this.setState(st => ({ ocrOk: !st.ocrOk })),
+      mqSlow: this.mqSlow, mqFast: this.mqFast,
+      phaseCols: s.narrow ? '1fr' : this.PHASES.map(p => `minmax(150px, ${p.w}fr)`).join(' '),
+      phases: this.PHASES.map((p, i) => ({ ...p, delay: String(i * 140),
+        op: s.phase === -1 || s.phase === i ? 1 : 0.3,
+        barH: s.phase === i ? '10px' : '6px',
+        onEnter: () => this.setState({ phase: i }), onLeave: () => this.setState({ phase: -1 }) })),
+      team: ['Product', 'Risk', 'Research', 'Content', 'Compliance', 'Operations', 'Engineering', 'Data'],
+      resCols: s.narrow ? 'repeat(2,minmax(0,1fr))' : 'repeat(4,minmax(0,1fr))',
+      results: this.RESULTS.map((x, i) => ({ ...x, delay: String(i * 110) })),
+      copyEmail: this.copyEmail,
+      toTop: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
+      toastO: s.toast ? 1 : 0, toastT: s.toast ? 'translate(-50%, 0px) scale(1)' : 'translate(-50%, 16px) scale(.96)'
+    };
+  }
+}
+</script>
+</body>
+</html>

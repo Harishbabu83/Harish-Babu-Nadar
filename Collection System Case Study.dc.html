@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><title>Collection System — Harish Babu Nadar</title>
+<script src="./theme.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:#f6f5f2;color:#0f1013;font-family:"Geist",system-ui,sans-serif;font-size:15px;line-height:1.55;text-wrap:pretty;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,figure,dl,dd,ol,ul{margin:0}
+ol,ul{padding:0;list-style:none}
+::selection{background:rgba(196,84,31,.18)}
+a{color:#c4541f}
+a:hover{color:#9e4318}
+:focus-visible{outline:2px solid #c4541f;outline-offset:3px}
+</style>
+</helmet>
+
+<div ref="{{ enterRef }}" aria-hidden="true" style="position:fixed; inset:0; z-index:100; background:#0f1013; clip-path:inset(0 0 100% 0); pointer-events:none; display:grid; place-items:center;"><div style="display:flex; flex-direction:column; align-items:center; gap:18px;"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#a3a5ad;">03 / 04</span><span style="font-size:clamp(32px,4vw,56px); line-height:1; font-weight:500; letter-spacing:-0.04em; color:#f6f5f2;">Collection <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.01em; color:#f4a77f;">system</span></span><span style="width:160px; height:2px; border-radius:2px; background:rgba(255,255,255,.12); overflow:hidden;"><span style="display:block; height:100%; background:#c4541f;"></span></span></div></div>
+<div ref="{{ progressRef }}" style="position:fixed; left:0; right:0; top:0; height:2px; z-index:60; background:#c4541f; transform:scaleX(0); transform-origin:left;"></div>
+<header style="position:fixed; top:0; left:0; right:0; z-index:50; padding:12px clamp(12px,3vw,24px); pointer-events:none;">
+  <div style="pointer-events:auto; max-width:{{ navMax }}; margin:0 auto; display:flex; align-items:center; gap:16px; padding:8px; border-radius:999px; background:{{ navBg }}; box-shadow:{{ navShadow }}; backdrop-filter:blur(16px) saturate(160%); -webkit-backdrop-filter:blur(16px) saturate(160%); transition:max-width .6s cubic-bezier(.2,.8,.2,1), background .4s ease, box-shadow .4s ease;">
+    <a href="Portfolio%20Homepage.dc.html#collection" aria-label="Back to portfolio" style="display:inline-flex; align-items:center; justify-content:center; flex:none; width:44px; height:44px; border-radius:50%; background:#0f1013; color:#f6f5f2; text-decoration:none; transition:background .2s ease, transform .2s ease;" style-hover="background:#c4541f; color:#ffffff;" style-active="transform:scale(.94);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg></a>
+    <a href="Portfolio%20Homepage.dc.html" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; margin-right:auto; color:#0f1013; text-decoration:none; font-size:15px; font-weight:500; letter-spacing:-0.01em; white-space:nowrap;">Home</a>
+    <nav style="display:{{ navLinksDisplay }}; gap:2px;">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
+        <a href="{{ n.href }}" style="padding:8px 12px; border-radius:999px; color:{{ n.color }}; background:{{ n.bg }}; text-decoration:none; font-size:14px; transition:color .2s ease, background .2s ease;" style-hover="color:#0f1013; background:rgba(15,16,19,.05);">{{ n.label }}</a>
+      </sc-for>
+    </nav>
+    <button type="button" data-pf-theme="" aria-label="Switch to dark mode" title="Switch to dark mode" style="display:grid; place-items:center; flex:none; width:44px; height:44px; padding:0; border:0; border-radius:999px; background:transparent; color:#55575e; cursor:pointer; transition:color .2s ease, background .2s ease;" style-hover="color:#0f1013; background:rgba(15,16,19,.05);"><svg data-pf-icon="moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg><svg data-pf-icon="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button>
+  </div>
+</header>
+
+<section id="top" style="max-width:1200px; margin:0 auto; padding:clamp(120px,18vh,184px) clamp(20px,5vw,72px) 0;">
+  <div data-reveal="0" style="display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;">
+    <span style="display:inline-flex; align-items:center; gap:8px; padding:6px 12px 6px 10px; border-radius:999px; background:#ffffff; border:1px solid rgba(15,16,19,.08);"><span style="width:7px; height:7px; border-radius:50%; background:#c4541f;"></span>03 · Collection System</span>
+    <span>Collections 2.0 · Early-warning &amp; recovery</span>
+  </div>
+  <h1 style="margin-top:28px; max-width:17ch; font-size:clamp(40px,6.2vw,96px); line-height:1; letter-spacing:-0.05em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="80" data-up="" style="display:inline-block;">The right nudge,</span></span>
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="180" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#c4541f;">at the right time.</span></span>
+  </h1>
+  <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:32px clamp(32px,6vw,96px); margin-top:clamp(28px,4vw,40px);">
+    <p data-reveal="300" style="flex:1 1 360px; max-width:56ch; font-size:18px; line-height:1.6; color:#55575e;">Every overdue borrower used to get the same treatment: reminders, then calls, then a field visit. Collections 2.0 sorts accounts into seven risk segments, gives each a treatment pathway, and hands the team a ranked queue that says who to contact, when, how — and what it costs to recover.</p>
+    <dl data-reveal="380" style="flex:0 1 460px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px 24px;">
+      <div><dt style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Role</dt><dd style="margin-top:6px; font-size:15px;">Product Designer</dd></div>
+      <div><dt style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Platform</dt><dd style="margin-top:6px; font-size:15px;">Web</dd></div>
+      <div><dt style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Users</dt><dd style="margin-top:6px; font-size:15px;">Collections &amp; risk ops</dd></div>
+    </dl>
+  </div>
+  <div ref="{{ hxRef }}" data-reveal="420" style="margin-top:clamp(56px,9vh,96px); padding:clamp(18px,2.6vw,32px); border-radius:28px; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+    <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:16px 32px;">
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <span style="display:inline-flex; align-items:center; gap:8px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="width:8px; height:8px; border-radius:2px; background:{{ cxSegC }}; transition:background .4s ease;"></span>Segment · {{ cxSeg }}</span>
+        <span style="font-size:clamp(22px,2.4vw,30px); line-height:1.1; font-weight:500; letter-spacing:-0.035em;">Same missed EMI, <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.015em; color:#c4541f;">two treatments.</span></span>
+      </div>
+      <div style="display:flex; align-items:baseline; gap:10px;"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;">Days past due</span><span style="min-width:2ch; text-align:right; font-size:clamp(40px,4.4vw,56px); line-height:.9; letter-spacing:-0.05em; font-weight:500; font-variant-numeric:tabular-nums;">{{ cxDay }}</span></div>
+    </div>
+    <div aria-hidden="true" style="display:grid; grid-template-columns:repeat(10,minmax(0,1fr)); margin-top:28px; padding-bottom:10px; border-bottom:1px dashed rgba(15,16,19,.1); font-family:'Geist Mono',monospace; font-size:11px; color:#8b8d94; text-align:center;"><span>D1</span><span>D2</span><span>D3</span><span>D4</span><span>D5</span><span>D6</span><span>D7</span><span>D8</span><span>D9</span><span>D10</span></div>
+    <div style="display:flex; flex-direction:column; gap:22px; margin-top:22px;">
+      <sc-for list="{{ cxRows }}" as="r" hint-placeholder-count="2">
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:4px 16px;">
+            <span style="display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px; font-size:15px; font-weight:500;">{{ r.label }}<span style="font-family:'Geist Mono',monospace; font-size:12px; font-weight:400; color:#8b8d94;">{{ r.sub }}</span></span>
+            <span style="display:flex; align-items:baseline; gap:6px; font-size:16px; font-weight:500; font-variant-numeric:tabular-nums; color:{{ r.costC }};">{{ r.cost }}<span style="font-family:'Geist Mono',monospace; font-size:12px; font-weight:400; color:#8b8d94;">spent</span></span>
+          </div>
+          <div style="position:relative; height:28px;">
+            <span style="position:absolute; left:0; right:0; top:13px; height:2px; border-radius:2px; background:rgba(15,16,19,.08);"></span>
+            <span style="position:absolute; left:0; top:13px; height:2px; width:{{ r.fill }}; border-radius:2px; background:{{ r.c }}; transition:width .6s cubic-bezier(.65,0,.35,1), background .4s ease;"></span>
+            <sc-for list="{{ r.marks }}" as="m" hint-placeholder-count="3">
+              <span style="position:absolute; left:{{ m.left }}; top:14px; width:{{ m.size }}; height:{{ m.size }}; margin:{{ m.mg }}; display:grid; place-items:center; border-radius:50%; background:{{ m.bg }}; box-shadow:0 0 0 3px #ffffff; transform:scale({{ m.s }}); transition:transform .45s cubic-bezier(.3,1.6,.5,1), background .4s ease;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" style="opacity:{{ m.ck }};"><path d="M20 6 9 17l-5-5"></path></svg></span>
+            </sc-for>
+          </div>
+          <span style="min-height:20px; font-size:13px; line-height:1.5; color:#55575e;">{{ r.cap }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 16px; margin-top:18px; padding-top:18px; border-top:1px solid rgba(15,16,19,.07); opacity:{{ cxResOp }}; transform:{{ cxResTf }}; transition:opacity .4s ease, transform .5s cubic-bezier(.2,.8,.2,1);">
+      <span style="font-size:clamp(18px,1.8vw,22px); font-weight:500; letter-spacing:-0.02em;">{{ cxRes }}</span>
+      <span style="font-size:14px; color:#6c6e75;">{{ cxRes2 }}</span>
+    </div>
+  </div>
+  <div data-reveal="460" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr)); gap:16px; margin-top:clamp(40px,9vh,88px);">
+    <div style="padding:clamp(24px,3vw,36px); border-radius:28px; background:#ffffff; border:1px solid rgba(15,16,19,.07); display:flex; flex-direction:column; gap:16px;">
+      <div style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#c4541f;">Executive summary</div>
+      <div style="font-size:clamp(22px,2.3vw,30px); line-height:1.15; letter-spacing:-0.035em; font-weight:500; max-width:24ch;">From one escalation ladder to seven pathways.</div>
+      <p style="font-size:14px; line-height:1.6; color:#6c6e75;">Rules sort accounts every 15 minutes; each segment starts with the cheapest intervention likely to work. Humans are saved for the accounts that need them, and every action is measured against one number — the cost to recover ₹100.</p>
+      <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:auto;">
+        <span style="padding:6px 12px; border-radius:999px; background:#f8ebe3; color:#9e4318; font-size:12px;">Overview</span>
+        <span style="padding:6px 12px; border-radius:999px; background:#f8ebe3; color:#9e4318; font-size:12px;">Work queue</span>
+        <span style="padding:6px 12px; border-radius:999px; background:#f8ebe3; color:#9e4318; font-size:12px;">Segments</span>
+        <span style="padding:6px 12px; border-radius:999px; background:#f8ebe3; color:#9e4318; font-size:12px;">Interventions</span>
+        <span style="padding:6px 12px; border-radius:999px; background:#f8ebe3; color:#9e4318; font-size:12px;">Reports</span>
+      </div>
+    </div>
+    <div style="position:relative; overflow:hidden; padding:clamp(24px,3vw,36px); border-radius:28px; background:#0f1013; color:#f6f5f2; display:flex; flex-direction:column; justify-content:space-between; gap:28px;">
+      <span aria-hidden="true" style="position:absolute; right:-80px; top:-120px; width:340px; height:340px; border-radius:50%; background:radial-gradient(closest-side, rgba(196,84,31,.6), transparent);"></span>
+      <div style="position:relative; font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#a3a5ad;">North-star metric</div>
+      <div style="position:relative; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;">
+        <span style="font-size:clamp(56px,6.4vw,96px); line-height:.9; letter-spacing:-0.06em; font-weight:500; font-variant-numeric:tabular-nums;">₹14.2</span>
+        <span style="font-family:'Instrument Serif',serif; font-style:italic; font-size:22px; color:#f4a77f;">to recover every ₹100</span>
+      </div>
+      <div style="position:relative; display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:4px;">
+        <span title="Forgot to Pay" style="height:28px; border-radius:6px; background:#2fae66;"></span>
+        <span title="Technical Bounce" style="height:28px; border-radius:6px; background:#4a8fe7;"></span>
+        <span title="Salary Delay" style="height:28px; border-radius:6px; background:#e3b23c;"></span>
+        <span title="Temp Cash-Flow" style="height:28px; border-radius:6px; background:#e8890c;"></span>
+        <span title="Persistently Unreachable" style="height:28px; border-radius:6px; background:#e0607e;"></span>
+        <span title="Behavioural Risk" style="height:28px; border-radius:6px; background:#d63b3b;"></span>
+        <span title="Likely Default" style="height:28px; border-radius:6px; background:#8f1d1d;"></span>
+      </div>
+      <div style="position:relative; display:flex; justify-content:space-between; gap:12px; font-size:12px; color:#b4b6bd;"><span>Digital nudge</span><span>Field &amp; legal</span></div>
+    </div>
+  </div>
+  <div data-reveal="540" style="margin-top:16px; border-radius:20px; overflow:hidden; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.08), 0 50px 100px -50px rgba(196,84,31,.45), 0 20px 40px -24px rgba(15,16,19,.18);">
+    <div style="display:flex; align-items:center; gap:14px; height:44px; padding:0 16px; border-bottom:1px solid rgba(15,16,19,.07); background:#fbfbfa;">
+      <div style="display:flex; gap:6px;"><span style="width:10px; height:10px; border-radius:50%; background:#e2e2e6;"></span><span style="width:10px; height:10px; border-radius:50%; background:#e2e2e6;"></span><span style="width:10px; height:10px; border-radius:50%; background:#e2e2e6;"></span></div>
+      <div style="flex:1; max-width:360px; margin:0 auto; height:26px; border-radius:8px; background:#f1f1f4; display:flex; align-items:center; justify-content:center; font-family:'Geist Mono',monospace; font-size:11px; color:#8b8d94; white-space:nowrap; overflow:hidden;">collections / overview</div>
+      <span style="width:46px;"></span>
+    </div>
+    <div style="height:clamp(420px,62vh,640px);"><iframe src="Collections%20Prototype.dc.html" title="Collections 2.0 prototype — overview" loading="lazy" style="display:block; width:100%; height:100%; border:0;"></iframe></div>
+  </div>
+</section>
+
+<section id="problem" style="max-width:1200px; margin:0 auto; padding:clamp(88px,16vh,168px) clamp(20px,5vw,72px) 0; scroll-margin-top:40px;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#c4541f;">01</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Problem &amp; opportunity</div>
+  <h2 style="margin-top:22px; max-width:18ch; font-size:clamp(32px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="60" data-up="" style="display:inline-block;">Same process,</span></span>
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="140" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#c4541f;">very different borrowers.</span></span>
+  </h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr)); gap:24px clamp(32px,6vw,96px); margin-top:40px;">
+    <p data-reveal="200" style="font-size:17px; line-height:1.65; color:#55575e; max-width:56ch;">A student whose auto-debit failed on a bank error and a borrower drifting toward default were treated alike — the same reminders, the same call scripts, in the same order. Agents spent their day on accounts that would have paid with a WhatsApp message, while the risky ones waited. Nobody could say what each recovered rupee cost.</p>
+    <div data-reveal="280" style="padding:24px 26px; border-radius:22px; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+      <div style="font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#c4541f;">Opportunity</div>
+      <p style="margin-top:10px; font-size:15px; line-height:1.6; color:#33353b;">Read why an account is overdue, match it to the cheapest intervention likely to work, and escalate only when that fails — with one metric that rewards getting it right.</p>
+      <ol style="display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:20px; padding-top:18px; border-top:1px solid rgba(15,16,19,.08);">
+        <li style="padding:6px 12px; border-radius:999px; background:#c4541f; font-size:13px; font-weight:500; color:#ffffff;">Segment</li>
+        <li style="color:#8b8d94; font-size:13px;">→</li>
+        <li style="padding:6px 12px; border-radius:999px; background:#f4f4f2; font-size:13px; color:#55575e;">Nudge</li>
+        <li style="color:#8b8d94; font-size:13px;">→</li>
+        <li style="padding:6px 12px; border-radius:999px; background:#f4f4f2; font-size:13px; color:#55575e;">Call</li>
+        <li style="color:#8b8d94; font-size:13px;">→</li>
+        <li style="padding:6px 12px; border-radius:999px; background:#f4f4f2; font-size:13px; color:#55575e;">Field</li>
+        <li style="color:#8b8d94; font-size:13px;">→</li>
+        <li style="padding:6px 12px; border-radius:999px; background:#f4f4f2; font-size:13px; color:#55575e;">Legal</li>
+      </ol>
+    </div>
+  </div>
+  <div data-reveal="0" style="margin-top:clamp(56px,9vh,96px); font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Three gaps</div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(max(33.33% - 24px, min(100%, (720px - 100%) * 999)),1fr)); gap:12px; margin-top:18px;">
+    <div data-reveal="0" style="padding:22px; border-radius:22px; border:1px solid rgba(15,16,19,.07); background:#ffffff; display:flex; flex-direction:column; gap:18px;">
+      <span style="width:30px; height:30px; border-radius:50%; background:#f8ebe3; color:#c4541f; display:grid; place-items:center; font-family:'Geist Mono',monospace; font-size:11px;">01</span>
+      <div style="display:flex; flex-direction:column; gap:6px;"><span style="font-size:17px; font-weight:500; letter-spacing:-0.02em; line-height:1.25;">No reason behind the overdue</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">Days past due was the only signal — a bounce, a late salary and a deliberate skip looked the same.</span></div>
+    </div>
+    <div data-reveal="90" style="padding:22px; border-radius:22px; border:1px solid rgba(15,16,19,.07); background:#ffffff; display:flex; flex-direction:column; gap:18px;">
+      <span style="width:30px; height:30px; border-radius:50%; background:#f8ebe3; color:#c4541f; display:grid; place-items:center; font-family:'Geist Mono',monospace; font-size:11px;">02</span>
+      <div style="display:flex; flex-direction:column; gap:6px;"><span style="font-size:17px; font-weight:500; letter-spacing:-0.02em; line-height:1.25;">Agents on the wrong accounts</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">Expensive human calls went to borrowers a reminder would have cured.</span></div>
+    </div>
+    <div data-reveal="180" style="padding:22px; border-radius:22px; border:1px solid rgba(15,16,19,.07); background:#ffffff; display:flex; flex-direction:column; gap:18px;">
+      <span style="width:30px; height:30px; border-radius:50%; background:#f8ebe3; color:#c4541f; display:grid; place-items:center; font-family:'Geist Mono',monospace; font-size:11px;">03</span>
+      <div style="display:flex; flex-direction:column; gap:6px;"><span style="font-size:17px; font-weight:500; letter-spacing:-0.02em; line-height:1.25;">Rules locked in code</span><span style="font-size:14px; line-height:1.55; color:#6c6e75;">Changing who got what treatment meant a ticket to engineering and a release.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="approach" style="max-width:1200px; margin:0 auto; padding:clamp(88px,16vh,168px) clamp(20px,5vw,72px) 0; scroll-margin-top:40px;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#c4541f;">02</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Approach</div>
+  <h2 style="margin-top:22px; max-width:18ch; font-size:clamp(32px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="60" data-up="" style="display:inline-block;">Seven segments,</span></span>
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="140" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#c4541f;">seven pathways.</span></span>
+  </h2>
+  <p data-reveal="200" style="margin-top:28px; max-width:58ch; font-size:17px; line-height:1.65; color:#55575e;">Rules run every 15 minutes, top to bottom; an account joins the first segment it matches. Each segment begins with its own first move.</p>
+  <div style="margin-top:clamp(40px,6vh,64px); border-radius:28px; overflow:hidden; background:#ffffff; border:1px solid rgba(15,16,19,.07);">
+    <sc-for list="{{ segs }}" as="s" hint-placeholder-count="7">
+      <div data-reveal="{{ s.delay }}" style="display:grid; grid-template-columns:{{ segCols }}; gap:6px 24px; align-items:center; padding:18px clamp(18px,3vw,28px); border-top:{{ s.bt }};">
+        <span style="display:flex; align-items:center; gap:12px; font-size:17px; font-weight:500; letter-spacing:-0.02em;"><span style="flex:none; width:10px; height:10px; border-radius:50%; background:{{ s.c }};"></span>{{ s.name }}</span>
+        <span style="font-size:14px; color:#6c6e75;">{{ s.when }}</span>
+        <span style="display:flex; align-items:center; gap:10px; font-size:14px; color:#33353b;"><span style="flex:none; padding:3px 9px; border-radius:999px; background:{{ s.tb }}; color:{{ s.tc }}; font-family:'Geist Mono',monospace; font-size:11px;">{{ s.type }}</span>{{ s.action }}</span>
+      </div>
+    </sc-for>
+  </div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(max(25% - 24px, min(50% - 16px, (880px - 100%) * 999), min(100%, (460px - 100%) * 999)),1fr)); gap:16px; margin-top:clamp(40px,6vh,64px);">
+    <div data-reveal="0" style="padding:clamp(24px,3vw,32px); border-radius:28px; background:#0f1013; color:#f6f5f2; display:flex; flex-direction:column; gap:12px; min-height:220px;">
+      <span style="align-self:flex-start; padding:5px 10px; border-radius:999px; background:rgba(244,167,127,.14); font-family:'Geist Mono',monospace; font-size:11px; color:#f4a77f;">Principle 01</span>
+      <span style="margin-top:20px; font-size:clamp(21px,2.1vw,27px); line-height:1.14; letter-spacing:-0.03em; font-weight:500;">Diagnose before acting</span>
+      <span style="font-size:14px; line-height:1.6; color:#b4b6bd;">Segments describe why someone is late, not just how late.</span>
+    </div>
+    <div data-reveal="90" style="padding:clamp(24px,3vw,32px); border-radius:28px; background:#0f1013; color:#f6f5f2; display:flex; flex-direction:column; gap:12px; min-height:220px;">
+      <span style="align-self:flex-start; padding:5px 10px; border-radius:999px; background:rgba(244,167,127,.14); font-family:'Geist Mono',monospace; font-size:11px; color:#f4a77f;">Principle 02</span>
+      <span style="margin-top:20px; font-size:clamp(21px,2.1vw,27px); line-height:1.14; letter-spacing:-0.03em; font-weight:500;">Cheapest effective first</span>
+      <span style="font-size:14px; line-height:1.6; color:#b4b6bd;">Digital where it works, people where it matters, field and legal last.</span>
+    </div>
+    <div data-reveal="180" style="padding:clamp(24px,3vw,32px); border-radius:28px; background:#0f1013; color:#f6f5f2; display:flex; flex-direction:column; gap:12px; min-height:220px;">
+      <span style="align-self:flex-start; padding:5px 10px; border-radius:999px; background:rgba(244,167,127,.14); font-family:'Geist Mono',monospace; font-size:11px; color:#f4a77f;">Principle 03</span>
+      <span style="margin-top:20px; font-size:clamp(21px,2.1vw,27px); line-height:1.14; letter-spacing:-0.03em; font-weight:500;">One answer per account</span>
+      <span style="font-size:14px; line-height:1.6; color:#b4b6bd;">The queue says who, when, how and why — ranked by risk and due time.</span>
+    </div>
+    <div data-reveal="270" style="padding:clamp(24px,3vw,32px); border-radius:28px; background:#0f1013; color:#f6f5f2; display:flex; flex-direction:column; gap:12px; min-height:220px;">
+      <span style="align-self:flex-start; padding:5px 10px; border-radius:999px; background:rgba(244,167,127,.14); font-family:'Geist Mono',monospace; font-size:11px; color:#f4a77f;">Principle 04</span>
+      <span style="margin-top:20px; font-size:clamp(21px,2.1vw,27px); line-height:1.14; letter-spacing:-0.03em; font-weight:500;">Rules ops can own</span>
+      <span style="font-size:14px; line-height:1.6; color:#b4b6bd;">Conditions, action, frequency and attempt caps — editable and switchable without a release.</span>
+    </div>
+  </div>
+  <div data-reveal="0" style="margin-top:clamp(56px,8vh,88px); font-family:'Geist Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:#6c6e75;">Key design decisions</div>
+  <div style="margin-top:14px; border-top:1px solid rgba(15,16,19,.1);">
+    <div data-reveal="0" style="display:grid; grid-template-columns:{{ rowCols }}; gap:8px 24px; align-items:baseline; padding:24px 0; border-bottom:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#c4541f;">01</span><span style="font-size:19px; font-weight:500; letter-spacing:-0.02em; line-height:1.3;">Cost to recover ₹100 as the north star</span><span style="font-size:15px; line-height:1.6; color:#55575e;">Cure rate alone rewards over-calling; pairing recovery with cost makes the cheap, effective nudge the winning move.</span></div>
+    <div data-reveal="60" style="display:grid; grid-template-columns:{{ rowCols }}; gap:8px 24px; align-items:baseline; padding:24px 0; border-bottom:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#c4541f;">02</span><span style="font-size:19px; font-weight:500; letter-spacing:-0.02em; line-height:1.3;">Next best action with its odds</span><span style="font-size:15px; line-height:1.6; color:#55575e;">Each borrower shows ranked options with a success probability and the best window to try — the agent picks, the system recommends.</span></div>
+    <div data-reveal="120" style="display:grid; grid-template-columns:{{ rowCols }}; gap:8px 24px; align-items:baseline; padding:24px 0; border-bottom:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#c4541f;">03</span><span style="font-size:19px; font-weight:500; letter-spacing:-0.02em; line-height:1.3;">Start from the queue, in bulk</span><span style="font-size:15px; line-height:1.6; color:#55575e;">Filter by segment or Digital/Human, select rows and Start all — routine nudges never need a borrower page.</span></div>
+    <div data-reveal="180" style="display:grid; grid-template-columns:{{ rowCols }}; gap:8px 24px; align-items:baseline; padding:24px 0; border-bottom:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#c4541f;">04</span><span style="font-size:19px; font-weight:500; letter-spacing:-0.02em; line-height:1.3;">A live board for interventions</span><span style="font-size:15px; line-height:1.6; color:#55575e;">Running outreach sits in status columns; dragging a card updates it, and live calls pulse so supervisors see what’s happening now.</span></div>
+  </div>
+</section>
+
+<section id="solution" style="max-width:1200px; margin:0 auto; padding:clamp(88px,16vh,168px) clamp(20px,5vw,72px) 0; scroll-margin-top:40px;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#c4541f;">03</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Solution</div>
+  <h2 style="margin-top:22px; max-width:18ch; font-size:clamp(32px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="60" data-up="" style="display:inline-block;">Try it —</span></span>
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="140" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#c4541f;">it’s the real prototype.</span></span>
+  </h2>
+  <p data-reveal="200" style="margin-top:28px; max-width:58ch; font-size:17px; line-height:1.65; color:#55575e;">Pick a screen to open it below. Everything inside is interactive: start an action, open a borrower, edit a rule, drag a card.</p>
+  <div data-reveal="80" style="margin-top:clamp(32px,5vh,48px); display:grid; grid-template-columns:{{ flowCols }}; gap:clamp(20px,3vw,40px); align-items:start;">
+    <div style="display:flex; flex-direction:column; gap:2px; min-width:0;">
+      <sc-for list="{{ screens }}" as="x" hint-placeholder-count="6">
+        <button type="button" aria-pressed="{{ x.sel }}" onClick="{{ x.onClick }}" style="display:grid; grid-template-columns:32px minmax(0,1fr); gap:4px 12px; align-items:baseline; width:100%; text-align:left; padding:12px 16px; border:0; border-radius:16px; background:{{ x.bg }}; font:inherit; color:inherit; cursor:pointer; transition:background .25s ease;" style-hover="background:#f1efec;">
+          <span style="font-family:'Geist Mono',monospace; font-size:12px; color:{{ x.nc }};">{{ x.n }}</span>
+          <span style="font-size:16px; font-weight:500; letter-spacing:-0.02em; color:{{ x.tc }};">{{ x.t }}</span>
+          <sc-if value="{{ x.on }}" hint-placeholder-val="{{ false }}"><span style="grid-column:2; font-size:14px; line-height:1.55; color:#6c6e75;">{{ x.dd }}</span></sc-if>
+        </button>
+      </sc-for>
+    </div>
+    <div style="min-width:0; border-radius:16px; overflow:hidden; background:#ffffff; box-shadow:0 0 0 1px rgba(15,16,19,.08), 0 40px 80px -44px rgba(196,84,31,.5);">
+      <div style="display:flex; align-items:center; gap:12px; height:36px; padding:0 14px; border-bottom:1px solid rgba(15,16,19,.07); background:#fbfbfa;">
+        <div style="display:flex; gap:5px;"><span style="width:9px; height:9px; border-radius:50%; background:#e2e2e6;"></span><span style="width:9px; height:9px; border-radius:50%; background:#e2e2e6;"></span><span style="width:9px; height:9px; border-radius:50%; background:#e2e2e6;"></span></div>
+        <div style="flex:1; text-align:center; font-family:'Geist Mono',monospace; font-size:11px; color:#8b8d94; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ curT }}</div>
+        <a href="Collections%20Prototype.dc.html" target="_blank" rel="noopener" style="padding:12px 6px; margin:-12px -6px; font-family:'Geist Mono',monospace; font-size:11px; color:#c4541f; text-decoration:none; white-space:nowrap;" style-hover="color:#9e4318;">Open ↗</a>
+      </div>
+      <div style="height:clamp(480px,70vh,720px);"><iframe ref="{{ frameRef }}" src="Collections%20Prototype.dc.html?page=queue" title="Collections 2.0 prototype" loading="lazy" style="display:block; width:100%; height:100%; border:0;"></iframe></div>
+    </div>
+  </div>
+</section>
+
+<section id="outcomes" style="max-width:1280px; margin:0 auto; padding:clamp(88px,16vh,168px) clamp(12px,2vw,24px) 0; scroll-margin-top:40px;">
+  <div style="padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px); border-radius:clamp(28px,4vw,48px); background:#0f1013; color:#f6f5f2; position:relative; overflow:hidden;">
+    <span aria-hidden="true" style="position:absolute; left:-160px; bottom:-220px; width:560px; height:560px; border-radius:50%; background:radial-gradient(closest-side, rgba(196,84,31,.45), transparent);"></span>
+    <div data-reveal="0" style="position:relative; display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#a3a5ad;"><span style="color:#f4a77f;">04</span><span style="width:28px; height:1px; background:rgba(255,255,255,.25);"></span>Outcomes</div>
+    <h2 style="position:relative; margin-top:22px; max-width:19ch; font-size:clamp(32px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+      <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="60" data-up="" style="display:inline-block;">More digital,</span></span>
+      <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="140" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#f4a77f;">cheaper to recover.</span></span>
+    </h2>
+    <p data-reveal="200" style="position:relative; margin-top:24px; max-width:62ch; font-size:16px; line-height:1.65; color:#b4b6bd;">Nudges absorbed the easy cures and agents moved to the accounts that needed them. Last 30 days against the period before segmentation; figures are directional.</p>
+    <div style="position:relative; display:grid; grid-template-columns:repeat(auto-fit,minmax(max(25% - 24px, min(50% - 16px, (880px - 100%) * 999), min(100%, (460px - 100%) * 999)),1fr)); gap:1px; margin-top:clamp(36px,5vh,56px); border-radius:24px; overflow:hidden; background:rgba(255,255,255,.08);">
+      <div data-reveal="0" style="padding:24px; background:#141519; display:flex; flex-direction:column; gap:6px; min-height:170px;"><span style="font-size:clamp(30px,3.2vw,44px); line-height:1; letter-spacing:-0.05em; font-weight:500; color:#f4a77f;">−12%</span><span style="margin-top:auto; font-size:14px; font-weight:500;">Cost to recover ₹100</span><span style="font-size:12px; line-height:1.5; color:#a3a5ad;">now ₹14.2</span></div>
+      <div data-reveal="60" style="padding:24px; background:#141519; display:flex; flex-direction:column; gap:6px; min-height:170px;"><span style="font-size:clamp(30px,3.2vw,44px); line-height:1; letter-spacing:-0.05em; font-weight:500; color:#f4a77f;">55 → 74%</span><span style="margin-top:auto; font-size:14px; font-weight:500;">Digital share of interventions</span><span style="font-size:12px; line-height:1.5; color:#a3a5ad;">April to September</span></div>
+      <div data-reveal="120" style="padding:24px; background:#141519; display:flex; flex-direction:column; gap:6px; min-height:170px;"><span style="font-size:clamp(30px,3.2vw,44px); line-height:1; letter-spacing:-0.05em; font-weight:500; color:#f4a77f;">58%</span><span style="margin-top:auto; font-size:14px; font-weight:500;">Cure rate</span><span style="font-size:12px; line-height:1.5; color:#a3a5ad;">up 5.6 pts</span></div>
+      <div data-reveal="180" style="padding:24px; background:#141519; display:flex; flex-direction:column; gap:6px; min-height:170px;"><span style="font-size:clamp(30px,3.2vw,44px); line-height:1; letter-spacing:-0.05em; font-weight:500; color:#f4a77f;">63.6%</span><span style="margin-top:auto; font-size:14px; font-weight:500;">Promise-to-pay kept</span><span style="font-size:12px; line-height:1.5; color:#a3a5ad;">up 3.2 pts</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="learnings" style="max-width:1200px; margin:0 auto; padding:clamp(88px,16vh,168px) clamp(20px,5vw,72px) 0; scroll-margin-top:40px;">
+  <div data-reveal="0" style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#c4541f;">05</span><span style="width:28px; height:1px; background:rgba(15,16,19,.2);"></span>Learnings</div>
+  <h2 style="margin-top:22px; max-width:18ch; font-size:clamp(32px,4.8vw,68px); line-height:1.03; letter-spacing:-0.045em; font-weight:500;">
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="60" data-up="" style="display:inline-block;">Empathy scales</span></span>
+    <span style="display:inline-block; overflow:hidden; vertical-align:top; padding:0 .06em .1em 0;"><span data-reveal="140" data-up="" style="display:inline-block; font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#c4541f;">when it’s targeted.</span></span>
+  </h2>
+  <div style="margin-top:clamp(40px,6vh,64px); border-top:1px solid rgba(15,16,19,.1);">
+    <div data-reveal="0" style="display:grid; grid-template-columns:{{ rowCols }}; gap:8px 24px; align-items:baseline; padding:28px 0; border-bottom:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#c4541f;">01</span><span style="font-size:clamp(20px,2vw,26px); font-weight:500; letter-spacing:-0.03em; line-height:1.15;">The metric shapes the behaviour</span><span style="font-size:15px; line-height:1.65; color:#55575e;">Once cost sat next to recovery, the team stopped treating every account as a call.</span></div>
+    <div data-reveal="60" style="display:grid; grid-template-columns:{{ rowCols }}; gap:8px 24px; align-items:baseline; padding:28px 0; border-bottom:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#c4541f;">02</span><span style="font-size:clamp(20px,2vw,26px); font-weight:500; letter-spacing:-0.03em; line-height:1.15;">Name the reason, not the risk</span><span style="font-size:15px; line-height:1.65; color:#55575e;">“Salary delay” tells an agent what to say; “risk 45” doesn’t. Segment names became the script.</span></div>
+    <div data-reveal="120" style="display:grid; grid-template-columns:{{ rowCols }}; gap:8px 24px; align-items:baseline; padding:28px 0; border-bottom:1px solid rgba(15,16,19,.1);"><span style="font-family:'Geist Mono',monospace; font-size:12px; color:#c4541f;">03</span><span style="font-size:clamp(20px,2vw,26px); font-weight:500; letter-spacing:-0.03em; line-height:1.15;">Recommend, then step aside</span><span style="font-size:15px; line-height:1.65; color:#55575e;">Showing odds and leaving the choice to the agent earned more trust than auto-assigning actions.</span></div>
+  </div>
+</section>
+
+<section style="position:relative; overflow:hidden; padding:clamp(120px,20vh,200px) 0 clamp(80px,12vh,120px);">
+  <div aria-hidden="true" style="position:absolute; left:30%; top:10%; width:min(720px,90vw); height:min(520px,70vw); border-radius:45% 55% 60% 40%; background:radial-gradient(closest-side, rgba(196,84,31,.24), rgba(240,170,130,.12) 60%, transparent); filter:blur(50px); pointer-events:none;"></div>
+  <div style="position:relative; max-width:1200px; margin:0 auto; padding:0 clamp(20px,5vw,72px);">
+    <h2 data-reveal="0" style="font-size:clamp(44px,7.2vw,112px); line-height:.98; letter-spacing:-0.055em; font-weight:500; max-width:13ch;">Let’s design products people can <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.025em; color:#c4541f;">trust.</span></h2>
+    <div data-reveal="120" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:24px 48px; margin-top:48px;">
+      <p style="max-width:40ch; font-size:17px; line-height:1.6; color:#55575e;">Open to product design leadership, zero-to-one systems and complex fintech journeys.</p>
+      <div style="display:flex; flex-wrap:wrap; gap:10px;">
+        <button onClick="{{ copyEmail }}" onMouseMove="{{ magMove }}" onMouseLeave="{{ magLeave }}" style="display:inline-flex; align-items:center; gap:10px; height:56px; padding:0 26px; border:0; border-radius:999px; background:#0f1013; color:#f6f5f2; font:inherit; font-size:16px; font-weight:500; cursor:pointer; transition:transform .35s cubic-bezier(.2,.8,.2,1), background .25s ease;" style-hover="background:#c4541f;">Get in touch<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="max-width:1200px; margin:0 auto; padding:0 clamp(20px,5vw,72px) clamp(48px,7vh,72px);">
+  <div data-reveal="0" style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:32px; padding-top:clamp(40px,6vh,64px); border-top:1px solid rgba(15,16,19,.08);">
+    <div>
+      <div style="font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;">Next project · 04 / 04</div>
+      <div style="margin-top:14px; font-size:clamp(36px,5vw,64px); line-height:1; letter-spacing:-0.045em; font-weight:500;">Brida</div>
+    </div>
+    <a href="Brida%20Case%20Study.dc.html" style="display:inline-flex; align-items:center; gap:12px; height:56px; padding:0 10px 0 26px; border-radius:999px; background:#0f1013; color:#f6f5f2; text-decoration:none; font-size:15px; font-weight:500; transition:background .25s ease, box-shadow .25s ease;" style-hover="background:#c4541f; color:#ffffff; box-shadow:0 14px 40px -10px rgba(196,84,31,.6);">View project<span style="display:grid; place-items:center; width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span></a>
+  </div>
+  <footer style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; margin-top:clamp(64px,9vh,96px); padding-top:24px; border-top:1px solid rgba(15,16,19,.1); font-size:13px; color:#6c6e75;">
+    <span style="color:#0f1013; font-weight:500;">Harish Babu Nadar</span>
+    <span style="font-family:'Geist Mono',monospace; font-size:12px;">© 2026 · All rights reserved</span>
+    <div style="display:flex; flex-wrap:wrap; gap:20px;"><a href="https://www.linkedin.com/in/harishbabuganesannadar" target="_blank" rel="noopener noreferrer" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; color:#55575e; text-decoration:none; transition:color .2s ease;" style-hover="color:#0f1013;">LinkedIn</a><a href="mailto:Harishbabuganesan@gmail.com" style="padding-top:12px; padding-bottom:12px; margin-top:-12px; margin-bottom:-12px; color:#55575e; text-decoration:none; transition:color .2s ease;" style-hover="color:#0f1013;">Email</a></div>
+  </footer>
+</section>
+<div role="status" aria-live="polite" style="position:fixed; left:50%; bottom:28px; z-index:60; display:flex; align-items:center; gap:10px; padding:12px 18px 12px 14px; border-radius:999px; background:#0f1013; color:#f6f5f2; font-size:13px; box-shadow:0 20px 40px -16px rgba(15,16,19,.5); pointer-events:none; opacity:{{ toastO }}; transform:{{ toastT }}; transition:opacity .3s ease, transform .45s cubic-bezier(.2,.9,.2,1.2);">
+  <span style="width:20px; height:20px; border-radius:50%; background:#c4541f; display:grid; place-items:center;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+  Email copied — Harishbabuganesan@gmail.com
+</div>
+<dc-import name="BackToTop" hint-size="0px,0px"></dc-import>
+<dc-import name="MobilePreview" viewport="{{ viewport }}" hint-size="0px,0px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;motion&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Full&quot;,&quot;Subtle&quot;,&quot;Off&quot;],&quot;default&quot;:&quot;Full&quot;,&quot;tsType&quot;:&quot;'Full' | 'Subtle' | 'Off'&quot;},&quot;viewport&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Desktop&quot;,&quot;Mobile&quot;],&quot;default&quot;:&quot;Desktop&quot;,&quot;tsType&quot;:&quot;'Desktop' | 'Mobile'&quot;}}">
+class Component extends DCLogic {
+  progressRef = React.createRef();
+  enterRef = React.createRef();
+  frameRef = React.createRef();
+  copyEmail = () => {
+    window.location.href = 'mailto:Harishbabuganesan@gmail.com';
+    try { navigator.clipboard && navigator.clipboard.writeText('Harishbabuganesan@gmail.com').catch(() => {}); } catch (e) {}
+    this.setState({ toast: true }); clearTimeout(this.toastTimer); this.toastTimer = setTimeout(() => this.setState({ toast: false }), 2400);
+  };
+  magMove = e => {
+    if (this.props.motion === 'Off') return;
+    const el = e.currentTarget, r = el.getBoundingClientRect();
+    el.style.transform = 'translate(' + ((e.clientX - r.left - r.width / 2) * .18) + 'px,' + ((e.clientY - r.top - r.height / 2) * .28) + 'px)';
+  };
+  magLeave = e => { e.currentTarget.style.transform = ''; };
+  CX_LADDER = [[1, 'SMS reminder', 0.2], [3, 'Reminder call', 18], [5, 'Agent call', 38], [7, 'Second agent call', 38], [9, 'Field visit', 220], [10, 'Paid after the field visit', 0, 1]];
+  CX_SC = [
+    ['Forgot to Pay', '#2fae66', [[1, 'WhatsApp nudge', 0.6], [2, 'SMS with a pay link — paid', 0.2, 1]]],
+    ['Salary Delay', '#e3b23c', [[1, 'Grace-period offer', 0.6], [5, 'IVR reminder after salary credit', 4], [6, 'Paid in full', 0, 1]]],
+    ['Temp Cash-Flow', '#e8890c', [[2, 'Empathy call', 38], [3, 'Restructure offer', 0.6], [4, 'First revised EMI paid', 0, 1]]]
+  ];
+  hxRef = React.createRef();
+  hxMount() {
+    this.hxVis = true;
+    const el = this.hxRef.current;
+    if (el && typeof IntersectionObserver !== 'undefined') { this.hxIo = new IntersectionObserver(es => { this.hxVis = es[0].isIntersecting; }); this.hxIo.observe(el); }
+    if (this.motionOff()) return;
+    this.hxStartT = setTimeout(() => { this.hxT = setInterval(() => { if (!document.hidden && this.hxVis) this.hxTick(); }, 700); }, 900);
+  }
+  hxUnmount() { clearInterval(this.hxT); clearTimeout(this.hxStartT); if (this.hxIo) this.hxIo.disconnect(); }
+  hxTick() {
+    const h = this.state.hx;
+    this.setState({ hx: h.d >= 14 ? { sc: (h.sc + 1) % this.CX_SC.length, d: 0 } : { ...h, d: h.d + 1 } });
+  }
+  hxVals(s) {
+    const h = s.hx, d = Math.min(h.d, 10), sc = this.CX_SC[h.sc];
+    const money = v => '₹' + (v < 100 ? v.toFixed(2) : Math.round(v).toLocaleString('en-IN'));
+    const row = (label, sub, c, costC, evs) => {
+      const end = (evs.find(e => e[3]) || evs[evs.length - 1])[0], fired = evs.filter(e => e[0] <= d), cost = fired.reduce((a, e) => a + e[2], 0), last = fired[fired.length - 1];
+      return { label, sub, c, costC, end, costV: cost, cost: money(cost), fill: (Math.min(d, end) / 10 * 100).toFixed(2) + '%',
+        marks: evs.map(e => { const pd = !!e[3], z = pd ? 20 : 12; return { left: ((e[0] - .5) / 10 * 100).toFixed(2) + '%', size: z + 'px', mg: (-z / 2) + 'px 0 0 ' + (-z / 2) + 'px', bg: pd ? '#2fae66' : c, s: e[0] <= d ? 1 : 0, ck: pd ? 1 : 0 }; }),
+        cap: last ? 'Day ' + last[0] + ' · ' + last[1] + (last[2] ? ' · ' + money(last[2]) : '') : 'Day 0 · EMI missed' };
+    };
+    const a = row('One escalation ladder', 'Before · every account', '#8b8d94', '#0f1013', this.CX_LADDER), b = row('Collections 2.0', sc[0] + ' pathway', sc[1], '#9e4318', sc[2]), fin = h.d >= 10;
+    return { hxRef: this.hxRef, cxSeg: sc[0], cxSegC: sc[1], cxDay: String(d), cxRows: [a, b],
+      cxResOp: fin ? 1 : 0, cxResTf: fin ? 'translateY(0px)' : 'translateY(8px)',
+      cxRes: 'Resolved ' + (a.end - b.end) + ' days sooner', cxRes2: money(b.costV) + ' spent instead of ' + money(a.costV) };
+  }
+  state = { hx: { sc: 0, d: this.motionOff() ? 10 : 0 }, solid: false, nav: '', narrow: typeof window !== 'undefined' && window.innerWidth < 960, w: typeof window !== 'undefined' ? window.innerWidth : 1200, scr: 1 };
+  SEGS = [
+    ['Forgot to Pay', 'DPD 1–3 · low risk · no bounces', 'Digital', 'SMS & WhatsApp nudge, 2× daily', '#2fae66'],
+    ['Technical Bounce', 'DPD 0 · netbanking failure', 'Digital', 'Auto re-presentment + WhatsApp', '#4a8fe7'],
+    ['Salary Delay', 'DPD 1–5 · salary date late', 'Digital', 'Grace-period offer + IVR call', '#e3b23c'],
+    ['Temp Cash-Flow', 'Short-term income dip', 'Human', 'Empathy call + restructure offer', '#e8890c'],
+    ['Persistently Unreachable', 'Repeated failed contact', 'Digital', 'Alternate numbers & channels', '#e0607e'],
+    ['Behavioural Risk', 'Pattern of skipped payments', 'Human', 'Senior agent call', '#d63b3b'],
+    ['Likely Default', 'DPD > 30 · risk > 80', 'Field', 'Field visit + legal notice', '#8f1d1d']
+  ];
+  SCREENS = [
+    ['Overview', 'Cure rate, PTP, contactability and cost to recover ₹100 — then priority actions, digital vs human and the escalation funnel.', 'overview', ''],
+    ['Work queue', 'Next best action for every open account, ranked by risk and due time. Filter, select and Start all.', 'queue', ''],
+    ['Borrower', 'Facts, contacts and ranked actions with success odds and the best time window — start, schedule or escalate.', 'queue', 'borrower'],
+    ['Segments', 'Seven cohorts with accounts, DPD, recovery and pathway — each rule switchable on the spot.', 'segments', ''],
+    ['Edit a rule', 'Trigger conditions, action, frequency, attempts cap and priority, saved for the next run.', 'segments', 'rule'],
+    ['Interventions', 'Live outreach on a board — drag cards between statuses; running calls pulse.', 'interventions', '']
+  ];
+  motionOff() {
+    return (this.props.motion ?? 'Full') === 'Off' || (typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+  componentDidMount() {
+    this.onScroll = () => { if (this.raf) return; this.raf = requestAnimationFrame(() => { this.raf = 0; this.tick(); }); };
+    this.onResize = () => { const w = window.innerWidth, narrow = w < 960; if (narrow !== this.state.narrow || (w < 640) !== (this.state.w < 640)) this.setState({ narrow, w }); this.onScroll(); };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', this.onResize);
+    const off = this.motionOff(), ov = this.enterRef.current;
+    if (ov && !off && !document.hidden) {
+      let viaT = false; try { viaT = sessionStorage.getItem('pf-transition') === '1'; sessionStorage.removeItem('pf-transition'); } catch (er) {}
+      if (viaT && ov.firstElementChild) ov.firstElementChild.style.visibility = 'hidden';
+      const a = ov.animate([{ clipPath: 'inset(0 0 0% 0)' }, { clipPath: 'inset(0 0 100% 0)' }], { duration: 600, delay: 80, easing: 'cubic-bezier(.7,0,.2,1)', fill: 'backwards' });
+      if (ov.firstElementChild) ov.firstElementChild.animate([{ opacity: 1, transform: 'translateY(0px)' }, { opacity: 0, transform: 'translateY(-28px)' }], { duration: 300, easing: 'cubic-bezier(.6,0,.2,1)', fill: 'backwards' });
+      this.ovT = setTimeout(() => { try { a.finish(); } catch (e) {} }, 900);
+    }
+    this._lastScr = this.state.scr;
+    this.hxMount();
+    this.setupReveal();
+    this.tick();
+  }
+  componentDidUpdate() {
+    if (this._lastScr === this.state.scr) return;
+    this._lastScr = this.state.scr;
+    const f = this.frameRef.current, s = this.SCREENS[this.state.scr];
+    if (f) f.setAttribute('src', `Collections%20Prototype.dc.html?page=${s[2]}${s[3] ? '&open=' + s[3] : ''}`);
+  }
+  componentWillUnmount() {
+    this.hxUnmount();
+    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('resize', this.onResize);
+    if (this.io) this.io.disconnect();
+    clearTimeout(this.fb); clearTimeout(this.ovT);
+    if (this.onVis) document.removeEventListener('visibilitychange', this.onVis);
+  }
+  tick() {
+    const y = window.scrollY, vh = window.innerHeight, max = document.documentElement.scrollHeight - vh;
+    if (this.progressRef.current) this.progressRef.current.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
+    const upd = {}, solid = y > 24;
+    if (solid !== this.state.solid) upd.solid = solid;
+    let nav = '';
+    ['problem', 'approach', 'solution', 'outcomes', 'learnings'].forEach(id => { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top < vh * 0.4) nav = id; });
+    if (nav !== this.state.nav) upd.nav = nav;
+    if (Object.keys(upd).length) this.setState(upd);
+  }
+  setupReveal() {
+    if (this.motionOff() || typeof IntersectionObserver === 'undefined' || document.hidden) return;
+    const subtle = this.props.motion === 'Subtle';
+    const kf = subtle ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: 'translateY(24px)', filter: 'blur(8px)' }, { opacity: 1, transform: 'translateY(0px)', filter: 'blur(0px)' }];
+    const vh = window.innerHeight, pending = [];
+    let fired = false;
+    const show = el => { if (el.__rv) el.__rv.play(); if (this.io) this.io.unobserve(el); };
+    this.io = new IntersectionObserver(es => { fired = true; es.forEach(e => e.isIntersecting && show(e.target)); }, { rootMargin: '0px 0px -8% 0px', threshold: 0.01 });
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      const up = el.hasAttribute('data-up');
+      const a = el.animate(up ? [{ transform: 'translateY(105%)' }, { transform: 'translateY(0%)' }] : kf, { duration: up ? 1000 : (subtle ? 500 : 900), delay: Number(el.dataset.reveal || 0), easing: up ? 'cubic-bezier(.2,.9,.1,1)' : 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' });
+      el.__rv = a;
+      const r = el.getBoundingClientRect();
+      if (r.top < vh && r.bottom > 0) { show(el); return; }
+      a.pause(); pending.push(a); this.io.observe(el);
+    });
+    this.fb = setTimeout(() => { if (!fired) pending.forEach(a => { try { a.finish(); } catch (e) {} }); }, 1000);
+    this.onVis = () => { if (document.hidden) pending.forEach(a => { try { a.finish(); } catch (e) {} }); };
+    document.addEventListener('visibilitychange', this.onVis);
+  }
+  renderVals() {
+    const s = this.state, A = '#c4541f', INK = '#0f1013';
+    const TB = { Digital: ['#e6f4ec', '#1d7a47'], Human: ['#fdf0e1', '#a35a07'], Field: ['#f8e3e3', '#8f1d1d'] };
+    return {
+      progressRef: this.progressRef, enterRef: this.enterRef, frameRef: this.frameRef,
+      ...this.hxVals(this.state),
+      copyEmail: this.copyEmail, magMove: this.magMove, magLeave: this.magLeave,
+      toastO: this.state.toast ? '1' : '0', toastT: this.state.toast ? 'translate(-50%,0)' : 'translate(-50%,16px)',
+      navMax: s.solid ? '780px' : '1160px',
+      navBg: s.solid ? 'rgba(255,255,255,.78)' : 'rgba(255,255,255,0)',
+      navShadow: s.solid ? '0 0 0 1px rgba(15,16,19,.06), 0 12px 32px -12px rgba(15,16,19,.18)' : '0 0 0 1px rgba(15,16,19,0)',
+      navLinksDisplay: s.narrow ? 'none' : 'flex',
+      navItems: [['problem', 'Problem'], ['approach', 'Approach'], ['solution', 'Prototype'], ['outcomes', 'Outcomes'], ['learnings', 'Learnings']].map(([id, label]) => ({
+        href: `#${id}`, label, color: s.nav === id ? INK : '#55575e', bg: s.nav === id ? 'rgba(15,16,19,.06)' : 'transparent' })),
+      flowCols: s.narrow ? 'minmax(0,1fr)' : 'minmax(0,1fr) minmax(0,2.4fr)',
+      rowCols: s.narrow ? 'minmax(0,1fr)' : '48px minmax(0,1fr) minmax(0,1.1fr)',
+      segCols: s.w < 640 ? 'minmax(0,1fr)' : 'minmax(0,1fr) minmax(0,1fr) minmax(0,1.3fr)',
+      segs: this.SEGS.map(([name, when, type, action, c], i) => ({ name, when, type, action, c, tb: TB[type][0], tc: TB[type][1], bt: i ? '1px solid rgba(15,16,19,.07)' : '0', delay: String(i * 50) })),
+      screens: this.SCREENS.map(([t, dd], i) => ({ n: String(i + 1).padStart(2, '0'), t, dd, on: s.scr === i, sel: s.scr === i ? 'true' : 'false',
+        bg: s.scr === i ? '#f8ebe3' : 'transparent', nc: s.scr === i ? A : '#8b8d94', tc: s.scr === i ? INK : '#6c6e75',
+        onClick: () => this.setState({ scr: i }) })),
+      curT: 'collections / ' + this.SCREENS[s.scr][0].toLowerCase()
+    };
+  }
+}
+</script>
+</body>
+</html>

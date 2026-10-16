@@ -290,6 +290,7 @@ class Component extends DCLogic {
   }
 
   componentDidMount() {
+    try { if (location.hash && sessionStorage.getItem('pf-transition') !== '1') { history.replaceState(null, '', location.pathname + location.search); window.scrollTo(0, 0); } } catch (er) {}
     this.onShow = e => { if (e.persisted) this.resetLeave(); };
     window.addEventListener('pageshow', this.onShow);
     this.onScroll = () => { if (this.raf) return; this.raf = requestAnimationFrame(() => { this.raf = 0; this.tick(); }); };

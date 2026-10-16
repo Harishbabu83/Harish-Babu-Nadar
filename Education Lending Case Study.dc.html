@@ -70,7 +70,7 @@ a:hover{color:#2a2fd6}
       <dl data-reveal="600" style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); margin:0; border-radius:20px; background:#ffffff; border:1px solid rgba(15,16,19,.08); overflow:hidden;">
         <div style="padding:18px 22px;"><dt style="font-family:'Geist Mono',monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:#6c6e75;">Role</dt><dd style="margin:6px 0 0; font-size:15px; font-weight:500;">Product Designer</dd></div>
         <div style="padding:18px 22px; border-left:1px solid rgba(15,16,19,.07);"><dt style="font-family:'Geist Mono',monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:#6c6e75;">Platforms</dt><dd style="margin:6px 0 0; font-size:15px; font-weight:500;">Android · iOS</dd></div>
-        <div style="padding:18px 22px; border-top:1px solid rgba(15,16,19,.07);"><dt style="font-family:'Geist Mono',monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:#6c6e75;">Timeline</dt><dd style="margin:6px 0 0; font-size:15px; font-weight:500;">20 weeks</dd></div>
+        <div style="padding:18px 22px; border-top:1px solid rgba(15,16,19,.07);"><dt style="font-family:'Geist Mono',monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:#6c6e75;">Timeline</dt><dd style="margin:6px 0 0; font-size:15px; font-weight:500;">1 year 8 months</dd></div>
         <div style="padding:18px 22px; border-left:1px solid rgba(15,16,19,.07); border-top:1px solid rgba(15,16,19,.07);"><dt style="font-family:'Geist Mono',monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:#6c6e75;">Scope</dt><dd style="margin:6px 0 0; font-size:15px; font-weight:500;">Six connected flows</dd></div>
       </dl>
     </div>
@@ -151,13 +151,12 @@ a:hover{color:#2a2fd6}
   <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:20px 48px;">
     <div>
       <div data-reveal="0" style="display:flex; align-items:center; gap:10px; font-family:'Geist Mono',monospace; font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:#6c6e75;"><span style="width:6px; height:6px; border-radius:50%; background:#4046ff;"></span>Process</div>
-      <h2 data-reveal="60" style="margin-top:20px; font-size:clamp(34px,4.4vw,64px); line-height:1.02; letter-spacing:-0.045em; font-weight:500; max-width:14ch;">Twenty weeks, one shared <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em;">decision system.</span></h2>
+      <h2 data-reveal="60" style="margin-top:20px; font-size:clamp(34px,4.4vw,64px); line-height:1.02; letter-spacing:-0.045em; font-weight:500; max-width:14ch;">Seven steps, one shared <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em;">decision system.</span></h2>
     </div>
     <p data-reveal="120" style="max-width:40ch; font-size:15px; line-height:1.6; color:#6c6e75;">Weekly reviews aligned research, risk, compliance, content and engineering on a single decision log — so every trade-off was made once, and in the open.</p>
   </div>
-  <div data-reveal="160" style="display:flex; justify-content:space-between; margin-top:72px; font-family:'Geist Mono',monospace; font-size:11px; color:#8b8d94;"><span>WEEK 01</span><span>WEEK 20</span></div>
-  <div style="display:grid; grid-template-columns:{{ phaseCols }}; gap:28px 6px; margin-top:14px;">
-    <sc-for list="{{ phases }}" as="p" hint-placeholder-count="5">
+  <div style="display:grid; grid-template-columns:{{ phaseCols }}; gap:28px 6px; margin-top:72px;">
+    <sc-for list="{{ phases }}" as="p" hint-placeholder-count="7">
       <div onMouseEnter="{{ p.onEnter }}" onMouseLeave="{{ p.onLeave }}" style="min-width:0; opacity:{{ p.op }}; transition:opacity .3s ease; cursor:default;">
         <div style="height:10px; display:flex; align-items:center;"><div data-reveal="{{ p.delay }}" data-rx="" style="width:100%; height:{{ p.barH }}; border-radius:999px; background:linear-gradient(90deg, #4046ff, #8f94ff); transform-origin:left; transition:height .3s cubic-bezier(.2,.8,.2,1);"></div></div>
         <div style="margin-top:18px; padding-right:12px;">
@@ -185,12 +184,12 @@ a:hover{color:#2a2fd6}
           <div style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#4046ff;">{{ c.num }}</span><span style="width:24px; height:1px; background:rgba(15,16,19,.2);"></span>{{ c.kicker }}</div>
           <h3 style="margin-top:20px; font-size:clamp(28px,3.2vw,42px); line-height:1.08; letter-spacing:-0.035em; font-weight:500; max-width:19ch;">{{ c.title }}</h3>
           <p style="margin-top:16px; max-width:44ch; font-size:16px; line-height:1.6; color:#55575e;">{{ c.body }}</p>
-          <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:20px; margin-top:32px; padding-top:24px; border-top:1px solid rgba(15,16,19,.08);">
-            <div style="display:flex; align-items:baseline; gap:14px;">
-              <span data-count="{{ c.metric.to }}" data-dec="{{ c.metric.dec }}" data-pre="{{ c.metric.pre }}" data-suf="{{ c.metric.suf }}" style="font-size:56px; line-height:1; letter-spacing:-0.05em; font-weight:500; font-variant-numeric:tabular-nums;">{{ c.metric.v }}</span>
-              <span style="max-width:16ch; font-size:13px; line-height:1.4; color:#6c6e75;">{{ c.metric.label }}</span>
+          <div style="display:flex; flex-wrap:nowrap; align-items:center; justify-content:space-between; gap:16px; margin-top:32px; padding-top:24px; border-top:1px solid rgba(15,16,19,.08);">
+            <div style="display:flex; align-items:center; gap:12px; flex:1 1 auto; min-width:0;">
+              <span data-count="{{ c.metric.to }}" data-dec="{{ c.metric.dec }}" data-pre="{{ c.metric.pre }}" data-suf="{{ c.metric.suf }}" style="flex-shrink:0; font-size:clamp(36px,4.2vw,56px); line-height:1; letter-spacing:-0.05em; font-weight:500; font-variant-numeric:tabular-nums;">{{ c.metric.v }}</span>
+              <span style="min-width:0; max-width:16ch; font-size:13px; line-height:1.4; color:#6c6e75; text-wrap:pretty;">{{ c.metric.label }}</span>
             </div>
-            <a href="{{ c.href }}" onClick="{{ c.go }}" onMouseMove="{{ magMove }}" onMouseLeave="{{ magLeave }}" style="display:inline-flex; align-items:center; gap:12px; height:48px; padding:0 8px 0 22px; border-radius:999px; background:#0f1013; color:#ffffff; text-decoration:none; font-size:15px; font-weight:500; box-shadow:0 10px 24px -12px rgba(15,16,19,.45); transition:transform .35s cubic-bezier(.2,.8,.2,1), background .25s ease, box-shadow .25s ease;" style-hover="background:#4046ff; color:#ffffff; box-shadow:0 14px 30px -12px rgba(64,70,255,.6);" style-active="transform:scale(.97);">Explore feature<span style="width:34px; height:34px; border-radius:50%; background:#ffffff; color:#0f1013; display:grid; place-items:center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></span></a>
+            <a href="{{ c.href }}" onClick="{{ c.go }}" onMouseMove="{{ magMove }}" onMouseLeave="{{ magLeave }}" style="flex-shrink:0; white-space:nowrap; display:inline-flex; align-items:center; gap:12px; height:48px; padding:0 8px 0 22px; border-radius:999px; background:#0f1013; color:#ffffff; text-decoration:none; font-size:15px; font-weight:500; box-shadow:0 10px 24px -12px rgba(15,16,19,.45); transition:transform .35s cubic-bezier(.2,.8,.2,1), background .25s ease, box-shadow .25s ease;" style-hover="background:#4046ff; color:#ffffff; box-shadow:0 14px 30px -12px rgba(64,70,255,.6);" style-active="transform:scale(.97);">Open feature<span style="width:34px; height:34px; border-radius:50%; background:#ffffff; color:#0f1013; display:grid; place-items:center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></span></a>
           </div>
           </div>
         </article>
@@ -530,11 +529,13 @@ class Component extends DCLogic {
   NODES = [[60, 250], [236, 110], [412, 230], [588, 100], [764, 220], [940, 110]];
 
   PHASES = [
-    { name: 'Frame', wk: 'Wk 1–2', w: 2, d: 'Mapped the journey, its failure points and the metrics that mattered.' },
-    { name: 'Discover', wk: 'Wk 3–6', w: 4, d: 'Student and parent interviews, ops shadowing, funnel analysis.' },
-    { name: 'Define', wk: 'Wk 7–9', w: 3, d: 'Principles, a shared service blueprint and one decision log.' },
-    { name: 'Design', wk: 'Wk 10–16', w: 7, d: 'Six flows on one component system, tested every week.' },
-    { name: 'Ship & learn', wk: 'Wk 17–20', w: 4, d: 'Staged rollout with weekly experiment readouts.' }
+    { name: 'Research', wk: '01', w: 1, d: 'User research and funnel data from PostHog and Mixpanel.' },
+    { name: 'Pain points', wk: '02', w: 1, d: 'Identified the problems and pain points behind drop-offs.' },
+    { name: 'Ideate', wk: '03', w: 1, d: 'Brainstormed options and shortlisted the solution.' },
+    { name: 'M3 system', wk: '04', w: 1, d: 'Implemented the Material 3 design system as the foundation.' },
+    { name: 'Design', wk: '05', w: 1, d: 'End-to-end screens and an interactive prototype.' },
+    { name: 'Handover', wk: '06', w: 1, d: 'Dev handover, build support and go-live.' },
+    { name: 'Learn', wk: '07', w: 1, d: 'Post-live data analysis and usability testing.' }
   ];
 
   RESULTS = [
@@ -967,7 +968,7 @@ class Component extends DCLogic {
       ocrBar: s.ocrOk ? '100%' : '71%',
       ocrToggle: () => this.setState(st => ({ ocrOk: !st.ocrOk })),
       mqSlow: this.mqSlow, mqFast: this.mqFast,
-      phaseCols: s.narrow ? '1fr' : this.PHASES.map(p => `minmax(150px, ${p.w}fr)`).join(' '),
+      phaseCols: s.narrow ? '1fr' : `repeat(${this.PHASES.length}, minmax(0, 1fr))`,
       phases: this.PHASES.map((p, i) => ({ ...p, delay: String(i * 140),
         op: s.phase === -1 || s.phase === i ? 1 : 0.3,
         barH: s.phase === i ? '10px' : '6px',

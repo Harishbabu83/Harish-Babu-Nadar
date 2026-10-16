@@ -67,7 +67,7 @@ a:hover{color:#5e123c}
       </div>
       <dl data-reveal="600" style="flex:0 1 440px; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); margin:0; border-radius:20px; background:#ffffff; border:1px solid rgba(15,16,19,.08); overflow:hidden;">
         <div style="padding:18px 22px;"><dt style="font-family:'Geist Mono',monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:#6c6e75;">Role</dt><dd style="margin:6px 0 0; font-size:15px; font-weight:500;">Product Designer</dd></div>
-        <div style="padding:18px 22px; border-left:1px solid rgba(15,16,19,.07);"><dt style="font-family:'Geist Mono',monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:#6c6e75;">Platform</dt><dd style="margin:6px 0 0; font-size:15px; font-weight:500;">Web</dd></div>
+        <div style="padding:18px 22px; border-left:1px solid rgba(15,16,19,.07);"><dt style="font-family:'Geist Mono',monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:#6c6e75;">Timeline</dt><dd style="margin:6px 0 0; font-size:15px; font-weight:500;">1 year 8 months</dd></div>
         <div style="padding:18px 22px; border-top:1px solid rgba(15,16,19,.07);"><dt style="font-family:'Geist Mono',monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:#6c6e75;">Users</dt><dd style="margin:6px 0 0; font-size:15px; font-weight:500;">Credit, verification &amp; ops</dd></div>
         <div style="padding:18px 22px; border-left:1px solid rgba(15,16,19,.07); border-top:1px solid rgba(15,16,19,.07);"><dt style="font-family:'Geist Mono',monospace; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:#6c6e75;">Scope</dt><dd style="margin:6px 0 0; font-size:15px; font-weight:500;">Four connected flows</dd></div>
       </dl>
@@ -171,6 +171,28 @@ a:hover{color:#5e123c}
   </div>
 </section>
 
+<section id="process" style="max-width:1200px; margin:0 auto; padding:clamp(96px,16vh,160px) clamp(20px,5vw,72px) 0; scroll-margin-top:80px;">
+  <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:20px 48px;">
+    <div>
+      <div data-reveal="0" style="display:flex; align-items:center; gap:10px; font-family:'Geist Mono',monospace; font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:#6c6e75;"><span style="width:6px; height:6px; border-radius:50%; background:#a3266c;"></span>Process</div>
+      <h2 data-reveal="60" style="margin-top:20px; font-size:clamp(34px,4.4vw,64px); line-height:1.02; letter-spacing:-0.045em; font-weight:500; max-width:14ch;">Seven steps, built on <span style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400; letter-spacing:-0.02em; color:#a3266c;">Material 3.</span></h2>
+    </div>
+    <p data-reveal="120" style="max-width:40ch; font-size:15px; line-height:1.6; color:#6c6e75;">From research to post-live testing — every desk designed on Material 3 and handed to engineering with a working prototype.</p>
+  </div>
+  <div style="display:grid; grid-template-columns:{{ procCols }}; gap:28px 6px; margin-top:72px;">
+    <sc-for list="{{ procPhases }}" as="p" hint-placeholder-count="7">
+      <div onMouseEnter="{{ p.onEnter }}" onMouseLeave="{{ p.onLeave }}" style="min-width:0; opacity:{{ p.op }}; transition:opacity .3s ease; cursor:default;">
+        <div style="height:10px; display:flex; align-items:center;"><div data-reveal="{{ p.delay }}" data-rx="" style="width:100%; height:{{ p.barH }}; border-radius:999px; background:linear-gradient(90deg, #a3266c, #f0a3cb); transform-origin:left; transition:height .3s cubic-bezier(.2,.8,.2,1);"></div></div>
+        <div style="margin-top:18px; padding-right:12px;">
+          <div style="font-family:'Geist Mono',monospace; font-size:11px; color:#a3266c;">{{ p.n }}</div>
+          <div style="margin-top:6px; font-size:18px; font-weight:500; letter-spacing:-0.02em;">{{ p.name }}</div>
+          <p style="margin-top:6px; font-size:13px; line-height:1.5; color:#6c6e75; text-wrap:pretty;">{{ p.d }}</p>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
 <section id="cases" style="max-width:1200px; margin:0 auto; padding:clamp(120px,20vh,200px) clamp(20px,5vw,72px) 0; scroll-margin-top:80px;">
   <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:24px 48px;">
     <div>
@@ -187,12 +209,12 @@ a:hover{color:#5e123c}
           <div style="display:flex; align-items:center; gap:12px; font-family:'Geist Mono',monospace; font-size:12px; color:#6c6e75;"><span style="color:#7e1a52;">{{ c.num }}</span><span style="width:24px; height:1px; background:rgba(15,16,19,.2);"></span>{{ c.kicker }}</div>
           <h3 style="margin-top:20px; font-size:clamp(28px,3.2vw,42px); line-height:1.08; letter-spacing:-0.035em; font-weight:500; max-width:19ch;">{{ c.title }}</h3>
           <p style="margin-top:16px; max-width:44ch; font-size:16px; line-height:1.6; color:#55575e;">{{ c.body }}</p>
-          <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:20px; margin-top:32px; padding-top:24px; border-top:1px solid rgba(15,16,19,.08);">
-            <div style="display:flex; align-items:baseline; gap:14px;">
-              <span data-count="{{ c.metric.to }}" data-dec="{{ c.metric.dec }}" data-pre="{{ c.metric.pre }}" data-suf="{{ c.metric.suf }}" style="font-size:56px; line-height:1; letter-spacing:-0.05em; font-weight:500; font-variant-numeric:tabular-nums;">{{ c.metric.v }}</span>
-              <span style="max-width:16ch; font-size:13px; line-height:1.4; color:#6c6e75;">{{ c.metric.label }}</span>
+          <div style="display:flex; flex-wrap:nowrap; align-items:center; justify-content:space-between; gap:16px; margin-top:32px; padding-top:24px; border-top:1px solid rgba(15,16,19,.08);">
+            <div style="display:flex; align-items:center; gap:12px; flex:1 1 auto; min-width:0;">
+              <span data-count="{{ c.metric.to }}" data-dec="{{ c.metric.dec }}" data-pre="{{ c.metric.pre }}" data-suf="{{ c.metric.suf }}" style="flex-shrink:0; font-size:clamp(36px,4.2vw,56px); line-height:1; letter-spacing:-0.05em; font-weight:500; font-variant-numeric:tabular-nums;">{{ c.metric.v }}</span>
+              <span style="min-width:0; max-width:16ch; font-size:13px; line-height:1.4; color:#6c6e75; text-wrap:pretty;">{{ c.metric.label }}</span>
             </div>
-            <a href="{{ c.href }}" onClick="{{ c.go }}" onMouseMove="{{ magMove }}" onMouseLeave="{{ magLeave }}" style="display:inline-flex; align-items:center; gap:12px; height:48px; padding:0 8px 0 22px; border-radius:999px; background:#0f1013; color:#ffffff; text-decoration:none; font-size:15px; font-weight:500; box-shadow:0 10px 24px -12px rgba(15,16,19,.45); transition:transform .35s cubic-bezier(.2,.8,.2,1), background .25s ease, box-shadow .25s ease;" style-hover="background:#a3266c; color:#ffffff; box-shadow:0 14px 30px -12px rgba(163,38,108,.6);" style-active="transform:scale(.97);">Explore feature<span style="width:34px; height:34px; border-radius:50%; background:#ffffff; color:#0f1013; display:grid; place-items:center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></span></a>
+            <a href="{{ c.href }}" onClick="{{ c.go }}" onMouseMove="{{ magMove }}" onMouseLeave="{{ magLeave }}" style="flex-shrink:0; white-space:nowrap; display:inline-flex; align-items:center; gap:12px; height:48px; padding:0 8px 0 22px; border-radius:999px; background:#0f1013; color:#ffffff; text-decoration:none; font-size:15px; font-weight:500; box-shadow:0 10px 24px -12px rgba(15,16,19,.45); transition:transform .35s cubic-bezier(.2,.8,.2,1), background .25s ease, box-shadow .25s ease;" style-hover="background:#a3266c; color:#ffffff; box-shadow:0 14px 30px -12px rgba(163,38,108,.6);" style-active="transform:scale(.97);">Open feature<span style="width:34px; height:34px; border-radius:50%; background:#ffffff; color:#0f1013; display:grid; place-items:center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></span></a>
           </div>
           </div>
         </article>
@@ -433,7 +455,7 @@ class Component extends DCLogic {
   statementRef = React.createRef(); canvasRef = React.createRef(); marqueeRef = React.createRef(); blobRef = React.createRef(); chipDotRef = React.createRef();
   ticketRef = React.createRef(); tkDotRef = React.createRef(); tkTextRef = React.createRef();
   caseTextRef = React.createRef(); winRef = React.createRef(); floatRef = React.createRef(); pathRef = React.createRef(); pulseRef = React.createRef();
-  state = { solid: false, nav: '', active: 0, node: -1, pipeAt: 0, chips: this.initChips(), pdApp: 0, pdAns: [0, 1, 0], ppAmt: 200000, ppMode: 't', ppSent: 0, paSt: ['a', 'a', 'r', 'p'], camSel: 1, camP: 1, narrow: typeof window !== 'undefined' && window.innerWidth < 960, mid: typeof window !== 'undefined' && window.innerWidth < 1100, tiny: typeof window !== 'undefined' && window.innerWidth < 560, lv: ['', '', ''], toast: false };
+  state = { solid: false, nav: '', phase: -1, active: 0, node: -1, pipeAt: 0, chips: this.initChips(), pdApp: 0, pdAns: [0, 1, 0], ppAmt: 200000, ppMode: 't', ppSent: 0, paSt: ['a', 'a', 'r', 'p'], camSel: 1, camP: 1, narrow: typeof window !== 'undefined' && window.innerWidth < 960, mid: typeof window !== 'undefined' && window.innerWidth < 1100, tiny: typeof window !== 'undefined' && window.innerWidth < 560, lv: ['', '', ''], toast: false };
   KEY = 'pf-transition';
   STUDIES = {
     pd: ['Personal%20Discussion%20Case%20Study.dc.html', ['Personal', 'discussion', 'LOS · 01']],
@@ -802,7 +824,7 @@ class Component extends DCLogic {
       const ws = st.querySelectorAll('[data-w]'), n = ws.length;
       ws.forEach((w, i) => { const o = (i + 0.5) / n <= p ? '1' : '0.16'; if (w.style.opacity !== o) { w.style.transition = 'opacity .35s ease'; w.style.opacity = o; } });
     }
-    ['pipeline', 'overview', 'cases', 'results'].forEach(id => { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top < vh * 0.4) nav = id; });
+    ['pipeline', 'overview', 'process', 'cases', 'results'].forEach(id => { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top < vh * 0.4) nav = id; });
     if (nav !== this.state.nav) upd.nav = nav;
     const hero = document.getElementById('top');
     this.heroVisible = hero ? hero.getBoundingClientRect().bottom > 0 : false;
@@ -838,6 +860,7 @@ class Component extends DCLogic {
     this.onVis = () => { if (document.hidden) pending.forEach(a => { try { a.finish(); } catch (e) {} }); };
     document.addEventListener('visibilitychange', this.onVis);
   }
+  PROC = [{name: 'Research', n: '01', d: 'User research and data analysis across the credit and ops desks.'},{name: 'Pain points', n: '02', d: 'Identified the problems and pain points slowing each desk.'},{name: 'Ideate', n: '03', d: 'Brainstormed options and shortlisted the solution.'},{name: 'M3 system', n: '04', d: 'Implemented the Material 3 design system as the foundation.'},{name: 'Design', n: '05', d: 'End-to-end screens and an interactive prototype.'},{name: 'Handover', n: '06', d: 'Dev handover, build support and go-live.'},{name: 'Learn', n: '07', d: 'Post-live data analysis and usability testing.'}];
   renderVals() {
     const s = this.state, INK = '#0f1013', S = this.STUDIES;
     const go = k => e => this.goPage(e, S[k][1]);
@@ -849,7 +872,9 @@ class Component extends DCLogic {
       navBg: s.solid ? 'rgba(255,255,255,.78)' : 'rgba(255,255,255,0)',
       navShadow: s.solid ? '0 0 0 1px rgba(15,16,19,.06), 0 12px 32px -12px rgba(15,16,19,.18)' : '0 0 0 1px rgba(15,16,19,0)',
       navLinksDisplay: s.narrow ? 'none' : 'flex',
-      navItems: [['pipeline', 'Pipeline'], ['overview', 'Overview'], ['cases', 'Features'], ['results', 'Results']].map(([id, label]) => ({
+      procCols: this.state.narrow ? '1fr' : `repeat(${this.PROC.length}, minmax(0, 1fr))`,
+      procPhases: this.PROC.map((p, i) => ({ ...p, delay: String(i * 140), op: this.state.phase === -1 || this.state.phase === i ? 1 : 0.3, barH: this.state.phase === i ? '10px' : '6px', onEnter: () => this.setState({ phase: i }), onLeave: () => this.setState({ phase: -1 }) })),
+      navItems: [['pipeline', 'Pipeline'], ['overview', 'Overview'], ['process', 'Process'], ['cases', 'Features'], ['results', 'Results']].map(([id, label]) => ({
         href: `#${id}`, label, color: s.nav === id ? INK : '#55575e', bg: s.nav === id ? 'rgba(15,16,19,.06)' : 'transparent' })),
       pipeCols: s.narrow ? 'repeat(auto-fit,minmax(min(100%,220px),1fr))' : (s.mid ? 'repeat(3,minmax(0,1fr))' : 'repeat(6,minmax(0,1fr))'),
       pipeGap: s.narrow || s.mid ? '28px 16px' : '16px',

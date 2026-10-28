@@ -16,6 +16,8 @@ a{color:var(--b);text-decoration:none}
 a:hover{color:var(--bh)}
 button,input,select,textarea{font:inherit;color:inherit}
 ::selection{background:var(--b3)}
+:focus-visible{outline:2px solid var(--b);outline-offset:2px}
+tr:focus-visible{outline-offset:-2px}
 [data-motion="reduced"] *{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important;transition-delay:0s!important}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 @keyframes flUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
@@ -42,14 +44,14 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
 
 <header style="position:sticky;top:0;z-index:40;height:56px;display:flex;align-items:center;gap:8px;padding:0 16px 0 12px;background:{{ hdrBg }};box-shadow:{{ hdrSh }};backdrop-filter:saturate(180%) blur(12px);-webkit-backdrop-filter:saturate(180%) blur(12px);transition:background .25s,box-shadow .25s">
   <button onClick="{{ toggleNav }}" aria-label="Toggle navigation" title="Toggle navigation" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#424242;cursor:pointer;transition:background .15s,transform .1s" style-hover="background:rgba(0,0,0,0.05)" style-active="transform:scale(0.92)"><fl-icon name="navigation"></fl-icon></button>
-  <div style="display:flex;align-items:center;gap:10px;padding-right:{{ brandPr }};flex:none">
-    <div style="width:30px;height:30px;border-radius:8px;background:var(--g);color:#fff;box-shadow:0 4px 12px rgba(80,60,200,0.25);display:flex;align-items:center;justify-content:center;flex:none"><fl-icon name="shield" v="filled" px="18"></fl-icon></div>
-    <span style="display:{{ brandD }};font-size:15px;font-weight:600;white-space:nowrap;letter-spacing:-0.01em">Kuhoo <span style="font-weight:400;color:#707070">Collections</span></span>
+  <div style="display:flex;align-items:center;gap:10px;padding-right:12px">
+    <img src="./kuhoo-mark.svg" alt="Kuhoo" width="18" height="26" style="display:block;flex:none;width:18px;height:26px">
+    <span style="display:{{ wordD }};font-size:15px;font-weight:600;white-space:nowrap;letter-spacing:-0.01em">Kuhoo <span style="font-weight:400;color:#707070">Collections</span></span>
   </div>
-  <div style="position:relative;flex:1;min-width:0;max-width:{{ gW }};margin:0 auto;transition:max-width .35s cubic-bezier(.2,.8,.2,1)">
+  <div style="position:relative;flex:1;max-width:{{ gW }};margin:0 auto;transition:max-width .35s cubic-bezier(.2,.8,.2,1)">
     <div style="display:flex;align-items:center;gap:8px;height:36px;padding:0 10px 0 12px;background:{{ gBg }};border-radius:8px;box-shadow:{{ gSh }};color:#707070;transition:background .2s,box-shadow .2s">
       <fl-icon name="search" px="16"></fl-icon>
-      <input ref="{{ gRef }}" value="{{ gq }}" onChange="{{ onGq }}" onFocus="{{ onGqFocus }}" onBlur="{{ onGqBlur }}" placeholder="Search borrowers" aria-label="Search borrowers" style="flex:1;min-width:0;height:34px;border:0;outline:none;background:transparent;font-size:14px;color:#242424">
+      <input ref="{{ gRef }}" value="{{ gq }}" onChange="{{ onGq }}" onFocus="{{ onGqFocus }}" onBlur="{{ onGqBlur }}" onKeyDown="{{ onGqKey }}" placeholder="Search borrowers" aria-label="Search borrowers" style="flex:1;min-width:0;height:34px;border:0;outline:none;background:transparent;font-size:14px;color:#242424">
       <sc-if value="{{ gHint }}" hint-placeholder-val="{{ true }}"><span style="font-size:11px;line-height:18px;color:#707070;border:1px solid #E0E0E0;border-radius:4px;padding:0 6px;background:#fff">/</span></sc-if>
     </div>
     <sc-if value="{{ showG }}" hint-placeholder-val="{{ false }}">
@@ -83,7 +85,7 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
               <div style="flex:1;min-width:0">
                 <div style="display:flex;align-items:center;gap:6px"><span style="font-size:13px;line-height:18px;font-weight:600;flex:1">{{ n.title }}</span><sc-if value="{{ n.unread }}" hint-placeholder-val="{{ true }}"><span style="width:7px;height:7px;border-radius:50%;background:var(--b);flex:none"></span></sc-if></div>
                 <div style="font-size:12px;line-height:16px;color:#616161">{{ n.body }}</div>
-                <div style="display:flex;gap:12px;align-items:center;margin-top:6px"><span style="font-size:12px;color:#8A8A8A">{{ n.time }}</span><button onClick="{{ n.act }}" style="border:0;background:transparent;padding:0;color:var(--b);font-size:12px;font-weight:600;cursor:pointer" style-hover="color:var(--bh)">{{ n.actLabel }}</button></div>
+                <div style="display:flex;gap:12px;align-items:center;margin-top:6px"><span style="font-size:12px;color:#757575">{{ n.time }}</span><button onClick="{{ n.act }}" style="border:0;background:transparent;padding:0;color:var(--b);font-size:12px;font-weight:600;cursor:pointer" style-hover="color:var(--bh)">{{ n.actLabel }}</button></div>
               </div>
             </div>
           </sc-for>
@@ -91,13 +93,14 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
       </sc-if>
     </div>
     <div style="position:relative">
-      <button onClick="{{ togProfile }}" aria-label="Account" title="Vineet Morgan" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:0;border-radius:50%;background:transparent;cursor:pointer;transition:transform .1s" style-active="transform:scale(0.92)">
-        <span style="width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;background:var(--g);color:#fff;transition:box-shadow .15s" style-hover="box-shadow:0 0 0 3px var(--b3)">VM</span>
+      <button onClick="{{ togProfile }}" aria-label="Account menu" aria-haspopup="menu" title="Vineet Morgan" style="display:flex;align-items:center;gap:4px;height:36px;padding:0 6px 0 3px;border:0;border-radius:18px;background:transparent;color:#616161;cursor:pointer;transition:background .15s,transform .1s" style-hover="background:rgba(0,0,0,0.05)" style-active="transform:scale(0.96)">
+        <span style="position:relative;width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;letter-spacing:0.02em;background:var(--b2);color:var(--bp);box-shadow:inset 0 0 0 1px var(--b3)">VM<span style="position:absolute;right:-1px;bottom:-1px;width:9px;height:9px;border-radius:50%;background:#13A10E;border:2px solid #FAFAFA"></span></span>
+        <fl-icon name="chevron_down" px="12"></fl-icon>
       </button>
       <sc-if value="{{ pop.profile }}" hint-placeholder-val="{{ false }}">
         <div style="position:absolute;top:44px;right:0;width:260px;background:#fff;border-radius:12px;border:1px solid #EBEBEB;box-shadow:0 12px 32px rgba(0,0,0,0.10);z-index:41;padding:6px;animation:flIn .16s ease-out both">
           <div style="display:flex;gap:12px;align-items:center;padding:10px">
-            <span style="width:40px;height:40px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;background:var(--g);color:#fff">VM</span>
+            <span style="width:40px;height:40px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;background:var(--b2);color:var(--bp);box-shadow:inset 0 0 0 1px var(--b3);flex:none">VM</span>
             <div style="min-width:0"><div style="font-weight:600">Vineet Morgan</div><div style="font-size:12px;line-height:16px;color:#707070">Risk Operations Lead</div></div>
           </div>
           <div style="height:1px;background:#F0F0F0;margin:4px 6px"></div>
@@ -111,11 +114,13 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
 </header>
 
 <sc-if value="{{ anyPop }}" hint-placeholder-val="{{ false }}"><div onClick="{{ closePop }}" style="position:fixed;inset:0;z-index:30"></div></sc-if>
+<sc-if value="{{ navScrim }}" hint-placeholder-val="{{ false }}"><div onClick="{{ toggleNav }}" style="position:fixed;top:56px;left:0;right:0;bottom:0;background:rgba(0,0,0,0.24);z-index:34;animation:flFade .2s ease-out both"></div></sc-if>
 
 <div style="flex:1;display:flex;align-items:stretch">
-<nav aria-label="Primary" style="position:sticky;top:56px;align-self:flex-start;height:calc(100vh - 56px);width:{{ navW }};flex:none;padding:8px 10px;overflow:hidden;transition:width .3s cubic-bezier(.2,.8,.2,1)">
+<div style="flex:none;width:{{ navSlot }};position:relative;z-index:35;transition:width .3s cubic-bezier(.2,.8,.2,1)">
+<nav aria-label="Primary" style="position:sticky;top:56px;height:calc(100vh - 56px);width:{{ navW }};padding:8px 10px;overflow:hidden;background:{{ navBg }};box-shadow:{{ navSh }};transition:width .3s cubic-bezier(.2,.8,.2,1),background .2s,box-shadow .2s">
   <div style="position:relative;display:flex;flex-direction:column;gap:4px">
-    <span aria-hidden="true" style="position:absolute;left:0;right:0;top:0;height:40px;border-radius:8px;background:#fff;border:1px solid #EBEBEB;box-shadow:0 1px 2px rgba(0,0,0,0.04);transform:translateY({{ navY }});transition:transform .4s cubic-bezier(.2,.9,.25,1)"><span style="position:absolute;left:-1px;top:11px;width:3px;height:16px;border-radius:2px;background:linear-gradient(180deg,var(--b),var(--ba))"></span></span>
+    <span aria-hidden="true" style="position:absolute;left:0;right:0;top:0;height:40px;border-radius:10px;background:linear-gradient(120deg,var(--b2) 0%,var(--b4) 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.7);transform:translateY({{ navY }});transition:transform .4s cubic-bezier(.2,.9,.25,1)"></span>
     <sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
       <button onClick="{{ n.go }}" title="{{ n.label }}" aria-current="{{ n.cur }}" style="position:relative;display:flex;align-items:center;gap:12px;width:100%;height:40px;padding:0 12px;border:0;border-radius:8px;background:transparent;color:{{ n.fg }};font-size:14px;font-weight:{{ n.fw }};cursor:pointer;text-align:left;white-space:nowrap;transition:color .2s,background .15s" style-hover="background:rgba(0,0,0,0.04)">
         <span style="display:flex;color:{{ n.ic }};transition:color .2s"><fl-icon name="{{ n.icon }}" v="{{ n.v }}"></fl-icon></span>
@@ -125,6 +130,7 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
     </sc-for>
   </div>
 </nav>
+</div>
 
 <main style="flex:1;min-width:0;padding:12px clamp(16px,3vw,40px) 72px">
 <div style="max-width:1360px;margin:0 auto">
@@ -140,17 +146,17 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
   </div>
 
   <section style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:8px;display:flex;flex-wrap:wrap;gap:8px">
-        <div style="flex:1 1 100%;min-width:0;display:grid;grid-template-columns:{{ kpiCols }};gap:8px">
+        <div style="flex:1 1 100%;min-width:0;display:flex;flex-wrap:wrap;gap:8px">
       <sc-for list="{{ ovKpis }}" as="k" hint-placeholder-count="4">
-        <div title="{{ k.hint }}" style="grid-column:{{ k.span }};min-width:0;padding:18px 20px;border-radius:8px;background:{{ k.tint }};display:flex;flex-direction:column;gap:2px;justify-content:flex-start;transition:box-shadow .2s,transform .2s;animation:flUp .45s cubic-bezier(.2,.8,.2,1) both;animation-delay:{{ k.delay }}" style-hover="box-shadow:0 6px 18px rgba(0,0,0,0.06);transform:translateY(-1px)">
-          <span style="width:28px;height:4px;border-radius:2px;background:{{ k.ac }};margin-bottom:8px"></span>
+        <div title="{{ k.hint }}" style="flex:1 1 150px;min-width:0;padding:18px 20px;border-radius:8px;background:{{ k.tint }};display:flex;flex-direction:column;gap:2px;justify-content:flex-start;transition:box-shadow .2s,transform .2s;animation:flUp .45s cubic-bezier(.2,.8,.2,1) both;animation-delay:{{ k.delay }}" style-hover="box-shadow:0 6px 18px rgba(0,0,0,0.06);transform:translateY(-1px)">
+          <span style="width:32px;height:32px;border-radius:8px;background:{{ k.ac }};color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:10px;box-shadow:0 4px 10px rgba(0,0,0,0.08)"><fl-icon name="{{ k.icon }}" px="18"></fl-icon></span>
           <span style="font-size:13px;line-height:18px;min-height:36px;color:#616161;text-wrap:balance">{{ k.label }}</span>
           <span style="font-size:28px;line-height:36px;font-weight:600;letter-spacing:-0.02em;font-variant-numeric:tabular-nums">{{ k.value }}</span>
           <span style="font-size:12px;line-height:16px;font-weight:600;color:{{ k.dc }}">{{ k.delta }}</span>
         </div>
       </sc-for>
-      <div title="Collection efficiency adjusted for operating cost · lower is better" style="grid-column:{{ kpiLastSpan }};min-width:0;padding:18px 20px;border-radius:8px;background:linear-gradient(160deg,var(--b2) 0%,#FFFFFF 80%);display:flex;flex-direction:column;gap:2px;justify-content:flex-start;transition:box-shadow .2s,transform .2s;animation:flUp .45s cubic-bezier(.2,.8,.2,1) both;animation-delay:390ms" style-hover="box-shadow:0 6px 18px rgba(0,0,0,0.06);transform:translateY(-1px)">
-        <span style="width:28px;height:4px;border-radius:2px;background:var(--g);margin-bottom:8px"></span>
+      <div title="Collection efficiency adjusted for operating cost · lower is better" style="flex:1 1 150px;min-width:0;padding:18px 20px;border-radius:8px;background:linear-gradient(160deg,var(--b2) 0%,#FFFFFF 80%);display:flex;flex-direction:column;gap:2px;justify-content:flex-start;transition:box-shadow .2s,transform .2s;animation:flUp .45s cubic-bezier(.2,.8,.2,1) both;animation-delay:390ms" style-hover="box-shadow:0 6px 18px rgba(0,0,0,0.06);transform:translateY(-1px)">
+        <span style="width:32px;height:32px;border-radius:8px;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:10px;box-shadow:0 4px 10px rgba(0,0,0,0.08)"><fl-icon name="money" px="18"></fl-icon></span>
         <span style="font-size:13px;line-height:18px;min-height:36px;color:#616161;text-wrap:balance">Cost to recover ₹100</span>
         <span style="font-size:28px;line-height:36px;font-weight:600;letter-spacing:-0.02em;font-variant-numeric:tabular-nums">{{ ns }}</span>
         <span style="font-size:12px;line-height:16px;font-weight:600;color:#0E700E">{{ ov.nsd }}</span>
@@ -166,22 +172,20 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
     <div style="overflow-x:auto;padding:0 8px 8px">
       <table style="width:100%;min-width:560px;border-collapse:separate;border-spacing:0">
         <thead><tr>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Borrower</th>
-          <th style="display:{{ colSegO }};text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Segment</th>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Risk</th>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">DPD</th>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Next best action</th>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Due</th>
+          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Borrower</th>
+          <th style="display:{{ colSegO }};text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Segment</th>
+          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Risk</th>
+          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Next best action</th>
+          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Due</th>
           <th style="padding:10px 12px"></th>
         </tr></thead>
         <tbody>
           <sc-for list="{{ topRows }}" as="r" hint-placeholder-count="5">
-            <tr onClick="{{ r.open }}" style="cursor:pointer;animation:{{ r.flash }}" style-hover="background:#FAFAFA">
-              <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3"><div style="display:flex;align-items:center;gap:12px"><span style="width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex:none;background:{{ r.avBg }};color:{{ r.avFg }}">{{ r.ini }}</span><div><div style="font-weight:600;white-space:nowrap">{{ r.name }}</div><div style="font-size:12px;line-height:16px;color:#8A8A8A">{{ r.id }}</div></div></div></td>
+            <tr tabIndex="0" onClick="{{ r.open }}" style="cursor:pointer;animation:{{ r.flash }}" style-hover="background:#FAFAFA">
+              <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3"><div style="display:flex;align-items:center;gap:12px"><span style="width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex:none;background:{{ r.avBg }};color:{{ r.avFg }}">{{ r.ini }}</span><div><div style="font-weight:600;white-space:nowrap">{{ r.name }}</div><div style="font-size:12px;line-height:16px;color:#757575">{{ r.id }}</div></div></div></td>
               <td style="display:{{ colSegO }};padding:var(--rp) 12px;border-top:1px solid #F3F3F3"><span style="display:inline-flex;align-items:center;gap:7px;font-size:13px;color:#424242;white-space:nowrap"><span style="width:8px;height:8px;border-radius:50%;background:{{ r.segDot }}"></span>{{ r.segName }}</span></td>
-              <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3"><span style="display:inline-flex;align-items:center;gap:8px;font-weight:600;font-variant-numeric:tabular-nums;color:{{ r.riskC }}"><span style="width:8px;height:8px;border-radius:50%;background:{{ r.riskC }}"></span>{{ r.risk }}</span></td>
-              <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3;font-variant-numeric:tabular-nums">{{ r.dpd }}</td>
-              <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3"><div style="display:flex;align-items:center;gap:10px"><span style="width:28px;height:28px;border-radius:8px;background:#F5F5F5;color:#424242;display:flex;align-items:center;justify-content:center;flex:none"><fl-icon name="{{ r.chIcon }}" px="16"></fl-icon></span><div><div style="min-width:150px;text-wrap:pretty">{{ r.nba }}</div><div style="font-size:12px;line-height:16px;color:#8A8A8A">{{ r.chLabel }}</div></div></div></td>
+              <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3"><span style="display:inline-flex;align-items:center;gap:8px;font-weight:600;font-variant-numeric:tabular-nums;color:{{ r.riskT }}"><span style="width:8px;height:8px;border-radius:50%;background:{{ r.riskC }}"></span>{{ r.risk }}</span></td>
+              <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3"><div style="display:flex;align-items:center;gap:10px"><span style="width:28px;height:28px;border-radius:8px;background:#F5F5F5;color:#424242;display:flex;align-items:center;justify-content:center;flex:none"><fl-icon name="{{ r.chIcon }}" px="16"></fl-icon></span><div><div style="min-width:150px;text-wrap:pretty">{{ r.nba }}</div><div style="font-size:12px;line-height:16px;color:#757575">{{ r.chLabel }}</div></div></div></td>
               <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3;white-space:nowrap;color:{{ r.dueC }};font-weight:{{ r.dueW }}">{{ r.due }}</td>
               <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3;text-align:right;width:120px">
                 <sc-if value="{{ r.bIdle }}" hint-placeholder-val="{{ true }}"><button onClick="{{ r.run }}" style="display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border:1px solid #E0E0E0;border-radius:6px;background:#fff;color:#242424;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s" style-hover="border-color:var(--b);color:var(--b);background:var(--b2)" style-active="transform:scale(0.95)"><fl-icon name="play" px="14"></fl-icon>Start</button></sc-if>
@@ -209,7 +213,7 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
               <div style="height:{{ m.hH }};background:linear-gradient(180deg,var(--b4),var(--b3));border-radius:6px 6px 2px 2px;transition:height .8s cubic-bezier(.2,.8,.2,1);transition-delay:{{ m.td }}"></div>
               <div style="height:{{ m.dH }};background:linear-gradient(180deg,var(--ba),var(--b));border-radius:2px 2px 6px 6px;transition:height .8s cubic-bezier(.2,.8,.2,1);transition-delay:{{ m.td }}"></div>
             </div>
-            <span style="font-size:12px;line-height:16px;color:#8A8A8A">{{ m.label }}</span>
+            <span style="font-size:12px;line-height:16px;color:#757575">{{ m.label }}</span>
           </div>
         </sc-for>
       </div>
@@ -234,29 +238,29 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
 <div data-screen-label="Work queue" style="display:flex;flex-direction:column;gap:24px;animation:flUp .45s cubic-bezier(.2,.8,.2,1) both">
   <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px">
     <div><h1 style="margin:0;font-size:28px;line-height:36px;font-weight:600;letter-spacing:-0.02em">Work queue</h1><div style="color:#707070;margin-top:2px">Next best action for every open account</div></div>
-    <button onClick="{{ newSchedule }}" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:0;border-radius:8px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;transition:filter .18s ease,box-shadow .18s ease,transform .18s cubic-bezier(.2,.8,.2,1)" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30);transform:translateY(-1px)" style-active="transform:translateY(0) scale(0.97);box-shadow:0 1px 4px rgba(70,60,190,0.22)"><fl-icon name="calendar_add" px="18"></fl-icon>Schedule</button>
+    <button onClick="{{ newSchedule }}" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:0;border-radius:8px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;transition:filter .15s,box-shadow .15s,transform .1s" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30)" style-active="transform:scale(0.97)"><fl-icon name="calendar_add" px="18"></fl-icon>Schedule</button>
   </div>
   <section style="background:#fff;border:1px solid #EBEBEB;border-radius:12px">
     <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:14px 16px">
-      <div style="display:flex;align-items:center;gap:8px;width:min(260px,100%);height:34px;padding:0 10px;border-radius:8px;background:#F5F5F5;color:#707070">
+      <div style="display:flex;align-items:center;gap:8px;width:min(260px,100%);height:34px;padding:0 10px;border-radius:8px;background:{{ qBg }};box-shadow:{{ qSh }};color:#707070;transition:background .15s,box-shadow .15s">
         <fl-icon name="search" px="16"></fl-icon>
-        <input value="{{ q }}" onChange="{{ onQ }}" placeholder="Filter by name or ID" aria-label="Filter accounts" style="flex:1;min-width:0;height:32px;border:0;outline:none;background:transparent;font-size:14px;color:#242424">
+        <input value="{{ q }}" onChange="{{ onQ }}" onFocus="{{ onQF }}" onBlur="{{ onQB }}" placeholder="Filter by name or ID" aria-label="Filter accounts" style="flex:1;min-width:0;height:32px;border:0;outline:none;background:transparent;font-size:14px;color:#242424">
       </div>
       <div style="position:relative">
         <button onClick="{{ togSeg }}" style="display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border:1px solid {{ segBtnBd }};border-radius:8px;background:{{ segBtnBg }};color:{{ segBtnFg }};font-size:14px;cursor:pointer;white-space:nowrap;transition:all .15s" style-hover="border-color:#C7C7C7"><fl-icon name="filter" px="16"></fl-icon>{{ segBtn }}<fl-icon name="chevron_down" px="14"></fl-icon></button>
         <sc-if value="{{ pop.seg }}" hint-placeholder-val="{{ false }}">
-          <div style="position:absolute;top:40px;left:0;width:280px;background:#fff;border-radius:12px;border:1px solid #EBEBEB;box-shadow:0 12px 32px rgba(0,0,0,0.10);z-index:31;padding:8px;animation:flIn .16s ease-out both">
+          <div style="position:absolute;top:40px;left:0;width:min(280px,calc(100vw - 32px));background:#fff;border-radius:12px;border:1px solid #EBEBEB;box-shadow:0 12px 32px rgba(0,0,0,0.10);z-index:31;padding:8px;animation:flIn .16s ease-out both">
             <sc-for list="{{ segOpts }}" as="o" hint-placeholder-count="7">
-              <div role="checkbox" aria-checked="{{ o.on }}" onClick="{{ o.toggle }}" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:6px;cursor:pointer;transition:background .12s" style-hover="background:#F5F5F5">
+              <div role="checkbox" tabIndex="0" aria-checked="{{ o.on }}" onClick="{{ o.toggle }}" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:6px;cursor:pointer;transition:background .12s" style-hover="background:#F5F5F5">
                 <span style="width:16px;height:16px;border-radius:4px;border:1px solid {{ o.cbBd }};background:{{ o.cbBg }};display:inline-flex;align-items:center;justify-content:center;color:#fff;flex:none;transition:background .15s,border-color .15s"><span style="display:flex;transform:scale({{ o.cbS }});transition:transform .2s cubic-bezier(.3,1.6,.5,1)"><fl-icon name="checkmark" px="12"></fl-icon></span></span>
                 <span style="width:8px;height:8px;border-radius:50%;background:{{ o.dot }};flex:none"></span>
                 <span style="flex:1">{{ o.name }}</span>
-                <span style="font-size:12px;color:#8A8A8A;font-variant-numeric:tabular-nums">{{ o.n }}</span>
+                <span style="font-size:12px;color:#757575;font-variant-numeric:tabular-nums">{{ o.n }}</span>
               </div>
             </sc-for>
             <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:6px;padding:10px 4px 2px;border-top:1px solid #F3F3F3">
               <button onClick="{{ segReset }}" style="height:30px;padding:0 12px;border:0;border-radius:6px;background:transparent;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s" style-hover="background:#F5F5F5">Reset</button>
-              <button onClick="{{ segApply }}" style="height:30px;padding:0 14px;border:0;border-radius:6px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:13px;font-weight:600;cursor:pointer;transition:filter .18s ease,box-shadow .18s ease,transform .18s cubic-bezier(.2,.8,.2,1)" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30);transform:translateY(-1px)" style-active="transform:translateY(0) scale(0.97);box-shadow:0 1px 4px rgba(70,60,190,0.22)">Apply</button>
+              <button onClick="{{ segApply }}" style="height:30px;padding:0 14px;border:0;border-radius:6px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:13px;font-weight:600;cursor:pointer;transition:filter .15s,box-shadow .15s,transform .1s" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30)" style-active="transform:scale(0.96)">Apply</button>
             </div>
           </div>
         </sc-if>
@@ -270,35 +274,35 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
         <div style="display:flex;align-items:center;gap:8px;animation:flIn .2s ease-out both">
           <span style="font-size:13px;color:#424242;font-variant-numeric:tabular-nums">{{ selCount }} selected</span>
           <button onClick="{{ clearSel }}" style="height:34px;padding:0 10px;border:0;border-radius:8px;background:transparent;font-size:14px;cursor:pointer;transition:background .15s" style-hover="background:#F5F5F5">Clear</button>
-          <button onClick="{{ bulkRun }}" style="display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border:0;border-radius:8px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:14px;font-weight:600;cursor:pointer;transition:filter .18s ease,box-shadow .18s ease,transform .18s cubic-bezier(.2,.8,.2,1)" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30);transform:translateY(-1px)" style-active="transform:translateY(0) scale(0.97);box-shadow:0 1px 4px rgba(70,60,190,0.22)"><fl-icon name="play" px="16"></fl-icon>Start all</button>
+          <button onClick="{{ bulkRun }}" style="display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border:0;border-radius:8px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:14px;font-weight:600;cursor:pointer;transition:filter .15s,box-shadow .15s,transform .1s" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30)" style-active="transform:scale(0.97)"><fl-icon name="play" px="16"></fl-icon>Start all</button>
         </div>
       </sc-if>
-      <sc-if value="{{ noSel }}" hint-placeholder-val="{{ true }}"><span style="font-size:13px;color:#8A8A8A;font-variant-numeric:tabular-nums">{{ qCount }} accounts</span></sc-if>
+      <sc-if value="{{ noSel }}" hint-placeholder-val="{{ true }}"><span style="font-size:13px;color:#757575;font-variant-numeric:tabular-nums">{{ qCount }} accounts</span></sc-if>
     </div>
     <sc-if value="{{ qHas }}" hint-placeholder-val="{{ true }}">
     <div style="overflow-x:auto;padding:0 8px 8px">
       <table style="width:100%;min-width:720px;border-collapse:separate;border-spacing:0">
         <thead><tr>
-          <th style="width:40px;padding:10px 8px 10px 12px"><span role="checkbox" aria-checked="{{ allSel }}" aria-label="Select all" onClick="{{ toggleAll }}" style="width:16px;height:16px;border-radius:4px;border:1px solid {{ allCbBd }};background:{{ allCbBg }};display:inline-flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;vertical-align:middle;transition:background .15s,border-color .15s"><span style="display:flex;transform:scale({{ allCbS }});transition:transform .2s cubic-bezier(.3,1.6,.5,1)"><fl-icon name="checkmark" px="12"></fl-icon></span></span></th>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A"><button onClick="{{ sortRank }}" style="border:0;background:transparent;padding:0;font-weight:600;cursor:pointer;color:inherit;display:inline-flex;gap:4px" style-hover="color:#242424">Borrower {{ si.rank }}</button></th>
-          <th style="display:{{ colSegQ }};text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Segment</th>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A"><button onClick="{{ sortRisk }}" style="border:0;background:transparent;padding:0;font-weight:600;cursor:pointer;color:inherit" style-hover="color:#242424">Risk {{ si.risk }}</button></th>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A"><button onClick="{{ sortDpd }}" style="border:0;background:transparent;padding:0;font-weight:600;cursor:pointer;color:inherit" style-hover="color:#242424">DPD {{ si.dpd }}</button></th>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Next best action</th>
-          <th style="display:{{ colOwner }};text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Owner</th>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Due</th>
-          <th style="display:{{ colStatus }};text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Status</th>
+          <th onClick="{{ toggleAll }}" style="width:40px;padding:10px 8px 10px 12px;cursor:pointer"><span role="checkbox" tabIndex="0" aria-checked="{{ allSel }}" aria-label="Select all" style="width:16px;height:16px;border-radius:4px;border:1px solid {{ allCbBd }};background:{{ allCbBg }};display:inline-flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;vertical-align:middle;transition:background .15s,border-color .15s"><span style="display:flex;transform:scale({{ allCbS }});transition:transform .2s cubic-bezier(.3,1.6,.5,1)"><fl-icon name="checkmark" px="12"></fl-icon></span></span></th>
+          <th aria-sort="{{ si.rankA }}" style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575"><button onClick="{{ sortRank }}" style="border:0;background:transparent;padding:0;font-weight:600;cursor:pointer;color:inherit;display:inline-flex;align-items:center;gap:4px" style-hover="color:#242424">Borrower<span style="display:flex;opacity:{{ si.rankOp }}"><fl-icon name="{{ si.rank }}" px="12"></fl-icon></span></button></th>
+          <th style="display:{{ colSegQ }};text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Segment</th>
+          <th aria-sort="{{ si.riskA }}" style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575"><button onClick="{{ sortRisk }}" style="border:0;background:transparent;padding:0;font-weight:600;cursor:pointer;color:inherit;display:inline-flex;align-items:center;gap:4px" style-hover="color:#242424">Risk<span style="display:flex;opacity:{{ si.riskOp }}"><fl-icon name="{{ si.risk }}" px="12"></fl-icon></span></button></th>
+          <th aria-sort="{{ si.dpdA }}" style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575"><button onClick="{{ sortDpd }}" style="border:0;background:transparent;padding:0;font-weight:600;cursor:pointer;color:inherit;display:inline-flex;align-items:center;gap:4px" style-hover="color:#242424">DPD<span style="display:flex;opacity:{{ si.dpdOp }}"><fl-icon name="{{ si.dpd }}" px="12"></fl-icon></span></button></th>
+          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Next best action</th>
+          <th style="display:{{ colOwner }};text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Owner</th>
+          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Due</th>
+          <th style="display:{{ colStatus }};text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Status</th>
           <th style="padding:10px 12px"></th>
         </tr></thead>
         <tbody>
           <sc-for list="{{ qRows }}" as="r" hint-placeholder-count="8">
-            <tr onClick="{{ r.open }}" style="cursor:pointer;background:{{ r.rowBg }};animation:{{ r.flash }};transition:background .15s" style-hover="background:#FAFAFA">
-              <td style="padding:var(--rp) 8px var(--rp) 12px;border-top:1px solid #F3F3F3"><span role="checkbox" aria-checked="{{ r.sel }}" onClick="{{ r.toggle }}" style="width:16px;height:16px;border-radius:4px;border:1px solid {{ r.cbBd }};background:{{ r.cbBg }};display:inline-flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;vertical-align:middle;transition:background .15s,border-color .15s"><span style="display:flex;transform:scale({{ r.cbS }});transition:transform .2s cubic-bezier(.3,1.6,.5,1)"><fl-icon name="checkmark" px="12"></fl-icon></span></span></td>
-              <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3"><div style="display:flex;align-items:center;gap:12px"><span style="width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex:none;background:{{ r.avBg }};color:{{ r.avFg }}">{{ r.ini }}</span><div><div style="font-weight:600;white-space:nowrap">{{ r.name }}</div><div style="font-size:12px;line-height:16px;color:#8A8A8A">{{ r.id }}</div></div></div></td>
+            <tr tabIndex="0" onClick="{{ r.open }}" style="cursor:pointer;background:{{ r.rowBg }};animation:{{ r.flash }};transition:background .15s" style-hover="background:#FAFAFA">
+              <td onClick="{{ r.toggle }}" style="padding:var(--rp) 8px var(--rp) 12px;border-top:1px solid #F3F3F3;cursor:pointer"><span role="checkbox" tabIndex="0" aria-checked="{{ r.sel }}" aria-label="Select {{ r.name }}" style="width:16px;height:16px;border-radius:4px;border:1px solid {{ r.cbBd }};background:{{ r.cbBg }};display:inline-flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;vertical-align:middle;transition:background .15s,border-color .15s"><span style="display:flex;transform:scale({{ r.cbS }});transition:transform .2s cubic-bezier(.3,1.6,.5,1)"><fl-icon name="checkmark" px="12"></fl-icon></span></span></td>
+              <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3"><div style="display:flex;align-items:center;gap:12px"><span style="width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex:none;background:{{ r.avBg }};color:{{ r.avFg }}">{{ r.ini }}</span><div><div style="font-weight:600;white-space:nowrap">{{ r.name }}</div><div style="font-size:12px;line-height:16px;color:#757575">{{ r.id }}</div></div></div></td>
               <td style="display:{{ colSegQ }};padding:var(--rp) 12px;border-top:1px solid #F3F3F3"><span style="display:inline-flex;align-items:center;gap:7px;font-size:13px;color:#424242;white-space:nowrap"><span style="width:8px;height:8px;border-radius:50%;background:{{ r.segDot }}"></span>{{ r.segName }}</span></td>
-              <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3"><span style="display:inline-flex;align-items:center;gap:8px;font-weight:600;font-variant-numeric:tabular-nums;color:{{ r.riskC }}"><span style="width:8px;height:8px;border-radius:50%;background:{{ r.riskC }}"></span>{{ r.risk }}</span></td>
+              <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3"><span style="display:inline-flex;align-items:center;gap:8px;font-weight:600;font-variant-numeric:tabular-nums;color:{{ r.riskT }}"><span style="width:8px;height:8px;border-radius:50%;background:{{ r.riskC }}"></span>{{ r.risk }}</span></td>
               <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3;font-variant-numeric:tabular-nums">{{ r.dpd }}</td>
-              <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3"><div style="display:flex;align-items:center;gap:10px"><span style="width:28px;height:28px;border-radius:8px;background:#F5F5F5;color:#424242;display:flex;align-items:center;justify-content:center;flex:none"><fl-icon name="{{ r.chIcon }}" px="16"></fl-icon></span><div><div style="min-width:120px;text-wrap:pretty">{{ r.nba }}</div><div style="font-size:12px;line-height:16px;color:#8A8A8A">{{ r.chLabel }}</div></div></div></td>
+              <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3"><div style="display:flex;align-items:center;gap:10px"><span style="width:28px;height:28px;border-radius:8px;background:#F5F5F5;color:#424242;display:flex;align-items:center;justify-content:center;flex:none"><fl-icon name="{{ r.chIcon }}" px="16"></fl-icon></span><div><div style="min-width:120px;text-wrap:pretty">{{ r.nba }}</div><div style="font-size:12px;line-height:16px;color:#757575">{{ r.chLabel }}</div></div></div></td>
               <td style="display:{{ colOwner }};padding:var(--rp) 12px;border-top:1px solid #F3F3F3;white-space:nowrap;color:#424242">{{ r.agent }}</td>
               <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3;white-space:nowrap;color:{{ r.dueC }};font-weight:{{ r.dueW }}">{{ r.due }}</td>
               <td style="display:{{ colStatus }};padding:var(--rp) 12px;border-top:1px solid #F3F3F3"><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:12px;font-size:12px;font-weight:600;white-space:nowrap;color:{{ r.stFg }};background:{{ r.stBg }}"><span style="width:6px;height:6px;border-radius:50%;background:currentColor;animation:{{ r.pulse }}"></span>{{ r.status }}</span></td>
@@ -315,7 +319,7 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
     </sc-if>
     <sc-if value="{{ qEmpty }}" hint-placeholder-val="{{ false }}">
       <div style="padding:64px 24px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;animation:flUp .35s ease-out both">
-        <span style="width:56px;height:56px;border-radius:16px;background:#F5F5F5;color:#8A8A8A;display:flex;align-items:center;justify-content:center"><fl-icon name="search" px="24"></fl-icon></span>
+        <span style="width:56px;height:56px;border-radius:16px;background:#F5F5F5;color:#757575;display:flex;align-items:center;justify-content:center"><fl-icon name="search" px="24"></fl-icon></span>
         <div style="font-size:16px;line-height:22px;font-weight:600;margin-top:8px">No accounts match</div>
         <div style="color:#707070">Try another segment or clear the search.</div>
         <button onClick="{{ clearFilters }}" style="margin-top:8px;height:34px;padding:0 14px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s,transform .1s" style-hover="background:#F5F5F5" style-active="transform:scale(0.97)">Clear filters</button>
@@ -329,28 +333,28 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
 <div data-screen-label="Segments" style="display:flex;flex-direction:column;gap:24px;animation:flUp .45s cubic-bezier(.2,.8,.2,1) both">
   <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px">
     <div><h1 style="margin:0;font-size:28px;line-height:36px;font-weight:600;letter-spacing:-0.02em">Segments</h1><div style="color:#707070;margin-top:2px">{{ segSummary }}</div></div>
-    <button onClick="{{ newRule }}" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:0;border-radius:8px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;transition:filter .18s ease,box-shadow .18s ease,transform .18s cubic-bezier(.2,.8,.2,1)" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30);transform:translateY(-1px)" style-active="transform:translateY(0) scale(0.97);box-shadow:0 1px 4px rgba(70,60,190,0.22)"><fl-icon name="add" px="18"></fl-icon>New segment</button>
+    <button onClick="{{ newRule }}" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:0;border-radius:8px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;transition:filter .15s,box-shadow .15s,transform .1s" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30)" style-active="transform:scale(0.97)"><fl-icon name="add" px="18"></fl-icon>New segment</button>
   </div>
   <section style="background:#fff;border:1px solid #EBEBEB;border-radius:12px">
     <div style="display:flex;align-items:center;gap:8px;padding:14px 20px 6px;color:#707070;font-size:13px"><fl-icon name="info" px="16"></fl-icon>Rules run every 15 minutes, top to bottom. An account joins the first segment it matches.</div>
     <div style="overflow-x:auto;padding:0 8px 8px">
       <table style="width:100%;min-width:640px;border-collapse:separate;border-spacing:0">
         <thead><tr>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Segment</th>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Accounts</th>
-          <th style="display:{{ colDpd }};text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Avg DPD</th>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Recovery</th>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Treatment pathway</th>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Rule</th>
+          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Segment</th>
+          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Accounts</th>
+          <th style="display:{{ colDpd }};text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Avg DPD</th>
+          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Recovery</th>
+          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Treatment pathway</th>
+          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Rule</th>
         </tr></thead>
         <tbody>
           <sc-for list="{{ segRows }}" as="s" hint-placeholder-count="7">
-            <tr onClick="{{ s.open }}" style="cursor:pointer;transition:background .15s;animation:flUp .4s cubic-bezier(.2,.8,.2,1) both;animation-delay:{{ s.delay }}" style-hover="background:#FAFAFA">
-              <td style="padding:14px 12px;border-top:1px solid #F3F3F3;opacity:{{ s.op }};transition:opacity .25s"><div style="display:flex;align-items:center;gap:12px"><span style="width:10px;height:10px;border-radius:50%;background:{{ s.dot }};flex:none"></span><div><div style="font-weight:600;white-space:nowrap">{{ s.name }}</div><div style="font-size:12px;line-height:16px;color:#8A8A8A">{{ s.cond }}</div></div></div></td>
+            <tr tabIndex="0" onClick="{{ s.open }}" style="cursor:pointer;transition:background .15s;animation:flUp .4s cubic-bezier(.2,.8,.2,1) both;animation-delay:{{ s.delay }}" style-hover="background:#FAFAFA">
+              <td style="padding:14px 12px;border-top:1px solid #F3F3F3;opacity:{{ s.op }};transition:opacity .25s"><div style="display:flex;align-items:center;gap:12px"><span style="width:10px;height:10px;border-radius:50%;background:{{ s.dot }};flex:none"></span><div><div style="font-weight:600;white-space:nowrap">{{ s.name }}</div><div style="font-size:12px;line-height:16px;color:#757575">{{ s.cond }}</div></div></div></td>
               <td style="padding:14px 12px;border-top:1px solid #F3F3F3;opacity:{{ s.op }}"><div style="display:flex;align-items:center;gap:10px"><span style="font-weight:600;width:30px;font-variant-numeric:tabular-nums">{{ s.count }}</span><span style="width:64px;height:4px;border-radius:2px;background:#F3F3F3;overflow:hidden"><span style="display:block;height:100%;border-radius:2px;width:{{ s.shareW }};background:{{ s.dot }};transition:width .8s cubic-bezier(.2,.8,.2,1);transition-delay:{{ s.td }}"></span></span></div></td>
               <td style="display:{{ colDpd }};padding:14px 12px;border-top:1px solid #F3F3F3;opacity:{{ s.op }};font-variant-numeric:tabular-nums">{{ s.avgDpd }}</td>
               <td style="padding:14px 12px;border-top:1px solid #F3F3F3;opacity:{{ s.op }}"><div style="display:flex;align-items:center;gap:10px"><span style="font-weight:600;width:34px;font-variant-numeric:tabular-nums">{{ s.recT }}</span><span style="width:64px;height:4px;border-radius:2px;background:#F3F3F3;overflow:hidden"><span style="display:block;height:100%;border-radius:2px;width:{{ s.recW }};background:{{ s.recC }};transition:width .8s cubic-bezier(.2,.8,.2,1);transition-delay:{{ s.td }}"></span></span></div></td>
-              <td style="padding:14px 12px;border-top:1px solid #F3F3F3;opacity:{{ s.op }}"><div style="min-width:120px;text-wrap:pretty">{{ s.action }}</div><div style="font-size:12px;line-height:16px;color:#8A8A8A">{{ s.freq }} · {{ s.capT }}</div></td>
+              <td style="padding:14px 12px;border-top:1px solid #F3F3F3;opacity:{{ s.op }}"><div style="min-width:120px;text-wrap:pretty">{{ s.action }}</div><div style="font-size:12px;line-height:16px;color:#757575">{{ s.freq }} · {{ s.capT }}</div></td>
               <td style="padding:14px 12px;border-top:1px solid #F3F3F3"><div style="display:flex;align-items:center;gap:10px">
                 <button role="switch" aria-checked="{{ s.active }}" aria-label="Rule active" onClick="{{ s.toggle }}" style="position:relative;width:40px;height:22px;padding:0;border-radius:11px;border:1px solid {{ s.swBd }};background:{{ s.swBg }};cursor:pointer;flex:none;transition:background .2s,border-color .2s,transform .1s" style-active="transform:scale(0.94)"><span style="position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:{{ s.swT }};transform:translateX({{ s.swX }});transition:transform .25s cubic-bezier(.3,1.4,.5,1),background .2s"></span></button>
                 <span style="font-size:13px;color:#616161;width:48px">{{ s.stT }}</span>
@@ -369,12 +373,12 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
 <div data-screen-label="Interventions" style="display:flex;flex-direction:column;gap:24px;animation:flUp .45s cubic-bezier(.2,.8,.2,1) both">
   <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px">
     <div><h1 style="margin:0;font-size:28px;line-height:36px;font-weight:600;letter-spacing:-0.02em">Interventions</h1><div style="color:#707070;margin-top:2px">Digital and agent outreach, live</div></div>
-    <button onClick="{{ newSchedule }}" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:0;border-radius:8px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;transition:filter .18s ease,box-shadow .18s ease,transform .18s cubic-bezier(.2,.8,.2,1)" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30);transform:translateY(-1px)" style-active="transform:translateY(0) scale(0.97);box-shadow:0 1px 4px rgba(70,60,190,0.22)"><fl-icon name="calendar_add" px="18"></fl-icon>Schedule</button>
+    <button onClick="{{ newSchedule }}" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:0;border-radius:8px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;transition:filter .15s,box-shadow .15s,transform .1s" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30)" style-active="transform:scale(0.97)"><fl-icon name="calendar_add" px="18"></fl-icon>Schedule</button>
   </div>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px 24px">
     <sc-for list="{{ iStats }}" as="k" hint-placeholder-count="4">
       <div style="display:flex;flex-direction:column;gap:2px;animation:flUp .45s cubic-bezier(.2,.8,.2,1) both;animation-delay:{{ k.delay }}">
-        <span style="font-size:13px;color:#707070">{{ k.label }}</span>
+        <span style="display:flex;align-items:center;gap:6px;font-size:13px;color:#707070"><span style="display:flex;color:var(--b)"><fl-icon name="{{ k.icon }}" px="16"></fl-icon></span>{{ k.label }}</span>
         <div style="display:flex;align-items:baseline;flex-wrap:wrap;column-gap:8px"><span style="font-size:26px;line-height:34px;font-weight:600;letter-spacing:-0.02em;font-variant-numeric:tabular-nums;white-space:nowrap">{{ k.value }}</span><span style="font-size:12px;font-weight:600;white-space:nowrap;color:{{ k.dc }}">{{ k.delta }}</span></div>
       </div>
     </sc-for>
@@ -384,21 +388,21 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
       <sc-for list="{{ iTabs }}" as="t" hint-placeholder-count="2"><button onClick="{{ t.pick }}" role="tab" aria-selected="{{ t.on }}" style="height:42px;border:0;background:transparent;font-size:14px;font-weight:600;color:{{ t.fg }};cursor:pointer;transition:color .2s" style-hover="color:#242424">{{ t.label }}</button></sc-for>
       <span aria-hidden="true" style="position:absolute;left:0;bottom:-1px;width:50%;height:3px;transform:translateX({{ iTabX }});transition:transform .35s cubic-bezier(.2,.9,.25,1)"><span style="display:block;height:100%;margin:0 28px;border-radius:2px;background:var(--b)"></span></span>
     </div>
-    <sc-if value="{{ iBoard }}" hint-placeholder-val="{{ true }}"><span style="display:flex;align-items:center;gap:6px;font-size:12px;color:#8A8A8A;padding-bottom:6px"><fl-icon name="arrow_move" px="14"></fl-icon>Drag cards to update status</span></sc-if>
+    <sc-if value="{{ iBoard }}" hint-placeholder-val="{{ true }}"><span style="display:flex;align-items:center;gap:6px;font-size:12px;color:#757575;padding-bottom:6px"><fl-icon name="arrow_move" px="14"></fl-icon>Drag cards to update status</span></sc-if>
   </div>
   <sc-if value="{{ iBoard }}" hint-placeholder-val="{{ true }}">
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;align-items:start">
       <sc-for list="{{ cols }}" as="col" hint-placeholder-count="4">
         <div onDragOver="{{ col.over }}" onDrop="{{ col.drop }}" style="display:flex;flex-direction:column;gap:10px;min-height:160px;padding:8px;border-radius:14px;border:1px dashed {{ col.bd }};background:{{ col.bg }};transition:background .2s,border-color .2s">
-          <div style="display:flex;align-items:center;gap:8px;padding:4px 6px"><span style="width:8px;height:8px;border-radius:50%;background:{{ col.dot }}"></span><span style="font-weight:600;flex:1">{{ col.title }}</span><span style="font-size:12px;font-weight:600;color:#8A8A8A;font-variant-numeric:tabular-nums">{{ col.count }}</span></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:4px 6px"><span style="width:8px;height:8px;border-radius:50%;background:{{ col.dot }}"></span><span style="font-weight:600;flex:1">{{ col.title }}</span><span style="font-size:12px;font-weight:600;color:#757575;font-variant-numeric:tabular-nums">{{ col.count }}</span></div>
           <sc-for list="{{ col.cards }}" as="c" hint-placeholder-count="2">
-            <div draggable="true" onDragStart="{{ c.dragStart }}" onDragEnd="{{ c.dragEnd }}" onClick="{{ c.open }}" style="background:#fff;border:1px solid #EBEBEB;border-radius:10px;padding:14px;cursor:grab;display:flex;flex-direction:column;gap:8px;opacity:{{ c.op }};animation:{{ c.flash }};transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s,opacity .2s,border-color .2s" style-hover="transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,0.08);border-color:#E0E0E0" style-active="cursor:grabbing">
+            <div tabIndex="0" draggable="true" onDragStart="{{ c.dragStart }}" onDragEnd="{{ c.dragEnd }}" onClick="{{ c.open }}" style="background:#fff;border:1px solid #EBEBEB;border-radius:10px;padding:14px;cursor:grab;display:flex;flex-direction:column;gap:8px;opacity:{{ c.op }};animation:{{ c.flash }};transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s,opacity .2s,border-color .2s" style-hover="transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,0.08);border-color:#E0E0E0" style-active="cursor:grabbing">
               <div style="display:flex;align-items:center;gap:8px"><span style="flex:1;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.name }}</span><span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;line-height:22px;font-weight:600;color:{{ c.mFg }};background:{{ c.mBg }};padding:0 {{ c.mPad }};border-radius:11px;white-space:nowrap;font-variant-numeric:tabular-nums"><sc-if value="{{ c.live }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:#038387;animation:flPulse 1.6s ease-out infinite"></span></sc-if>{{ c.meta }}</span></div>
               <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#616161"><span style="width:7px;height:7px;border-radius:50%;background:{{ c.segDot }}"></span>{{ c.segName }}</span>
               <div style="font-size:12px;line-height:16px;color:{{ c.capC }}">{{ c.cap }}</div>
             </div>
           </sc-for>
-          <sc-if value="{{ col.empty }}" hint-placeholder-val="{{ false }}"><div style="padding:20px 8px;text-align:center;font-size:12px;color:#8A8A8A">Drop a card here</div></sc-if>
+          <sc-if value="{{ col.empty }}" hint-placeholder-val="{{ false }}"><div style="padding:20px 8px;text-align:center;font-size:12px;color:#757575">Drop a card here</div></sc-if>
         </div>
       </sc-for>
     </div>
@@ -407,24 +411,24 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
     <section style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;overflow-x:auto;padding:4px 8px 8px;animation:flUp .35s ease-out both">
       <table style="width:100%;min-width:600px;border-collapse:separate;border-spacing:0">
         <thead><tr>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Time</th>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Borrower</th>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Intervention</th>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Channel</th>
-          <th style="display:{{ colAgent }};text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Agent</th>
-          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Outcome</th>
-          <th style="display:{{ colDur }};text-align:right;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Duration</th>
+          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Time</th>
+          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Borrower</th>
+          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Intervention</th>
+          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Channel</th>
+          <th style="display:{{ colAgent }};text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Agent</th>
+          <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Outcome</th>
+          <th style="display:{{ colDur }};text-align:right;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Duration</th>
         </tr></thead>
         <tbody>
           <sc-for list="{{ logRows }}" as="l" hint-placeholder-count="4">
             <tr style="transition:background .15s;animation:{{ l.anim }}" style-hover="background:#FAFAFA">
-              <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3;color:#8A8A8A;white-space:nowrap;font-variant-numeric:tabular-nums">{{ l.time }}</td>
-              <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3"><div style="font-weight:600">{{ l.name }}</div><div style="font-size:12px;line-height:16px;color:#8A8A8A">{{ l.id }}</div></td>
+              <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3;color:#757575;white-space:nowrap;font-variant-numeric:tabular-nums">{{ l.time }}</td>
+              <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3"><div style="font-weight:600">{{ l.name }}</div><div style="font-size:12px;line-height:16px;color:#757575">{{ l.id }}</div></td>
               <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3">{{ l.type }}</td>
               <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3"><span style="display:flex;align-items:center;gap:8px;color:#424242"><fl-icon name="{{ l.chIcon }}" px="16"></fl-icon>{{ l.chLabel }}</span></td>
               <td style="display:{{ colAgent }};padding:var(--rp) 12px;border-top:1px solid #F3F3F3;color:#616161">{{ l.agent }}</td>
               <td style="padding:var(--rp) 12px;border-top:1px solid #F3F3F3"><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:12px;font-size:12px;font-weight:600;white-space:nowrap;color:{{ l.fg }};background:{{ l.bg }}"><span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>{{ l.outcome }}</span></td>
-              <td style="display:{{ colDur }};padding:var(--rp) 12px;border-top:1px solid #F3F3F3;text-align:right;color:#8A8A8A">{{ l.dur }}</td>
+              <td style="display:{{ colDur }};padding:var(--rp) 12px;border-top:1px solid #F3F3F3;text-align:right;color:#757575">{{ l.dur }}</td>
             </tr>
           </sc-for>
         </tbody>
@@ -443,13 +447,13 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
         <span aria-hidden="true" style="position:absolute;top:3px;bottom:3px;left:3px;width:calc((100% - 6px) / 3);border-radius:6px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.10);transform:translateX({{ perX }});transition:transform .35s cubic-bezier(.2,.9,.25,1)"></span>
         <sc-for list="{{ periods }}" as="p" hint-placeholder-count="3"><button onClick="{{ p.pick }}" role="tab" aria-selected="{{ p.on }}" style="position:relative;height:28px;padding:0 12px;border:0;background:transparent;color:{{ p.fg }};font-size:13px;font-weight:600;cursor:pointer;transition:color .2s">{{ p.label }}</button></sc-for>
       </div>
-      <button onClick="{{ openExport }}" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:0;border-radius:8px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;transition:filter .18s ease,box-shadow .18s ease,transform .18s cubic-bezier(.2,.8,.2,1)" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30);transform:translateY(-1px)" style-active="transform:translateY(0) scale(0.97);box-shadow:0 1px 4px rgba(70,60,190,0.22)"><fl-icon name="arrow_download" px="18"></fl-icon>Export</button>
+      <button onClick="{{ openExport }}" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:0;border-radius:8px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;transition:filter .15s,box-shadow .15s,transform .1s" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30)" style-active="transform:scale(0.97)"><fl-icon name="arrow_download" px="18"></fl-icon>Export</button>
     </div>
   </div>
   <section style="background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:8px;display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr))">
     <sc-for list="{{ rpKpis }}" as="k" hint-placeholder-count="4">
       <div style="padding:16px 18px;border-radius:8px;background:{{ k.tint }};display:flex;flex-direction:column;gap:2px;transition:box-shadow .2s,transform .2s;animation:flUp .45s cubic-bezier(.2,.8,.2,1) both;animation-delay:{{ k.delay }}" style-hover="box-shadow:0 6px 18px rgba(0,0,0,0.06);transform:translateY(-1px)">
-        <span style="width:28px;height:4px;border-radius:2px;background:{{ k.ac }};margin-bottom:8px"></span>
+        <span style="width:32px;height:32px;border-radius:8px;background:{{ k.ac }};color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:10px;box-shadow:0 4px 10px rgba(0,0,0,0.08)"><fl-icon name="{{ k.icon }}" px="18"></fl-icon></span>
         <span style="font-size:13px;color:#616161">{{ k.label }}</span>
         <span style="font-size:28px;line-height:36px;font-weight:600;letter-spacing:-0.02em;font-variant-numeric:tabular-nums">{{ k.value }}</span>
         <span style="font-size:12px;line-height:16px;font-weight:600;color:{{ k.dc }}">{{ k.delta }}</span>
@@ -463,10 +467,10 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
         <div style="display:flex;gap:14px;font-size:12px;color:#616161;align-items:center"><span style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--b),var(--ba))"></span>Actual</span><span style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:0;border-top:2px dashed #BDBDBD"></span>Target</span></div>
       </div>
       <div style="position:relative;height:210px;margin-left:40px">
-        <span style="position:absolute;left:-40px;top:12px;font-size:11px;color:#8A8A8A">₹50L</span>
-        <span style="position:absolute;left:-40px;top:72px;font-size:11px;color:#8A8A8A">₹40L</span>
-        <span style="position:absolute;left:-40px;top:132px;font-size:11px;color:#8A8A8A">₹30L</span>
-        <span style="position:absolute;left:-40px;top:192px;font-size:11px;color:#8A8A8A">₹20L</span>
+        <span style="position:absolute;left:-40px;top:12px;font-size:11px;color:#757575">₹50L</span>
+        <span style="position:absolute;left:-40px;top:72px;font-size:11px;color:#757575">₹40L</span>
+        <span style="position:absolute;left:-40px;top:132px;font-size:11px;color:#757575">₹30L</span>
+        <span style="position:absolute;left:-40px;top:192px;font-size:11px;color:#757575">₹20L</span>
         <svg viewBox="0 0 600 210" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">
           <line x1="0" x2="600" y1="20" y2="20" stroke="#F3F3F3" vectorEffect="non-scaling-stroke"></line>
           <line x1="0" x2="600" y1="80" y2="80" stroke="#F3F3F3" vectorEffect="non-scaling-stroke"></line>
@@ -486,7 +490,7 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
         </div>
       </div>
       <div style="display:grid;grid-template-columns:repeat(6,1fr);margin:8px 0 0 40px">
-        <sc-for list="{{ tr.cols }}" as="c" hint-placeholder-count="6"><span style="text-align:center;font-size:12px;color:#8A8A8A">{{ c.m }}</span></sc-for>
+        <sc-for list="{{ tr.cols }}" as="c" hint-placeholder-count="6"><span style="text-align:center;font-size:12px;color:#757575">{{ c.m }}</span></sc-for>
       </div>
     </section>
     <section style="flex:1 1 320px;min-width:0;background:#fff;border:1px solid #EBEBEB;border-radius:12px;padding:18px 20px 12px">
@@ -494,7 +498,7 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
       <sc-for list="{{ agents }}" as="a" hint-placeholder-count="4">
         <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid {{ a.bt }}">
           <span style="width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex:none;background:{{ a.avBg }};color:{{ a.avFg }}">{{ a.ini }}</span>
-          <div style="flex:1;min-width:0"><div style="font-weight:600">{{ a.name }}</div><div style="font-size:12px;line-height:16px;color:#8A8A8A">{{ a.cases }} cases · {{ a.amt }}</div></div>
+          <div style="flex:1;min-width:0"><div style="font-weight:600">{{ a.name }}</div><div style="font-size:12px;line-height:16px;color:#757575">{{ a.cases }} cases · {{ a.amt }}</div></div>
           <div style="width:72px;text-align:right"><div style="font-weight:600;font-variant-numeric:tabular-nums">{{ a.rate }}</div><div style="height:3px;background:#F3F3F3;border-radius:2px;margin-top:4px;overflow:hidden"><div style="height:100%;width:{{ a.w }};background:linear-gradient(90deg,#107C10,#54C45A);border-radius:2px;transition:width .9s cubic-bezier(.2,.8,.2,1);transition-delay:{{ a.td }}"></div></div></div>
         </div>
       </sc-for>
@@ -515,12 +519,12 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
       <div style="overflow-x:auto">
         <table style="width:100%;min-width:460px;border-collapse:separate;border-spacing:0">
           <thead><tr>
-            <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Month</th>
-            <th style="text-align:right;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Accounts</th>
-            <th style="text-align:right;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Recovered</th>
-            <th style="text-align:right;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Recovery rate</th>
-            <th style="display:{{ colResp }};text-align:right;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Avg response</th>
-            <th style="text-align:right;padding:10px 12px;font-size:12px;font-weight:600;color:#8A8A8A">Cost per case</th>
+            <th style="text-align:left;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Month</th>
+            <th style="text-align:right;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Accounts</th>
+            <th style="text-align:right;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Recovered</th>
+            <th style="text-align:right;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Recovery rate</th>
+            <th style="display:{{ colResp }};text-align:right;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Avg response</th>
+            <th style="text-align:right;padding:10px 12px;font-size:12px;font-weight:600;color:#757575">Cost per case</th>
           </tr></thead>
           <tbody>
             <sc-for list="{{ months }}" as="m" hint-placeholder-count="3">
@@ -546,13 +550,13 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
 </div>
 
 <sc-if value="{{ bOpen }}" hint-placeholder-val="{{ false }}">
-  <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.32);z-index:50;animation:{{ bgAnim }}"></div>
-  <aside role="dialog" aria-label="Borrower details" data-screen-label="Borrower detail" style="position:fixed;top:8px;right:8px;bottom:8px;width:min(620px,calc(100vw - 16px));background:#fff;border-radius:14px;z-index:51;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,0.18);animation:{{ drAnim }};overflow:hidden">
+  <div onClick="{{ bdBg }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.32);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px;animation:{{ bgAnim }}">
+  <aside role="dialog" ref="{{ dRef }}" tabIndex="-1" aria-modal="true" aria-label="Borrower details" data-screen-label="Borrower detail" style="outline:none;position:relative;width:min(720px,100%);max-height:min(860px,100%);background:#fff;border-radius:16px;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,0.20);animation:{{ bpAnim }};overflow:hidden">
     <div style="display:flex;gap:14px;align-items:flex-start;padding:22px 24px 18px">
       <span style="width:48px;height:48px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;flex:none;background:{{ bd.avBg }};color:{{ bd.avFg }}">{{ bd.ini }}</span>
       <div style="flex:1;min-width:0">
         <h2 style="margin:0;font-size:20px;line-height:28px;font-weight:600;letter-spacing:-0.01em">{{ bd.name }}</h2>
-        <div style="font-size:13px;color:#8A8A8A">{{ bd.id }} · Borrower since {{ bd.since }}</div>
+        <div style="font-size:13px;color:#757575">{{ bd.id }} · Borrower since {{ bd.since }}</div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">
           <span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:12px;font-size:12px;font-weight:600;color:#424242;background:#F5F5F5"><span style="width:7px;height:7px;border-radius:50%;background:{{ bd.segDot }}"></span>{{ bd.segName }}</span>
           <span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:12px;font-size:12px;font-weight:600;color:{{ bd.stFg }};background:{{ bd.stBg }};transition:all .3s"><span style="width:6px;height:6px;border-radius:50%;background:currentColor;animation:{{ bd.pulse }}"></span>{{ bd.status }}</span>
@@ -561,9 +565,9 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
       </div>
       <button onClick="{{ closeDrawer }}" aria-label="Close" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#616161;cursor:pointer;transition:background .15s,transform .2s" style-hover="background:#F5F5F5;transform:rotate(90deg)"><fl-icon name="dismiss"></fl-icon></button>
     </div>
-    <div style="flex:1;overflow-y:auto;padding:0 24px 24px;display:flex;flex-direction:column;gap:24px">
+    <div style="flex:1;min-height:0;overflow-y:auto;padding:0 24px 24px;display:flex;flex-direction:column;gap:24px">
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:4px;padding:6px;background:#FAFAFA;border-radius:12px">
-        <sc-for list="{{ bd.facts }}" as="f" hint-placeholder-count="6"><div style="padding:10px 12px;border-radius:8px;animation:flUp .4s cubic-bezier(.2,.8,.2,1) both;animation-delay:{{ f.delay }}"><div style="font-size:12px;line-height:16px;color:#8A8A8A">{{ f.l }}</div><div style="font-weight:600;margin-top:2px;font-variant-numeric:tabular-nums">{{ f.v }}</div></div></sc-for>
+        <sc-for list="{{ bd.facts }}" as="f" hint-placeholder-count="6"><div style="padding:10px 12px;border-radius:8px;animation:flUp .4s cubic-bezier(.2,.8,.2,1) both;animation-delay:{{ f.delay }}"><div style="font-size:12px;line-height:16px;color:#757575">{{ f.l }}</div><div style="font-weight:600;margin-top:2px;font-variant-numeric:tabular-nums">{{ f.v }}</div></div></sc-for>
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:8px">
         <sc-for list="{{ bd.contacts }}" as="c" hint-placeholder-count="2">
@@ -571,14 +575,14 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
         </sc-for>
       </div>
       <div>
-        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap"><h3 style="margin:0;font-size:16px;line-height:22px;font-weight:600">Next best action</h3><span style="display:flex;align-items:center;gap:4px;font-size:12px;color:#8A8A8A"><fl-icon name="clock" px="14"></fl-icon>Best window 10:00 AM – 12:00 PM</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap"><h3 style="margin:0;font-size:16px;line-height:22px;font-weight:600">Next best action</h3><span style="display:flex;align-items:center;gap:4px;font-size:12px;color:#757575"><fl-icon name="clock" px="14"></fl-icon>Best window 10:00 AM – 12:00 PM</span></div>
         <div role="radiogroup" style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
           <sc-for list="{{ bd.opts }}" as="o" hint-placeholder-count="3">
-            <div role="radio" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;border:1px solid {{ o.bd }};background:{{ o.bg }};cursor:pointer;transition:border-color .2s,background .2s,transform .1s" style-hover="border-color:var(--b)" style-active="transform:scale(0.99)">
+            <div role="radio" tabIndex="0" aria-checked="{{ o.sel }}" onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;border:1px solid {{ o.bd }};background:{{ o.bg }};cursor:pointer;transition:border-color .2s,background .2s,transform .1s" style-hover="border-color:var(--b)" style-active="transform:scale(0.99)">
               <span style="width:18px;height:18px;border-radius:50%;border:1.5px solid {{ o.rb }};display:flex;align-items:center;justify-content:center;flex:none;transition:border-color .2s"><span style="width:8px;height:8px;border-radius:50%;background:var(--b);transform:scale({{ o.rs }});transition:transform .25s cubic-bezier(.3,1.6,.5,1)"></span></span>
               <span style="width:34px;height:34px;border-radius:8px;background:{{ o.ib }};color:{{ o.ic }};display:flex;align-items:center;justify-content:center;flex:none;transition:background .2s,color .2s"><fl-icon name="{{ o.icon }}" px="18"></fl-icon></span>
-              <div style="flex:1;min-width:0"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-weight:600">{{ o.title }}</span><sc-if value="{{ o.rec }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;gap:3px;height:18px;padding:0 7px;border-radius:9px;background:var(--b);color:#fff;font-size:11px;font-weight:600"><fl-icon name="sparkle" v="filled" px="10"></fl-icon>Best</span></sc-if></div><div style="font-size:12px;line-height:16px;color:#8A8A8A">{{ o.ch }}</div></div>
-              <div style="width:84px;flex:none"><div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#8A8A8A">Success</span><span style="font-weight:600;font-variant-numeric:tabular-nums">{{ o.p }}</span></div><div style="height:4px;background:#F0F0F0;border-radius:2px;margin-top:5px;overflow:hidden"><div style="height:100%;width:{{ o.pw }};background:var(--b);border-radius:2px;transition:width .8s cubic-bezier(.2,.8,.2,1);transition-delay:{{ o.td }}"></div></div></div>
+              <div style="flex:1;min-width:0"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-weight:600">{{ o.title }}</span><sc-if value="{{ o.rec }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;gap:3px;height:18px;padding:0 7px;border-radius:9px;background:var(--b);color:#fff;font-size:11px;font-weight:600"><fl-icon name="sparkle" v="filled" px="10"></fl-icon>Best</span></sc-if></div><div style="font-size:12px;line-height:16px;color:#757575">{{ o.ch }}</div></div>
+              <div style="width:84px;flex:none"><div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#757575">Success</span><span style="font-weight:600;font-variant-numeric:tabular-nums">{{ o.p }}</span></div><div style="height:4px;background:#F0F0F0;border-radius:2px;margin-top:5px;overflow:hidden"><div style="height:100%;width:{{ o.pw }};background:var(--b);border-radius:2px;transition:width .8s cubic-bezier(.2,.8,.2,1);transition-delay:{{ o.td }}"></div></div></div>
             </div>
           </sc-for>
         </div>
@@ -593,7 +597,7 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
             <sc-for list="{{ bd.events }}" as="e" hint-placeholder-count="4">
               <div style="display:flex;gap:14px;animation:flUp .35s cubic-bezier(.2,.8,.2,1) both;animation-delay:{{ e.delay }}">
                 <div style="display:flex;flex-direction:column;align-items:center;width:12px;flex:none"><span style="width:10px;height:10px;border-radius:50%;background:{{ e.c }};box-shadow:0 0 0 3px #fff;margin-top:5px;flex:none"></span><span style="flex:1;width:1px;background:#EBEBEB;margin:2px 0"></span></div>
-                <div style="padding-bottom:18px;min-width:0"><div style="font-weight:600">{{ e.t }}</div><div style="font-size:13px;color:#616161">{{ e.d }}</div><div style="font-size:12px;line-height:16px;color:#8A8A8A;margin-top:2px">{{ e.when }}</div></div>
+                <div style="padding-bottom:18px;min-width:0"><div style="font-weight:600">{{ e.t }}</div><div style="font-size:13px;color:#616161">{{ e.d }}</div><div style="font-size:12px;line-height:16px;color:#757575;margin-top:2px">{{ e.when }}</div></div>
               </div>
             </sc-for>
           </div>
@@ -607,7 +611,7 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
         </sc-if>
         <sc-if value="{{ bt.risk }}" hint-placeholder-val="{{ false }}">
           <div style="padding-top:18px;animation:flFade .25s both">
-            <div style="display:flex;gap:28px;margin-bottom:14px"><div><div style="font-size:12px;color:#8A8A8A">30 days ago</div><div style="font-size:18px;font-weight:600">{{ bd.riskStart }}</div></div><div><div style="font-size:12px;color:#8A8A8A">Today</div><div style="font-size:18px;font-weight:600">{{ bd.risk }}</div></div><div><div style="font-size:12px;color:#8A8A8A">Change</div><div style="font-size:18px;font-weight:600;color:{{ bd.riskDc }}">{{ bd.riskDelta }}</div></div></div>
+            <div style="display:flex;gap:28px;margin-bottom:14px"><div><div style="font-size:12px;color:#757575">30 days ago</div><div style="font-size:18px;font-weight:600">{{ bd.riskStart }}</div></div><div><div style="font-size:12px;color:#757575">Today</div><div style="font-size:18px;font-weight:600">{{ bd.risk }}</div></div><div><div style="font-size:12px;color:#757575">Change</div><div style="font-size:18px;font-weight:600;color:{{ bd.riskDc }}">{{ bd.riskDelta }}</div></div></div>
             <div style="position:relative;height:110px;background:#FAFAFA;border-radius:10px;overflow:hidden">
               <div style="position:absolute;inset:12px;clip-path:inset(-6px {{ bd.clipR }} -6px -6px);transition:clip-path 1s cubic-bezier(.4,0,.2,1)">
                 <svg viewBox="0 0 300 80" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible"><polyline points="{{ bd.trend }}" fill="none" stroke="var(--b)" strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" vectorEffect="non-scaling-stroke"></polyline></svg>
@@ -619,7 +623,7 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
     </div>
     <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:14px 24px;border-top:1px solid #F0F0F0">
       <sc-if value="{{ bd.bIdle }}" hint-placeholder-val="{{ true }}">
-        <button onClick="{{ bd.run }}" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 16px;border:0;border-radius:8px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;transition:filter .18s ease,box-shadow .18s ease,transform .18s cubic-bezier(.2,.8,.2,1)" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30);transform:translateY(-1px)" style-active="transform:translateY(0) scale(0.97);box-shadow:0 1px 4px rgba(70,60,190,0.22)"><fl-icon name="play" px="16"></fl-icon>Start {{ bd.pickTitle }}</button>
+        <button onClick="{{ bd.run }}" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 16px;border:0;border-radius:8px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;transition:filter .15s,box-shadow .15s,transform .1s" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30)" style-active="transform:scale(0.97)"><fl-icon name="play" px="16"></fl-icon>Start {{ bd.pickTitle }}</button>
         <button onClick="{{ bd.schedule }}" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s,transform .1s" style-hover="background:#F5F5F5" style-active="transform:scale(0.97)"><fl-icon name="calendar_ltr" px="16"></fl-icon>Schedule</button>
       </sc-if>
       <sc-if value="{{ bd.bLoad }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;gap:10px;height:36px;padding:0 16px;border-radius:8px;background:var(--b2);color:var(--b);font-size:14px;font-weight:600"><span style="width:14px;height:14px;border-radius:50%;border:2px solid var(--b3);border-top-color:var(--b);animation:flSpin .7s linear infinite"></span>Starting…</span></sc-if>
@@ -628,14 +632,15 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
       <sc-if value="{{ bd.canEscalate }}" hint-placeholder-val="{{ true }}"><button onClick="{{ bd.escalate }}" style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;border:0;border-radius:8px;background:transparent;color:#B10E1C;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s" style-hover="background:#FDF3F4"><fl-icon name="gavel" px="16"></fl-icon>Escalate to legal</button></sc-if>
     </div>
   </aside>
+  </div>
 </sc-if>
 
 <sc-if value="{{ rOpen }}" hint-placeholder-val="{{ false }}">
   <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(0,0,0,0.32);z-index:50;animation:{{ bgAnim }}"></div>
-  <aside role="dialog" aria-modal="true" aria-label="Edit segment rule" data-screen-label="Segment rule" style="position:fixed;inset:0;margin:auto;width:min(560px,calc(100vw - 24px));height:fit-content;max-height:calc(100vh - 48px);background:#fff;border-radius:16px;z-index:51;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,0.22);animation:{{ popAnim }};overflow:hidden">
+  <aside role="dialog" ref="{{ dRef }}" tabIndex="-1" aria-modal="true" aria-label="Edit segment rule" data-screen-label="Segment rule" style="outline:none;position:fixed;top:8px;right:8px;bottom:8px;width:min(500px,calc(100vw - 16px));background:#fff;border-radius:14px;z-index:51;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,0.18);animation:{{ drAnim }};overflow:hidden">
     <div style="display:flex;gap:12px;align-items:center;padding:22px 24px 14px">
       <span style="width:12px;height:12px;border-radius:50%;background:{{ rv.dot }};flex:none"></span>
-      <div style="flex:1;min-width:0"><h2 style="margin:0;font-size:20px;line-height:28px;font-weight:600;letter-spacing:-0.01em">{{ rv.title }}</h2><div style="font-size:13px;color:#8A8A8A">{{ rv.sub }}</div></div>
+      <div style="flex:1;min-width:0"><h2 style="margin:0;font-size:20px;line-height:28px;font-weight:600;letter-spacing:-0.01em">{{ rv.title }}</h2><div style="font-size:13px;color:#757575">{{ rv.sub }}</div></div>
       <button onClick="{{ closeDrawer }}" aria-label="Close" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#616161;cursor:pointer;transition:background .15s,transform .2s" style-hover="background:#F5F5F5;transform:rotate(90deg)"><fl-icon name="dismiss"></fl-icon></button>
     </div>
     <div style="flex:1;overflow-y:auto;padding:8px 24px 24px;display:flex;flex-direction:column;gap:22px">
@@ -645,55 +650,56 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
         <sc-if value="{{ rv.hasErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;color:#B10E1C;margin-top:6px;animation:flIn .2s both">{{ rErr }}</div></sc-if>
       </div>
       <div style="display:flex;flex-direction:column;gap:12px">
-        <div style="font-size:12px;font-weight:600;color:#8A8A8A;letter-spacing:0.02em">WHO ENTERS</div>
+        <div style="font-size:12px;font-weight:600;color:#757575;letter-spacing:0.02em">WHO ENTERS</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
           <div><label style="display:block;font-size:13px;margin-bottom:6px;color:#424242">DPD from</label><input type="number" min="0" value="{{ rf.dpdMin }}" onChange="{{ rOn.dpdMin }}" style="height:36px;width:100%;padding:0 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"></div>
           <div><label style="display:block;font-size:13px;margin-bottom:6px;color:#424242">DPD to</label><input type="number" min="0" value="{{ rf.dpdMax }}" onChange="{{ rOn.dpdMax }}" placeholder="No limit" style="height:36px;width:100%;padding:0 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"></div>
           <div><label style="display:block;font-size:13px;margin-bottom:6px;color:#424242">Risk from</label><input type="number" min="0" max="100" value="{{ rf.riskMin }}" onChange="{{ rOn.riskMin }}" style="height:36px;width:100%;padding:0 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"></div>
           <div><label style="display:block;font-size:13px;margin-bottom:6px;color:#424242">Risk to</label><input type="number" min="0" max="100" value="{{ rf.riskMax }}" onChange="{{ rOn.riskMax }}" style="height:36px;width:100%;padding:0 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"></div>
         </div>
+        <sc-if value="{{ rv.hasRangeErr }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#B10E1C;animation:flIn .2s both"><fl-icon name="error_circle" v="filled" px="12"></fl-icon>{{ rErr }}</div></sc-if>
         <div><label style="display:block;font-size:13px;margin-bottom:6px;color:#424242">Additional condition</label><input value="{{ rf.extra }}" onChange="{{ rOn.extra }}" placeholder="e.g. Broken promise to pay" style="height:36px;width:100%;padding:0 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"></div>
       </div>
       <div style="display:flex;flex-direction:column;gap:12px">
-        <div style="font-size:12px;font-weight:600;color:#8A8A8A;letter-spacing:0.02em">TREATMENT</div>
-        <div><label style="display:block;font-size:13px;margin-bottom:6px;color:#424242">Action</label><div style="position:relative"><select value="{{ rf.action }}" onChange="{{ rOn.action }}" style="height:36px;width:100%;padding:0 34px 0 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;appearance:none;-webkit-appearance:none;cursor:pointer;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"><sc-for list="{{ actions }}" as="o" hint-placeholder-count="1"><option value="{{ o }}">{{ o }}</option></sc-for></select><span style="position:absolute;right:10px;top:10px;pointer-events:none;color:#8A8A8A;display:flex"><fl-icon name="chevron_down" px="16"></fl-icon></span></div></div>
+        <div style="font-size:12px;font-weight:600;color:#757575;letter-spacing:0.02em">TREATMENT</div>
+        <div><label style="display:block;font-size:13px;margin-bottom:6px;color:#424242">Action</label><div style="position:relative"><select value="{{ rf.action }}" onChange="{{ rOn.action }}" style="height:36px;width:100%;padding:0 34px 0 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;appearance:none;-webkit-appearance:none;cursor:pointer;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"><sc-for list="{{ actions }}" as="o" hint-placeholder-count="1"><option value="{{ o }}">{{ o }}</option></sc-for></select><span style="position:absolute;right:10px;top:10px;pointer-events:none;color:#757575;display:flex"><fl-icon name="chevron_down" px="16"></fl-icon></span></div></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-          <div><label style="display:block;font-size:13px;margin-bottom:6px;color:#424242">Frequency</label><div style="position:relative"><select value="{{ rf.freq }}" onChange="{{ rOn.freq }}" style="height:36px;width:100%;padding:0 34px 0 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;appearance:none;-webkit-appearance:none;cursor:pointer;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"><sc-for list="{{ freqs }}" as="o" hint-placeholder-count="1"><option value="{{ o }}">{{ o }}</option></sc-for></select><span style="position:absolute;right:10px;top:10px;pointer-events:none;color:#8A8A8A;display:flex"><fl-icon name="chevron_down" px="16"></fl-icon></span></div></div>
-          <div><label style="display:block;font-size:13px;margin-bottom:6px;color:#424242">Attempts cap <span style="color:#8A8A8A">(0 = none)</span></label><input type="number" min="0" value="{{ rf.cap }}" onChange="{{ rOn.cap }}" style="height:36px;width:100%;padding:0 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"></div>
+          <div><label style="display:block;font-size:13px;margin-bottom:6px;color:#424242">Frequency</label><div style="position:relative"><select value="{{ rf.freq }}" onChange="{{ rOn.freq }}" style="height:36px;width:100%;padding:0 34px 0 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;appearance:none;-webkit-appearance:none;cursor:pointer;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"><sc-for list="{{ freqs }}" as="o" hint-placeholder-count="1"><option value="{{ o }}">{{ o }}</option></sc-for></select><span style="position:absolute;right:10px;top:10px;pointer-events:none;color:#757575;display:flex"><fl-icon name="chevron_down" px="16"></fl-icon></span></div></div>
+          <div><label style="display:block;font-size:13px;margin-bottom:6px;color:#424242">Attempts cap <span style="color:#757575">(0 = none)</span></label><input type="number" min="0" value="{{ rf.cap }}" onChange="{{ rOn.cap }}" style="height:36px;width:100%;padding:0 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"></div>
         </div>
-        <div><label style="display:block;font-size:13px;margin-bottom:6px;color:#424242">Priority</label><div style="position:relative"><select value="{{ rf.prio }}" onChange="{{ rOn.prio }}" style="height:36px;width:100%;padding:0 34px 0 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;appearance:none;-webkit-appearance:none;cursor:pointer;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"><sc-for list="{{ prios }}" as="o" hint-placeholder-count="1"><option value="{{ o }}">{{ o }}</option></sc-for></select><span style="position:absolute;right:10px;top:10px;pointer-events:none;color:#8A8A8A;display:flex"><fl-icon name="chevron_down" px="16"></fl-icon></span></div></div>
+        <div><label style="display:block;font-size:13px;margin-bottom:6px;color:#424242">Priority</label><div style="position:relative"><select value="{{ rf.prio }}" onChange="{{ rOn.prio }}" style="height:36px;width:100%;padding:0 34px 0 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;appearance:none;-webkit-appearance:none;cursor:pointer;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"><sc-for list="{{ prios }}" as="o" hint-placeholder-count="1"><option value="{{ o }}">{{ o }}</option></sc-for></select><span style="position:absolute;right:10px;top:10px;pointer-events:none;color:#757575;display:flex"><fl-icon name="chevron_down" px="16"></fl-icon></span></div></div>
       </div>
       <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:#FAFAFA;border-radius:10px">
         <button role="switch" aria-checked="{{ rf.active }}" onClick="{{ rOn.active }}" style="position:relative;width:40px;height:22px;padding:0;border-radius:11px;border:1px solid {{ rv.swBd }};background:{{ rv.swBg }};cursor:pointer;flex:none;transition:background .2s,border-color .2s,transform .1s" style-active="transform:scale(0.94)"><span style="position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:{{ rv.swT }};transform:translateX({{ rv.swX }});transition:transform .25s cubic-bezier(.3,1.4,.5,1),background .2s"></span></button>
-        <div><div style="font-weight:600">{{ rv.stT }}</div><div style="font-size:12px;line-height:16px;color:#8A8A8A">Paused rules send matching accounts to manual review.</div></div>
+        <div><div style="font-weight:600">{{ rv.stT }}</div><div style="font-size:12px;line-height:16px;color:#757575">Paused rules send matching accounts to manual review.</div></div>
       </div>
     </div>
     <div style="display:flex;justify-content:flex-end;gap:8px;padding:14px 24px;border-top:1px solid #F0F0F0">
       <button onClick="{{ closeDrawer }}" style="height:36px;padding:0 14px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s,transform .1s" style-hover="background:#F5F5F5" style-active="transform:scale(0.97)">Cancel</button>
-      <button onClick="{{ saveRule }}" style="height:36px;padding:0 16px;border:0;border-radius:8px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:14px;font-weight:600;cursor:pointer;transition:filter .18s ease,box-shadow .18s ease,transform .18s cubic-bezier(.2,.8,.2,1)" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30);transform:translateY(-1px)" style-active="transform:translateY(0) scale(0.97);box-shadow:0 1px 4px rgba(70,60,190,0.22)">{{ rv.saveT }}</button>
+      <button onClick="{{ saveRule }}" style="height:36px;padding:0 16px;border:0;border-radius:8px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:14px;font-weight:600;cursor:pointer;transition:filter .15s,box-shadow .15s,transform .1s" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30)" style-active="transform:scale(0.97)">{{ rv.saveT }}</button>
     </div>
   </aside>
 </sc-if>
 
 <sc-if value="{{ dlg.schedule }}" hint-placeholder-val="{{ false }}">
   <div onClick="{{ dlgBg }}" style="position:fixed;inset:0;z-index:60;background:rgba(0,0,0,0.32);display:flex;align-items:center;justify-content:center;padding:16px;animation:{{ dlgBgAnim }}">
-    <div role="dialog" aria-modal="true" aria-label="Schedule intervention" style="width:min(540px,100%);max-height:calc(100vh - 32px);overflow-y:auto;background:#fff;border-radius:16px;box-shadow:0 24px 64px rgba(0,0,0,0.18);padding:24px;display:flex;flex-direction:column;gap:18px;animation:{{ dlgAnim }}">
+    <div ref="{{ xRef }}" tabIndex="-1" role="dialog" aria-modal="true" aria-label="Schedule intervention" style="outline:none;width:min(540px,100%);max-height:calc(100vh - 32px);overflow-y:auto;background:#fff;border-radius:16px;box-shadow:0 24px 64px rgba(0,0,0,0.18);padding:24px;display:flex;flex-direction:column;gap:18px;animation:{{ dlgAnim }}">
       <div style="display:flex;align-items:center;justify-content:space-between"><h2 style="margin:0;font-size:20px;line-height:28px;font-weight:600;letter-spacing:-0.01em">Schedule intervention</h2><button onClick="{{ closeDlg }}" aria-label="Close" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#616161;cursor:pointer;transition:background .15s,transform .2s" style-hover="background:#F5F5F5;transform:rotate(90deg)"><fl-icon name="dismiss"></fl-icon></button></div>
       <div style="position:relative">
         <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px">Borrower</label>
-        <div style="display:flex;align-items:center;gap:8px;height:36px;padding:0 12px;border:1px solid {{ sv.bBd }};border-radius:8px;color:#8A8A8A;box-shadow:{{ sv.bSh }};transition:border-color .15s,box-shadow .15s"><fl-icon name="search" px="16"></fl-icon><input value="{{ sf.bq }}" onChange="{{ sOn.bq }}" placeholder="Search by account ID or name" style="flex:1;min-width:0;height:34px;border:0;outline:none;background:transparent;font-size:14px;color:#242424"></div>
+        <div style="display:flex;align-items:center;gap:8px;height:36px;padding:0 12px;border:1px solid {{ sv.bBd }};border-radius:8px;color:#757575;box-shadow:{{ sv.bSh }};transition:border-color .15s,box-shadow .15s"><fl-icon name="search" px="16"></fl-icon><input value="{{ sf.bq }}" onChange="{{ sOn.bq }}" placeholder="Search by account ID or name" style="flex:1;min-width:0;height:34px;border:0;outline:none;background:transparent;font-size:14px;color:#242424"></div>
         <sc-if value="{{ sv.hasSugg }}" hint-placeholder-val="{{ false }}">
           <div style="position:absolute;top:68px;left:0;right:0;background:#fff;border-radius:10px;border:1px solid #EBEBEB;box-shadow:0 12px 32px rgba(0,0,0,0.10);padding:6px;z-index:2;animation:flIn .15s ease-out both">
             <sc-for list="{{ sv.sugg }}" as="r" hint-placeholder-count="0">
-              <button onClick="{{ r.pick }}" style="display:flex;align-items:center;gap:10px;width:100%;padding:8px;border:0;border-radius:6px;background:transparent;cursor:pointer;text-align:left;transition:background .12s" style-hover="background:#F5F5F5"><span style="flex:1;min-width:0"><span style="font-weight:600">{{ r.name }}</span><span style="color:#8A8A8A"> · {{ r.id }}</span></span><span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#616161;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:{{ r.segDot }}"></span>{{ r.segName }}</span></button>
+              <button onClick="{{ r.pick }}" style="display:flex;align-items:center;gap:10px;width:100%;padding:8px;border:0;border-radius:6px;background:transparent;cursor:pointer;text-align:left;transition:background .12s" style-hover="background:#F5F5F5"><span style="flex:1;min-width:0"><span style="font-weight:600">{{ r.name }}</span><span style="color:#757575"> · {{ r.id }}</span></span><span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#616161;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:{{ r.segDot }}"></span>{{ r.segName }}</span></button>
             </sc-for>
           </div>
         </sc-if>
         <sc-if value="{{ sv.hasErr }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#B10E1C;margin-top:6px;animation:flIn .2s both"><fl-icon name="error_circle" v="filled" px="12"></fl-icon>{{ sErr }}</div></sc-if>
       </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px">
-        <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px">Intervention</label><div style="position:relative"><select value="{{ sf.type }}" onChange="{{ sOn.type }}" style="height:36px;width:100%;padding:0 34px 0 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;appearance:none;-webkit-appearance:none;cursor:pointer;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"><sc-for list="{{ sTypes }}" as="o" hint-placeholder-count="1"><option value="{{ o }}">{{ o }}</option></sc-for></select><span style="position:absolute;right:10px;top:10px;pointer-events:none;color:#8A8A8A;display:flex"><fl-icon name="chevron_down" px="16"></fl-icon></span></div></div>
-        <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px">Backup agent</label><div style="position:relative"><select value="{{ sf.agent }}" onChange="{{ sOn.agent }}" style="height:36px;width:100%;padding:0 34px 0 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;appearance:none;-webkit-appearance:none;cursor:pointer;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"><sc-for list="{{ agentNames }}" as="o" hint-placeholder-count="1"><option value="{{ o }}">{{ o }}</option></sc-for></select><span style="position:absolute;right:10px;top:10px;pointer-events:none;color:#8A8A8A;display:flex"><fl-icon name="chevron_down" px="16"></fl-icon></span></div></div>
+        <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px">Intervention</label><div style="position:relative"><select value="{{ sf.type }}" onChange="{{ sOn.type }}" style="height:36px;width:100%;padding:0 34px 0 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;appearance:none;-webkit-appearance:none;cursor:pointer;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"><sc-for list="{{ sTypes }}" as="o" hint-placeholder-count="1"><option value="{{ o }}">{{ o }}</option></sc-for></select><span style="position:absolute;right:10px;top:10px;pointer-events:none;color:#757575;display:flex"><fl-icon name="chevron_down" px="16"></fl-icon></span></div></div>
+        <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px">Backup agent</label><div style="position:relative"><select value="{{ sf.agent }}" onChange="{{ sOn.agent }}" style="height:36px;width:100%;padding:0 34px 0 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;appearance:none;-webkit-appearance:none;cursor:pointer;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"><sc-for list="{{ agentNames }}" as="o" hint-placeholder-count="1"><option value="{{ o }}">{{ o }}</option></sc-for></select><span style="position:absolute;right:10px;top:10px;pointer-events:none;color:#757575;display:flex"><fl-icon name="chevron_down" px="16"></fl-icon></span></div></div>
         <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px">Date</label><input type="date" value="{{ sf.date }}" onChange="{{ sOn.date }}" style="height:36px;width:100%;padding:0 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"></div>
         <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px">Time</label><input type="time" value="{{ sf.time }}" onChange="{{ sOn.time }}" style="height:36px;width:100%;padding:0 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"></div>
       </div>
@@ -707,7 +713,7 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
       <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px">Notes for the agent</label><textarea value="{{ sf.notes }}" onChange="{{ sOn.notes }}" rows="3" placeholder="Context the agent should know before reaching out" style="width:100%;padding:8px 12px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;outline:none;resize:vertical;transition:border-color .15s,box-shadow .15s" style-focus="border-color:var(--b);box-shadow:0 0 0 3px var(--b2)"></textarea></div>
       <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:2px">
         <button onClick="{{ closeDlg }}" style="height:36px;padding:0 14px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s,transform .1s" style-hover="background:#F5F5F5" style-active="transform:scale(0.97)">Cancel</button>
-        <button onClick="{{ submitSchedule }}" style="height:36px;padding:0 16px;border:0;border-radius:8px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:14px;font-weight:600;cursor:pointer;transition:filter .18s ease,box-shadow .18s ease,transform .18s cubic-bezier(.2,.8,.2,1)" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30);transform:translateY(-1px)" style-active="transform:translateY(0) scale(0.97);box-shadow:0 1px 4px rgba(70,60,190,0.22)">Schedule</button>
+        <button onClick="{{ submitSchedule }}" style="height:36px;padding:0 16px;border:0;border-radius:8px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:14px;font-weight:600;cursor:pointer;transition:filter .15s,box-shadow .15s,transform .1s" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30)" style-active="transform:scale(0.97)">Schedule</button>
       </div>
     </div>
   </div>
@@ -715,10 +721,10 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
 
 <sc-if value="{{ dlg.escalate }}" hint-placeholder-val="{{ false }}">
   <div onClick="{{ dlgBg }}" style="position:fixed;inset:0;z-index:60;background:rgba(0,0,0,0.32);display:flex;align-items:center;justify-content:center;padding:16px;animation:{{ dlgBgAnim }}">
-    <div role="alertdialog" aria-modal="true" aria-label="Escalate to legal notice" style="width:min(460px,100%);background:#fff;border-radius:16px;box-shadow:0 24px 64px rgba(0,0,0,0.18);padding:24px;display:flex;flex-direction:column;gap:16px;animation:{{ dlgAnim }}">
+    <div ref="{{ xRef }}" tabIndex="-1" role="alertdialog" aria-modal="true" aria-label="Escalate to legal notice" style="outline:none;width:min(460px,100%);background:#fff;border-radius:16px;box-shadow:0 24px 64px rgba(0,0,0,0.18);padding:24px;display:flex;flex-direction:column;gap:16px;animation:{{ dlgAnim }}">
       <span style="width:44px;height:44px;border-radius:12px;background:#FFF4EC;color:#BC4B09;display:flex;align-items:center;justify-content:center"><fl-icon name="gavel" px="22"></fl-icon></span>
       <div><h2 style="margin:0 0 6px;font-size:20px;line-height:28px;font-weight:600;letter-spacing:-0.01em">Escalate to legal notice?</h2><div style="color:#616161">A legal demand notice goes to the borrower’s registered address and all automated nudges stop. This can’t be undone.</div></div>
-      <div style="padding:12px 14px;background:#FAFAFA;border-radius:10px"><div style="font-weight:600">{{ ev.name }} · {{ ev.id }}</div><div style="font-size:12px;line-height:16px;color:#8A8A8A;margin-top:2px">{{ ev.dpd }} days past due · Risk {{ ev.risk }} · Outstanding {{ ev.out }}</div></div>
+      <div style="padding:12px 14px;background:#FAFAFA;border-radius:10px"><div style="font-weight:600">{{ ev.name }} · {{ ev.id }}</div><div style="font-size:12px;line-height:16px;color:#757575;margin-top:2px">{{ ev.dpd }} days past due · Risk {{ ev.risk }} · Outstanding {{ ev.out }}</div></div>
       <div style="display:flex;justify-content:flex-end;gap:8px">
         <button onClick="{{ closeDlg }}" style="height:36px;padding:0 14px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s,transform .1s" style-hover="background:#F5F5F5" style-active="transform:scale(0.97)">Cancel</button>
         <button onClick="{{ confirmEscalate }}" style="height:36px;padding:0 16px;border:0;border-radius:8px;background:#C50F1F;color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s,transform .1s" style-hover="background:#B10E1C" style-active="transform:scale(0.97)">Escalate</button>
@@ -729,7 +735,7 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
 
 <sc-if value="{{ dlg.export }}" hint-placeholder-val="{{ false }}">
   <div onClick="{{ dlgBg }}" style="position:fixed;inset:0;z-index:60;background:rgba(0,0,0,0.32);display:flex;align-items:center;justify-content:center;padding:16px;animation:{{ dlgBgAnim }}">
-    <div role="dialog" aria-modal="true" aria-label="Export report" style="width:min(500px,100%);max-height:calc(100vh - 32px);overflow-y:auto;background:#fff;border-radius:16px;box-shadow:0 24px 64px rgba(0,0,0,0.18);padding:24px;display:flex;flex-direction:column;gap:18px;animation:{{ dlgAnim }}">
+    <div ref="{{ xRef }}" tabIndex="-1" role="dialog" aria-modal="true" aria-label="Export report" style="outline:none;width:min(500px,100%);max-height:calc(100vh - 32px);overflow-y:auto;background:#fff;border-radius:16px;box-shadow:0 24px 64px rgba(0,0,0,0.18);padding:24px;display:flex;flex-direction:column;gap:18px;animation:{{ dlgAnim }}">
       <div style="display:flex;align-items:center;justify-content:space-between"><h2 style="margin:0;font-size:20px;line-height:28px;font-weight:600;letter-spacing:-0.01em">Export report</h2><button onClick="{{ closeDlg }}" aria-label="Close" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#616161;cursor:pointer;transition:background .15s,transform .2s" style-hover="background:#F5F5F5;transform:rotate(90deg)"><fl-icon name="dismiss"></fl-icon></button></div>
       <div>
         <div style="font-size:13px;font-weight:600;margin-bottom:6px">Format</div>
@@ -745,13 +751,13 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
       <div>
         <div style="font-size:13px;font-weight:600;margin-bottom:8px">Include</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:6px">
-          <sc-for list="{{ xv.secs }}" as="c" hint-placeholder-count="4"><div role="checkbox" aria-checked="{{ c.on }}" onClick="{{ c.toggle }}" style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 10px;border-radius:8px;transition:background .12s" style-hover="background:#F5F5F5"><span style="width:16px;height:16px;border-radius:4px;border:1px solid {{ c.cbBd }};background:{{ c.cbBg }};display:inline-flex;align-items:center;justify-content:center;color:#fff;flex:none;transition:background .15s,border-color .15s"><span style="display:flex;transform:scale({{ c.cbS }});transition:transform .2s cubic-bezier(.3,1.6,.5,1)"><fl-icon name="checkmark" px="12"></fl-icon></span></span>{{ c.label }}</div></sc-for>
+          <sc-for list="{{ xv.secs }}" as="c" hint-placeholder-count="4"><div role="checkbox" tabIndex="0" aria-checked="{{ c.on }}" onClick="{{ c.toggle }}" style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 10px;border-radius:8px;transition:background .12s" style-hover="background:#F5F5F5"><span style="width:16px;height:16px;border-radius:4px;border:1px solid {{ c.cbBd }};background:{{ c.cbBg }};display:inline-flex;align-items:center;justify-content:center;color:#fff;flex:none;transition:background .15s,border-color .15s"><span style="display:flex;transform:scale({{ c.cbS }});transition:transform .2s cubic-bezier(.3,1.6,.5,1)"><fl-icon name="checkmark" px="12"></fl-icon></span></span>{{ c.label }}</div></sc-for>
         </div>
       </div>
-      <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px">Send to</label><div style="display:flex;align-items:center;gap:8px;height:36px;padding:0 12px;border:1px solid #E0E0E0;border-radius:8px;color:#8A8A8A"><fl-icon name="mail" px="16"></fl-icon><input value="{{ xf.email }}" onChange="{{ xOn.email }}" style="flex:1;min-width:0;height:34px;border:0;outline:none;background:transparent;font-size:14px;color:#242424"></div></div>
+      <div><label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px">Send to</label><div style="display:flex;align-items:center;gap:8px;height:36px;padding:0 12px;border:1px solid #E0E0E0;border-radius:8px;color:#757575"><fl-icon name="mail" px="16"></fl-icon><input value="{{ xf.email }}" onChange="{{ xOn.email }}" style="flex:1;min-width:0;height:34px;border:0;outline:none;background:transparent;font-size:14px;color:#242424"></div></div>
       <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:2px">
         <button onClick="{{ closeDlg }}" style="height:36px;padding:0 14px;border:1px solid #E0E0E0;border-radius:8px;background:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s,transform .1s" style-hover="background:#F5F5F5" style-active="transform:scale(0.97)">Cancel</button>
-        <button onClick="{{ runExport }}" style="height:36px;padding:0 16px;border:0;border-radius:8px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:14px;font-weight:600;cursor:pointer;transition:filter .18s ease,box-shadow .18s ease,transform .18s cubic-bezier(.2,.8,.2,1)" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30);transform:translateY(-1px)" style-active="transform:translateY(0) scale(0.97);box-shadow:0 1px 4px rgba(70,60,190,0.22)">Export</button>
+        <button onClick="{{ runExport }}" style="height:36px;padding:0 16px;border:0;border-radius:8px;background:var(--g);color:#fff;box-shadow:0 2px 8px rgba(70,60,190,0.22);font-size:14px;font-weight:600;cursor:pointer;transition:filter .15s,box-shadow .15s,transform .1s" style-hover="filter:brightness(1.08);box-shadow:0 6px 16px rgba(70,60,190,0.30)" style-active="transform:scale(0.97)">Export</button>
       </div>
     </div>
   </div>
@@ -774,9 +780,8 @@ if(!customElements.get('fl-icon')){customElements.define('fl-icon',class extends
 </div>
 
 </div>
-<dc-import name="MobilePreview" viewport="{{ viewport }}" hint-size="0px,0px"></dc-import>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;brand&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Fluent blue&quot;,&quot;Kuhoo teal&quot;,&quot;Indigo&quot;],&quot;default&quot;:&quot;Fluent blue&quot;,&quot;tsType&quot;:&quot;'Fluent blue'|'Kuhoo teal'|'Indigo'&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;density&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Comfortable&quot;,&quot;Compact&quot;],&quot;default&quot;:&quot;Comfortable&quot;,&quot;tsType&quot;:&quot;'Comfortable'|'Compact'&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Full&quot;,&quot;Reduced&quot;],&quot;default&quot;:&quot;Full&quot;,&quot;tsType&quot;:&quot;'Full'|'Reduced'&quot;,&quot;section&quot;:&quot;Motion&quot;},&quot;viewport&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Desktop&quot;,&quot;Mobile&quot;],&quot;default&quot;:&quot;Desktop&quot;,&quot;tsType&quot;:&quot;'Desktop' | 'Mobile'&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;brand&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Fluent blue&quot;,&quot;Kuhoo teal&quot;,&quot;Indigo&quot;],&quot;default&quot;:&quot;Fluent blue&quot;,&quot;tsType&quot;:&quot;'Fluent blue'|'Kuhoo teal'|'Indigo'&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;density&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Comfortable&quot;,&quot;Compact&quot;],&quot;default&quot;:&quot;Comfortable&quot;,&quot;tsType&quot;:&quot;'Comfortable'|'Compact'&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Full&quot;,&quot;Reduced&quot;],&quot;default&quot;:&quot;Full&quot;,&quot;tsType&quot;:&quot;'Full'|'Reduced'&quot;,&quot;section&quot;:&quot;Motion&quot;}}">
 class Component extends DCLogic {
   static SEGS = [
     {id:'ftp',name:'Forgot to Pay',dot:'#107C10',count:62,avgDpd:'1.2',recovery:92,prio:'High',dpdMin:1,dpdMax:3,riskMin:0,riskMax:30,extra:'No bounces in 6 EMIs',action:'SMS + WhatsApp nudge',freq:'2× daily',cap:3,active:true},
@@ -855,6 +860,8 @@ class Component extends DCLogic {
 
   rootRef = React.createRef();
   gRef = React.createRef();
+  dRef = React.createRef();
+  xRef = React.createRef();
   tid = 0;
   state = this.initState();
 
@@ -892,21 +899,40 @@ class Component extends DCLogic {
 
   componentDidMount() {
     this.applyVars(); this.kick();
+    this._pp = { brand: this.props.brand, density: this.props.density }; this._ps = { dialog: this.state.dialog, drawer: this.state.drawer };
     try { const P = new URLSearchParams(location.search), pg = P.get('page'); if (pg && pg !== 'overview') this.go(pg); if (P.get('open') === 'borrower') setTimeout(() => this.openB(this.state.borrowers[0].id), 500); if (P.get('open') === 'rule') setTimeout(() => this.openRule(this.state.segs[0].id), 500); } catch (e) {}
     this.iv = setInterval(()=>{ const S=this.state; if ((S.page==='interventions'&&S.iTab==='board') || (S.drawer&&S.drawer.kind==='b')) this.setState({now:Date.now()}); }, 1000);
     this.onKey = e => {
-      const tag=(e.target&&e.target.tagName)||'';
+      const t=e.target||{}, tag=t.tagName||'';
+      if ((e.key==='Enter'||e.key===' ') && t.getAttribute && t.getAttribute('tabindex')==='0' && !/BUTTON|INPUT|TEXTAREA|SELECT|^A$/.test(tag)) { e.preventDefault(); t.click(); return; }
       if (e.key==='/' && !/INPUT|TEXTAREA|SELECT/.test(tag)) { e.preventDefault(); this.gRef.current&&this.gRef.current.focus(); return; }
       if (e.key!=='Escape') return;
-      if (this.state.dialog) this.closeDlg(); else if (this.state.pop) this.setState({pop:null}); else if (this.state.drawer) this.closeDrawer();
+      const S=this.state;
+      if (S.dialog) this.closeDlg();
+      else if (S.pop==='g') { this.setState({pop:null,gq:''}); this.gRef.current&&this.gRef.current.blur(); }
+      else if (S.pop) this.setState({pop:null});
+      else if (S.drawer) this.closeDrawer();
+      else if (S.navOpen&&window.innerWidth<760) this.setState({navOpen:false});
     };
     this.onResize = () => { const w=window.innerWidth; if (w!==this.state.vw) this.setState({vw:w}); };
     window.addEventListener('resize', this.onResize, {passive:true});
     this.onScroll = () => { const s=window.scrollY>4; if (s!==this.state.scrolled) this.setState({scrolled:s}); };
     window.addEventListener('keydown', this.onKey); window.addEventListener('scroll', this.onScroll, {passive:true});
   }
-  componentDidUpdate(pp) { if (pp.brand!==this.props.brand || pp.density!==this.props.density) this.applyVars(); }
-  componentWillUnmount() { clearInterval(this.iv); cancelAnimationFrame(this.raf); clearTimeout(this.kt); clearTimeout(this.dt); window.removeEventListener('keydown', this.onKey); window.removeEventListener('resize', this.onResize); window.removeEventListener('scroll', this.onScroll); }
+  componentDidUpdate(pp,ps) {
+    pp = pp || this._pp || {}; ps = ps || this._ps || {};
+    this._pp = { brand: this.props.brand, density: this.props.density }; this._ps = { dialog: this.state.dialog, drawer: this.state.drawer };
+    if (pp.brand!==this.props.brand || pp.density!==this.props.density) this.applyVars();
+    const S=this.state, lock=!!(S.drawer||S.dialog);
+    if (lock!==this._lock) { this._lock=lock; document.documentElement.style.overflow=lock?'hidden':''; }
+    const open=S.dialog?'d':S.drawer?'r':null, was=ps.dialog?'d':ps.drawer?'r':null;
+    if (open!==was) {
+      if (open&&!was) this._ret=document.activeElement;
+      if (open) requestAnimationFrame(()=>{ const el=(open==='d'?this.xRef:this.dRef).current; el&&el.focus({preventScroll:true}); });
+      else if (this._ret&&this._ret.focus&&document.contains(this._ret)) { this._ret.focus({preventScroll:true}); this._ret=null; }
+    }
+  }
+  componentWillUnmount() { clearInterval(this.iv); cancelAnimationFrame(this.raf); clearTimeout(this.kt); clearTimeout(this.dt); window.removeEventListener('keydown', this.onKey); window.removeEventListener('resize', this.onResize); window.removeEventListener('scroll', this.onScroll); document.documentElement.style.overflow=''; }
   applyVars() {
     const r=document.documentElement; const b=Component.BRANDS[this.props.brand]||Component.BRANDS['Fluent blue'];
     Object.keys(b).forEach(k=>r.style.setProperty(k,b[k]));
@@ -935,7 +961,7 @@ class Component extends DCLogic {
   dpdText(s) { return s.dpdMax==null ? s.dpdMin+'+ days' : s.dpdMin===s.dpdMax ? s.dpdMin+' days' : s.dpdMin+'–'+s.dpdMax+' days'; }
   riskText(s) { return (s.riskMin===0&&s.riskMax===100)?'any risk':s.riskMin===0?'risk < '+s.riskMax:s.riskMax===100?'risk > '+s.riskMin:'risk '+s.riskMin+'–'+s.riskMax; }
 
-  go(page) { if (page===this.state.page) return; this.setState({page,pop:null,drawer:null,closing:false}); window.scrollTo({top:0}); this.kick(); }
+  go(page) { if (this.state.navOpen&&window.innerWidth<760) this.setState({navOpen:false}); if (page===this.state.page) return; this.setState({page,pop:null,drawer:null,closing:false}); window.scrollTo({top:0}); this.kick(); }
   openB(id) {
     this.setState({drawer:{kind:'b',id},closing:false,dAnim:false,bTab:'activity',nbaPick:0,pop:null,gq:''});
     requestAnimationFrame(()=>requestAnimationFrame(()=>this.setState({dAnim:true})));
@@ -1014,12 +1040,14 @@ class Component extends DCLogic {
     this.setState({drawer:{kind:'r',id},closing:false,rErr:'',pop:null,rForm:s?{name:s.name,dpdMin:String(s.dpdMin),dpdMax:s.dpdMax==null?'':String(s.dpdMax),riskMin:String(s.riskMin),riskMax:String(s.riskMax),extra:s.extra,action:s.action,freq:s.freq,cap:String(s.cap),prio:s.prio,active:s.active}
       :{name:'',dpdMin:'0',dpdMax:'',riskMin:'0',riskMax:'100',extra:'',action:Component.ACTIONS[0],freq:'Once daily',cap:'3',prio:'Medium',active:true}});
   }
-  setR(k,v) { this.setState(s=>({rForm:{...s.rForm,[k]:v},rErr:k==='name'?'':s.rErr})); }
+  setR(k,v) { this.setState(s=>({rForm:{...s.rForm,[k]:v},rErr:(s.rErrAt==='range'?['dpdMin','dpdMax','riskMin','riskMax'].includes(k):k==='name')?'':s.rErr})); }
   saveRule() {
     const f=this.state.rForm, id=this.state.drawer.id;
-    if (!f.name.trim()) { this.setState({rErr:'Give this segment a name.'}); return; }
+    if (!f.name.trim()) { this.setState({rErr:'Give this segment a name.',rErrAt:'name'}); return; }
     const n=v=>v===''?null:Math.max(0,parseInt(v,10)||0);
     const p={name:f.name.trim(),dpdMin:n(f.dpdMin)||0,dpdMax:n(f.dpdMax),riskMin:Math.min(100,n(f.riskMin)||0),riskMax:Math.min(100,n(f.riskMax)==null?100:n(f.riskMax)),extra:f.extra.trim(),action:f.action,freq:f.freq,cap:n(f.cap)||0,prio:f.prio,active:f.active};
+    if (p.dpdMax!=null&&p.dpdMin>p.dpdMax) { this.setState({rErr:'“DPD from” can’t be higher than “DPD to”.',rErrAt:'range'}); return; }
+    if (p.riskMin>p.riskMax) { this.setState({rErr:'“Risk from” can’t be higher than “Risk to”.',rErrAt:'range'}); return; }
     if (id==='new') { this.setState(s=>({segs:[...s.segs,{id:'n'+Date.now(),dot:'#038387',count:0,avgDpd:'—',recovery:0,...p}]})); this.toast({tone:'success',title:'Segment created',body:p.name+' starts matching on the next run'}); }
     else { this.setState(s=>({segs:s.segs.map(x=>x.id===id?{...x,...p}:x)})); this.toast({tone:'success',title:'Rule saved',body:p.name+' · applies on the next run'}); }
     this.closeDrawer();
@@ -1038,6 +1066,7 @@ class Component extends DCLogic {
 
   renderVals() {
     const S=this.state, C=Component, A=S.anim;
+    const vw=S.vw||window.innerWidth, mob=vw<760;
     const segMap={}; S.segs.forEach(s=>{segMap[s.id]=s;});
     const tone=k=>{const t=C.TONE[k]||C.TONE.neutral; return {fg:t[0],bg:t[1]};};
     const segB=id=>{const s=segMap[id]||{name:'Unassigned',dot:'#BDBDBD'}; return {segName:s.name,segDot:s.dot};};
@@ -1046,7 +1075,7 @@ class Component extends DCLogic {
     const ch=k=>C.CH[k]||C.CH.sms;
     const urgent=d=>/ASAP|Overdue/.test(d);
     const dly=(i,step,base)=>((base||0)+i*(step||60))+'ms';
-    const row=b=>{ const bz=S.busy[b.id]; return {...b,...this.av(b.name),...segB(b.seg),...stB(b.status),riskW:A?b.risk+'%':'0%',riskC:riskC(b.risk),chLabel:ch(b.ch)[0],chIcon:ch(b.ch)[1],
+    const row=b=>{ const bz=S.busy[b.id]; return {...b,...this.av(b.name),...segB(b.seg),...stB(b.status),riskW:A?b.risk+'%':'0%',riskC:riskC(b.risk),riskT:b.risk<40?'#0E700E':b.risk<70?'#8A5300':'#B10E1C',chLabel:ch(b.ch)[0],chIcon:ch(b.ch)[1],
       dueC:urgent(b.due)?'#B10E1C':'#242424',dueW:urgent(b.due)?600:400,bIdle:!bz&&b.status==='Pending',bLoad:bz==='load',bDone:bz==='done',
       flash:S.flash[b.id]?'flFlash 1.3s ease-out':'none',open:()=>this.openB(b.id),run:e=>{e.stopPropagation();this.startRow(b.id,0);}}; };
     const segIdx=(list,cur)=>Math.max(0,list.findIndex(x=>x[0]===cur));
@@ -1055,7 +1084,7 @@ class Component extends DCLogic {
 
     const pending=S.borrowers.filter(b=>b.status==='Pending').length;
     const navI=segIdx(C.NAV,S.page);
-    const nav=C.NAV.map(([id,label,icon])=>{const a=S.page===id; return {label,icon,v:a?'filled':'regular',cur:a?'page':'false',fg:a?'#242424':'#424242',fw:a?600:400,ic:a?'var(--b)':'#616161',show:S.navOpen,
+    const nav=C.NAV.map(([id,label,icon])=>{const a=S.page===id; return {label,icon,v:a?'filled':'regular',cur:a?'page':'false',fg:a?'var(--bp)':'#424242',fw:a?600:400,ic:a?'var(--b)':'#616161',show:S.navOpen,
       hasCount:S.navOpen&&id==='queue'&&pending>0,count:pending,cBg:a?'var(--b)':'#EBEBEB',cFg:a?'#fff':'#424242',go:()=>this.go(id)};});
 
     const gq=S.gq.trim().toLowerCase();
@@ -1064,8 +1093,7 @@ class Component extends DCLogic {
     const pers=[['7D','7D'],['30D','30D'],['90D','90D']];
     const pick=v=>{ if (v!==this.state.period) { this.setState({period:v}); this.kick(); } };
     const ovD=C.OV[S.period];
-    const kvw=S.vw||window.innerWidth, kcw=kvw-(S.navOpen?236:64)-Math.min(80,Math.max(32,kvw*0.06))-16, kN=kcw>=760?5:kcw>=440?6:2;
-    const ovKpis=ovD.k.map((k,i)=>({...C.KPAL[i%4],span:kN===6?(i<3?'span 2':'span 3'):'span 1',label:k[0],value:this.cnt(k[1]),delta:k[2],dc:k[3]?'#0E700E':'#B10E1C',hint:C.HINTS[i],delay:dly(i,70,80)}));
+    const ovKpis=ovD.k.map((k,i)=>({...C.KPAL[i%4],icon:['heart_pulse','handshake','call_checkmark','arrow_trending_down'][i],label:k[0],value:this.cnt(k[1]),delta:k[2],dc:k[3]?'#0E700E':'#B10E1C',hint:C.HINTS[i],delay:dly(i,70,80)}));
     const topRows=S.borrowers.filter(b=>b.status==='Pending'||S.busy[b.id]).sort((a,b)=>a.rank-b.rank).slice(0,5).map(row);
     const months=['Apr','May','Jun','Jul','Aug','Sep'], tot=[2.9,2.8,5.3,6.4,6.0,8.3], dig=[55,58,64,66,70,74];
     const dvh=months.map((m,i)=>({label:m,total:tot[i].toFixed(1)+'k',hH:A?(tot[i]*(100-dig[i])/8.3*0.92).toFixed(1)+'%':'0%',dH:A?(tot[i]*dig[i]/8.3*0.92).toFixed(1)+'%':'0%',td:dly(i,70),tip:m+': '+dig[i]+'% digital, '+(100-dig[i])+'% human'}));
@@ -1082,20 +1110,21 @@ class Component extends DCLogic {
     const qRows=rows.map(b=>{const on=sel.has(b.id); return {...row(b),sel:on,...cb(on),rowBg:on?'var(--b2)':'transparent',toggle:e=>{e.stopPropagation();this.setState(s=>({sel:s.sel.includes(b.id)?s.sel.filter(x=>x!==b.id):[...s.sel,b.id]}));}};});
     const allSel=rows.length>0&&rows.every(b=>sel.has(b.id));
     const sortBy=k=>()=>this.setState(s=>({sort:k,dir:s.sort===k?-s.dir:1}));
-    const ind=k=>S.sort===k?(S.dir===1?'↓':'↑'):'';
+    const ind=k=>S.sort===k?(S.dir===1?'arrow_sort_down':'arrow_sort_up'):'arrow_sort';
+    const ariaS=k=>S.sort!==k?'none':((k==='rank')===(S.dir===1)?'ascending':'descending');
     const openCounts={}; S.borrowers.forEach(b=>{if(b.status!=='Resolved') openCounts[b.seg]=(openCounts[b.seg]||0)+1;});
     const segOpts=S.segs.map(s=>{const on=S.segDraft.includes(s.id); return {name:s.name,dot:s.dot,n:openCounts[s.id]||0,on,...cb(on),toggle:()=>this.setState(st=>({segDraft:st.segDraft.includes(s.id)?st.segDraft.filter(x=>x!==s.id):[...st.segDraft,s.id]}))};});
     const types=[['all','All'],['digital','Digital'],['human','Human']];
 
     const total=S.segs.reduce((a,s)=>a+s.count,0); const maxC=Math.max(...S.segs.map(s=>s.count),1);
-    const segRows=S.segs.map((s,i)=>({...s,op:s.active?1:0.45,cond:'DPD '+this.dpdText(s)+' · '+this.riskText(s)+(s.extra?' · '+s.extra:''),shareW:A?(s.count/maxC*100)+'%':'0%',
+    const segRows=S.segs.map((s,i)=>({...s,op:s.active?1:0.55,cond:'DPD '+this.dpdText(s)+' · '+this.riskText(s)+(s.extra?' · '+s.extra:''),shareW:A?(s.count/maxC*100)+'%':'0%',
       recT:s.count?s.recovery+'%':'—',recW:A?s.recovery+'%':'0%',recC:s.recovery>=70?'#107C10':s.recovery>=40?'#EAA300':'#D13438',capT:s.cap?s.cap+' attempts max':'No attempt limit',
       swBg:s.active?'var(--b)':'#fff',swBd:s.active?'var(--b)':'#BDBDBD',swT:s.active?'#fff':'#8A8A8A',swX:s.active?'18px':'0px',stT:s.active?'Active':'Paused',delay:dly(i,40,60),td:dly(i,50,200),
       open:()=>this.openRule(s.id),toggle:e=>{e.stopPropagation();this.toggleRule(s.id);}}));
 
     const colDefs=[['Scheduled','Scheduled','var(--b)'],['In progress','In progress','#038387'],['Completed','Resolved','#107C10'],['Escalated','Escalated','#C50F1F']];
     const cols=colDefs.map(([title,st,dot])=>{const cards=S.borrowers.filter(b=>b.status===st).map(b=>{
-      let meta,mFg,mBg='transparent',mPad='0',cap,capC='#8A8A8A',live=false;
+      let meta,mFg,mBg='transparent',mPad='0',cap,capC='#757575',live=false;
       if (st==='Scheduled') { meta=b.due.replace('Today, ',''); mFg='var(--b)'; cap=b.nba+' · '+ch(b.ch)[0]; }
       else if (st==='In progress') { meta=this.fmtT(S.now-(b.startedAt||S.now)); mFg='#036C70'; mBg='#E6F7F8'; mPad='8px'; live=true; cap=(['System','Automated'].includes(b.agent)?'Automated':b.agent)+' · '+b.nba; }
       else if (st==='Resolved') { const t=tone('ok'); meta=b.outcome||'Resolved'; mFg=t.fg; mBg=t.bg; mPad='8px'; cap='Logged by '+b.agent; }
@@ -1107,11 +1136,11 @@ class Component extends DCLogic {
       return {title,dot,count:cards.length,cards,empty:!cards.length,bd:isOver?'var(--b)':'transparent',bg:isOver?'var(--b2)':'transparent',
         over:e=>{ e.preventDefault(); if (this.state.dragOver!==st) this.setState({dragOver:st}); },
         drop:e=>{ e.preventDefault(); const id=this.state.dragId; this.setState({dragId:null,dragOver:null}); if (id) this.moveTo(id,st); }};});
-    const iStats=[['Interventions today','342','↑ 8.5%',1],['Pending actions','89','↓ 14%',1],['Success rate','67.3%','↑ 2.1 pts',1],['Avg agent response','2.4 hrs','↓ 0.3 hrs',1]].map((k,i)=>({label:k[0],value:this.cnt(k[1]),delta:k[2],dc:k[3]?'#0E700E':'#B10E1C',delay:dly(i,60,60)}));
+    const iStats=[['Interventions today','342','↑ 8.5%',1],['Pending actions','89','↓ 14%',1],['Success rate','67.3%','↑ 2.1 pts',1],['Avg agent response','2.4 hrs','↓ 0.3 hrs',1]].map((k,i)=>({icon:['flash','clock','checkmark_circle','timer'][i],label:k[0],value:this.cnt(k[1]),delta:k[2],dc:k[3]?'#0E700E':'#B10E1C',delay:dly(i,60,60)}));
     const logRows=S.log.map(l=>{const t=tone(l.tone); return {...l,fg:t.fg,bg:t.bg,anim:l.fresh?'flFlash 1.4s ease-out':'none'};});
     const iTabsL=[['board','Board'],['log','Activity log']];
 
-    const rpKpis=C.RP[S.period].map((k,i)=>({...Component.KPAL[i%4],label:k[0],value:this.cnt(k[1]),delta:k[2],dc:k[3]?'#0E700E':'#B10E1C',delay:dly(i,70,80)}));
+    const rpKpis=C.RP[S.period].map((k,i)=>({...Component.KPAL[i%4],icon:['money_hand','target_arrow','calendar_ltr','receipt'][i],label:k[0],value:this.cnt(k[1]),delta:k[2],dc:k[3]?'#0E700E':'#B10E1C',delay:dly(i,70,80)}));
     const act=[24.8,28.6,27.9,31.5,38.0,45.2], tgt=[26,29,31,33,37,42];
     const y=v=>200-(v-20)/30*180; const pts=a=>a.map((v,i)=>((i+0.5)*100)+','+y(v).toFixed(1)).join(' ');
     const tr={act:pts(act),tgt:pts(tgt),area:'50,200 '+pts(act)+' 550,200',cols:months.map((m,i)=>({m,y:y(act[i]).toFixed(1)+'px',s:A?1:0,td:(250+i*150)+'ms',tip:m+' 2026 · ₹'+act[i].toFixed(1)+'L collected vs ₹'+tgt[i]+'L target'}))};
@@ -1153,8 +1182,8 @@ class Component extends DCLogic {
     let rv={}, rOn={};
     if (rOpen) {
       const f=S.rForm, isNew=S.drawer.id==='new', s=segMap[S.drawer.id];
-      rv={title:isNew?'New segment':f.name||'Untitled segment',sub:isNew?'Define who enters and how they are treated':s.count+' accounts match today',dot:s?s.dot:'#038387',nBd:S.rErr?'#C50F1F':'#E0E0E0',
-        hasErr:!!S.rErr,swBg:f.active?'var(--b)':'#fff',swBd:f.active?'var(--b)':'#BDBDBD',swT:f.active?'#fff':'#8A8A8A',swX:f.active?'18px':'0px',stT:f.active?'Rule active':'Rule paused',saveT:isNew?'Create segment':'Save rule'};
+      rv={title:isNew?'New segment':f.name||'Untitled segment',sub:isNew?'Define who enters and how they are treated':s.count+' accounts match today',dot:s?s.dot:'#038387',nBd:S.rErr&&S.rErrAt!=='range'?'#C50F1F':'#E0E0E0',
+        hasErr:!!S.rErr&&S.rErrAt!=='range',hasRangeErr:!!S.rErr&&S.rErrAt==='range',swBg:f.active?'var(--b)':'#fff',swBd:f.active?'var(--b)':'#BDBDBD',swT:f.active?'#fff':'#8A8A8A',swX:f.active?'18px':'0px',stT:f.active?'Rule active':'Rule paused',saveT:isNew?'Create segment':'Save rule'};
       ['name','dpdMin','dpdMax','riskMin','riskMax','extra','action','freq','cap','prio'].forEach(k=>{rOn[k]=e=>this.setR(k,e.target.value);});
       rOn.active=()=>this.setR('active',!f.active);
     }
@@ -1192,22 +1221,22 @@ class Component extends DCLogic {
     const pop={notif:S.pop==='notif',profile:S.pop==='profile',seg:S.pop==='seg'};
 
     return {
-      ...(()=>{ const cw=(S.vw||window.innerWidth)-(S.navOpen?236:64)-Math.min(80,Math.max(32,(S.vw||window.innerWidth)*0.06)); const v=x=>cw>=x?'table-cell':'none';
+      ...(()=>{ const cw=(S.vw||window.innerWidth)-(S.navOpen&&!mob?236:64)-Math.min(80,Math.max(32,(S.vw||window.innerWidth)*0.06)); const v=x=>cw>=x?'table-cell':'none';
         return {colSegO:v(820),colDueO:v(0),colSegQ:v(1000),colOwner:v(1120),colDpd:v(860),colStatus:v(940),colAgent:v(940),colDur:v(800),colResp:v(560)}; })(),
-      rootRef:this.rootRef, gRef:this.gRef, motion:this.reduced()?'reduced':'full',
+      rootRef:this.rootRef, gRef:this.gRef, dRef:this.dRef, xRef:this.xRef, wordD:vw<640?'none':'inline', motion:this.reduced()?'reduced':'full',
       hdrBg:S.scrolled?'rgba(250,250,250,0.82)':'transparent', hdrSh:S.scrolled?'0 1px 0 #EBEBEB':'none',
-      toggleNav:()=>this.setState(s=>({navOpen:!s.navOpen})), navW:S.navOpen?'236px':'64px', nav, navY:(navI*44)+'px',
-      gq:S.gq, onGq:e=>this.setState({gq:e.target.value,pop:'g'}), onGqFocus:()=>this.setState({pop:'g',gFocus:true}), onGqBlur:()=>this.setState({gFocus:false}),
-      gW:S.gFocus?'560px':'400px', gBg:S.gFocus?'#fff':'#F0F0F0', gSh:S.gFocus?'0 0 0 1px var(--b), 0 4px 16px rgba(0,0,0,0.06)':'none', gHint:!S.gFocus&&!S.gq&&(S.vw||window.innerWidth)>=640, brandD:(S.vw||window.innerWidth)<640?'none':'inline', brandPr:(S.vw||window.innerWidth)<640?'0px':'12px',
+      toggleNav:()=>this.setState(s=>({navOpen:!s.navOpen})), navW:S.navOpen?'236px':'64px', navSlot:mob?'64px':(S.navOpen?'236px':'64px'), navBg:mob&&S.navOpen?'#FAFAFA':'transparent', navSh:mob&&S.navOpen?'8px 0 24px rgba(0,0,0,0.10)':'none', navScrim:mob&&S.navOpen, nav, navY:(navI*44)+'px',
+      gq:S.gq, onGq:e=>this.setState({gq:e.target.value,pop:'g'}), onGqFocus:()=>this.setState({pop:'g',gFocus:true}), onGqBlur:()=>this.setState({gFocus:false}), onGqKey:e=>{ if (e.key!=='Enter'||!gRes.length) return; e.preventDefault(); e.target.blur(); this.openB(gRes[0].id); },
+      gW:S.gFocus?'560px':'400px', gBg:S.gFocus?'#fff':'#F0F0F0', gSh:S.gFocus?'0 0 0 1px var(--b), 0 4px 16px rgba(0,0,0,0.06)':'none', gHint:!S.gFocus&&!S.gq&&vw>=640,
       gRes, showG:S.pop==='g'&&!!gq, gEmpty:!!gq&&!gRes.length,
-      pop, anyPop:!!S.pop, closePop:()=>this.setState({pop:null}),
+      pop, anyPop:!!S.pop&&!(S.pop==='g'&&!gq), closePop:()=>this.setState({pop:null}),
       togNotif:()=>this.setState(s=>({pop:s.pop==='notif'?null:'notif'})), togProfile:()=>this.setState(s=>({pop:s.pop==='profile'?null:'profile'})),
       hasUnread:!S.read, notifs, markRead:()=>this.setState({read:true}),
       profileItems:[['settings','Settings'],['question_circle','Help & documentation'],['code','API access'],['sign_out','Sign out']].map(([icon,label])=>({icon,label,act:()=>this.setState({pop:null})})),
       pg:{overview:S.page==='overview',queue:S.page==='queue',segments:S.page==='segments',interventions:S.page==='interventions',reports:S.page==='reports'},
       periodLabel:pLabel, periods:seg2(pers,S.period,pick), perX:(segIdx(pers,S.period)*100)+'%',
-      kpiCols:'repeat('+kN+',minmax(0,1fr))', kpiLastSpan:kN===6?'span 3':kN===2?'span 2':'span 1', ovSub:'Friday, 25 Sep · '+pending+' accounts need action', ov:ovD, ns:this.cnt(ovD.ns), ovKpis, topRows, dvh, funnel, goQueue:()=>this.go('queue'),
-      newSchedule:()=>this.openSchedule(null), q:S.q, onQ:e=>this.setState({q:e.target.value}),
+      ovSub:'Friday, 25 Sep · '+pending+' accounts need action', ov:ovD, ns:this.cnt(ovD.ns), ovKpis, topRows, dvh, funnel, goQueue:()=>this.go('queue'),
+      newSchedule:()=>this.openSchedule(null), q:S.q, onQ:e=>this.setState({q:e.target.value}), qBg:S.qF?'#fff':'#F5F5F5', qSh:S.qF?'0 0 0 1px var(--b)':'none', onQF:()=>this.setState({qF:true}), onQB:()=>this.setState({qF:false}),
       segBtn:S.segSel.length?S.segSel.length+' segment'+(S.segSel.length>1?'s':''):'All segments', segBtnBd:S.segSel.length?'var(--b)':'#E0E0E0', segBtnBg:S.segSel.length?'var(--b2)':'#fff', segBtnFg:S.segSel.length?'var(--b)':'#242424',
       togSeg:()=>this.setState(s=>({pop:s.pop==='seg'?null:'seg',segDraft:s.segSel.slice()})), segOpts,
       segReset:()=>this.setState({segDraft:[],segSel:[],pop:null}), segApply:()=>this.setState(s=>({segSel:s.segDraft.slice(),pop:null,sel:[]})),
@@ -1215,15 +1244,15 @@ class Component extends DCLogic {
       hasSel:S.sel.length>0, noSel:!S.sel.length, selCount:S.sel.length, clearSel:()=>this.setState({sel:[]}), bulkRun:()=>this.bulkRun(),
       qCount:rows.length, qHas:rows.length>0, qEmpty:!rows.length, qRows, allSel, allCbBg:allSel?'var(--b)':'#fff', allCbBd:allSel?'var(--b)':'#BDBDBD', allCbS:allSel?1:0,
       toggleAll:()=>this.setState({sel:allSel?[]:rows.map(b=>b.id)}),
-      sortRank:sortBy('rank'), sortRisk:sortBy('risk'), sortDpd:sortBy('dpd'), si:{rank:ind('rank'),risk:ind('risk'),dpd:ind('dpd')},
+      sortRank:sortBy('rank'), sortRisk:sortBy('risk'), sortDpd:sortBy('dpd'), si:{rank:ind('rank'),risk:ind('risk'),dpd:ind('dpd'),rankOp:S.sort==='rank'?1:0.45,riskOp:S.sort==='risk'?1:0.45,dpdOp:S.sort==='dpd'?1:0.45,rankA:ariaS('rank'),riskA:ariaS('risk'),dpdA:ariaS('dpd')},
       clearFilters:()=>this.setState({q:'',segSel:[],segDraft:[],type:'all'}),
       segSummary:total+' delinquent accounts across '+S.segs.length+' risk cohorts', segRows, newRule:()=>this.openRule('new'),
       iStats, iTabs:seg2(iTabsL,S.iTab,v=>{ if (v!==this.state.iTab) { this.setState({iTab:v}); } }), iTabX:(segIdx(iTabsL,S.iTab)*100)+'%', iBoard:S.iTab==='board', iLog:S.iTab==='log', cols, logRows,
       rpKpis, tr, clipR:A?'0%':'100%', agents, channels, months:monthsT, openExport:()=>this.openExport(),
       bOpen, bd, bTabs:seg2([['activity','Activity'],['payments','Payments'],['risk','Risk trend']],S.bTab,v=>{ this.setState({bTab:v,dAnim:false}); requestAnimationFrame(()=>requestAnimationFrame(()=>this.setState({dAnim:true}))); clearTimeout(this.dt); this.dt=setTimeout(()=>this.setState({dAnim:true}),400); }),
       bTabX:(segIdx([['activity'],['payments'],['risk']],S.bTab)*100)+'%',
-      bt:{activity:S.bTab==='activity',payments:S.bTab==='payments',risk:S.bTab==='risk'}, closeDrawer:()=>this.closeDrawer(),
-      drAnim:S.closing?'flDrawerOut .19s ease-in both':'flDrawer .38s cubic-bezier(.16,1,.3,1) both', bgAnim:S.closing?'flFadeOut .19s ease-in both':'flFade .25s ease-out both', popAnim:S.closing?'flPopOut .19s ease-in both':'flPop .28s cubic-bezier(.16,1,.3,1) both',
+      bt:{activity:S.bTab==='activity',payments:S.bTab==='payments',risk:S.bTab==='risk'}, closeDrawer:()=>this.closeDrawer(), bdBg:e=>{ if (e.target===e.currentTarget) this.closeDrawer(); }, bpAnim:S.closing?'flPopOut .19s ease-in both':'flPop .3s cubic-bezier(.16,1,.3,1) both',
+      drAnim:S.closing?'flDrawerOut .19s ease-in both':'flDrawer .38s cubic-bezier(.16,1,.3,1) both', bgAnim:S.closing?'flFadeOut .19s ease-in both':'flFade .25s ease-out both',
       rOpen, rf:S.rForm||{}, rv, rOn, rErr:S.rErr, saveRule:()=>this.saveRule(),
       actions:C.ACTIONS, freqs:C.FREQS, prios:C.PRIOS, sTypes:C.STYPES, agentNames:C.AGENTS,
       dlg, dlgBg:e=>{if(e.target===e.currentTarget) this.closeDlg();}, closeDlg:()=>this.closeDlg(),
